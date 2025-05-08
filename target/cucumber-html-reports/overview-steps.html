@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.tablesorter.min.js"></script>
+<script src="js/Chart.min.js"></script>
+<script src="js/moment.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+<link rel="stylesheet" href="css/cucumber.css" type="text/css"/>
+<link rel="stylesheet" href="css/font-awesome.min.css"/>
+<link rel="shortcut icon" href="images/favicon.png"/>
+
+<script>
+$(document).ready(function() {
+    // this will tell tablesorter to try looking for the data-value attribute
+    // if present, it'll sort by that instead
+    // otherwise, it'll sort by the text content of the table cell
+    $("#tablesorter").tablesorter({
+        textAttribute: 'data-value',
+        // ignores the first row of the header, the 'scenario', 'steps', since
+        // sorting those doesn't make sense
+        selectorHeaders: '> thead tr:not(.dont-sort) th',
+        // use a stable sort
+        sortStable: true
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<title>Cucumber Reports  - Steps Overview</title>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navigation">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse">
+      <p class="navbar-text navbar-left">Cucumber Report</p>
+      <ul class="nav navbar-nav navbar-right">
+        <li role="presentation" ><a href="overview-features.html">Features</a></li>
+        <li role="presentation" ><a href="overview-tags.html">Tags</a></li>
+        <li role="presentation"     class="active" ><a href="overview-steps.html">Steps</a></li>
+        <li role="presentation" ><a href="overview-failures.html">Failures</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container-fluid">
+  <div class="col-md-5 col-md-offset-1">
+
+<table class="table table-bordered" id="build-info">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="info">
+      <td>Semaaa</td>
+      <td>14 Apr 2024, 04:49</td>
+    </tr>
+  </tbody>
+</table>
+
+  </div>
+  <div class="col-md-3 col-md-offset-2">
+  </div>
+</div>
+
+
+<div id="report-lead" class="container-fluid">
+  <div class="col-md-10 col-md-offset-1">
+    <h2>Steps Statistics</h2>
+      <p>The following graph shows step statistics for this build. Below list is based on results.
+ step does not provide information about result then is not listed below.
+ Additionally @Before and @After are not counted because they are part of the scenarios, not steps.</p>
+  </div>
+</div>
+
+<div class="container-fluid" id="report">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <table id="tablesorter" class="stats-table table-hover">
+
+        <thead>
+          <tr class="header">
+            <th>Implementation</th>
+            <th>Occurrences</th>
+            <th>Average duration</th>
+            <th>Max duration</th>
+            <th>Total durations</th>
+            <th>Ratio</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+              <td class="location">com.efectura.stepDefs.BlackListHomePageStepDefs.the_user_waits_until_the_system_element_is_visible_with_a_timeout_of_seconds(java.lang.Integer)</td>
+              <td>58</td>
+              <td class="duration" data-value="715038372">0.715</td>
+              <td class="duration" data-value="715038372">4.182</td>
+              <td class="duration" data-value="41472225600">41.472</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.Hooks.setup(io.cucumber.java.Scenario)</td>
+              <td>308</td>
+              <td class="duration" data-value="8235629378">8.235</td>
+              <td class="duration" data-value="8235629378">38.220</td>
+              <td class="duration" data-value="2536573848500">42:16.573</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.Hooks.tearDown(io.cucumber.java.Scenario)</td>
+              <td>308</td>
+              <td class="duration" data-value="5380870495">5.380</td>
+              <td class="duration" data-value="5380870495">17.561</td>
+              <td class="duration" data-value="1657308112500">27:37.308</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_associated_all_filter()</td>
+              <td>6</td>
+              <td class="duration" data-value="8782247483">8.782</td>
+              <td class="duration" data-value="8782247483">10.558</td>
+              <td class="duration" data-value="52693484900">52.693</td>
+              <td class="failed">83.33%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_associated_no_filter()</td>
+              <td>6</td>
+              <td class="duration" data-value="17208564400">17.208</td>
+              <td class="duration" data-value="17208564400">17.225</td>
+              <td class="duration" data-value="103251386400">1:43.251</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_clicks_associated_status()</td>
+              <td>3</td>
+              <td class="duration" data-value="8975833">0.008</td>
+              <td class="duration" data-value="8975833">0.009</td>
+              <td class="duration" data-value="26927500">0.026</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_clicks_export_associations()</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_clicks_export_attributes()</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_clicks_export_entity_button()</td>
+              <td>3</td>
+              <td class="duration" data-value="15521766">0.015</td>
+              <td class="duration" data-value="15521766">0.023</td>
+              <td class="duration" data-value="46565300">0.046</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_clicks_export_permission()</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_clicks_item()</td>
+              <td>5</td>
+              <td class="duration" data-value="9675358640">9.675</td>
+              <td class="duration" data-value="9675358640">12.112</td>
+              <td class="duration" data-value="48376793200">48.376</td>
+              <td class="failed">80.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_dowloand_export_entity_verifies()</td>
+              <td>3</td>
+              <td class="duration" data-value="332066">0.000</td>
+              <td class="duration" data-value="332066">0.000</td>
+              <td class="duration" data-value="996200">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_selects(java.lang.String)</td>
+              <td>3</td>
+              <td class="duration" data-value="326633">0.000</td>
+              <td class="duration" data-value="326633">0.000</td>
+              <td class="duration" data-value="979900">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_verifies_displayed_is_correct(java.lang.String)</td>
+              <td>3</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAccountHomePageStepDefs.the_user_verify_no_filter()</td>
+              <td>6</td>
+              <td class="duration" data-value="19048771366">19.048</td>
+              <td class="duration" data-value="19048771366">19.079</td>
+              <td class="duration" data-value="114292628200">1:54.292</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.clicks_group_permission_tab()</td>
+              <td>16</td>
+              <td class="duration" data-value="5113516125">5.113</td>
+              <td class="duration" data-value="5113516125">5.153</td>
+              <td class="duration" data-value="81816258000">1:21.816</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.clicks_user_permission_tab()</td>
+              <td>14</td>
+              <td class="duration" data-value="6113961771">6.113</td>
+              <td class="duration" data-value="6113961771">6.134</td>
+              <td class="duration" data-value="85595464800">1:25.595</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserClicksAccordionButton()</td>
+              <td>18</td>
+              <td class="duration" data-value="62993866">0.062</td>
+              <td class="duration" data-value="62993866">0.117</td>
+              <td class="duration" data-value="1133889600">1.133</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserClicksCancelButtonInChangeItemModal()</td>
+              <td>1</td>
+              <td class="duration" data-value="664310800">0.664</td>
+              <td class="duration" data-value="664310800">0.664</td>
+              <td class="duration" data-value="664310800">0.664</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserClicksOnUnsavedChangeButton()</td>
+              <td>3</td>
+              <td class="duration" data-value="69515566">0.069</td>
+              <td class="duration" data-value="69515566">0.073</td>
+              <td class="duration" data-value="208546700">0.208</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserClicksSaveButtonInChangeItemModal()</td>
+              <td>2</td>
+              <td class="duration" data-value="647082050">0.647</td>
+              <td class="duration" data-value="647082050">0.649</td>
+              <td class="duration" data-value="1294164100">1.294</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserRefreshTheBrowser()</td>
+              <td>1</td>
+              <td class="duration" data-value="47379300">0.047</td>
+              <td class="duration" data-value="47379300">0.047</td>
+              <td class="duration" data-value="47379300">0.047</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserSelects(java.lang.String)</td>
+              <td>15</td>
+              <td class="duration" data-value="6078902626">6.078</td>
+              <td class="duration" data-value="6078902626">7.198</td>
+              <td class="duration" data-value="91183539400">1:31.183</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserVerifiesItemStatusNotChange()</td>
+              <td>1</td>
+              <td class="duration" data-value="4089823600">4.089</td>
+              <td class="duration" data-value="4089823600">4.089</td>
+              <td class="duration" data-value="4089823600">4.089</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserVerifiesLastButtonIsUnclickableUser()</td>
+              <td>2</td>
+              <td class="duration" data-value="1034144300">1.034</td>
+              <td class="duration" data-value="1034144300">1.036</td>
+              <td class="duration" data-value="2068288600">2.068</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.theUserVerifiesThatTabIsOpened(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="97209150">0.097</td>
+              <td class="duration" data-value="97209150">0.106</td>
+              <td class="duration" data-value="194418300">0.194</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_clicks_last_page_button_asset()</td>
+              <td>6</td>
+              <td class="duration" data-value="5076959016">5.076</td>
+              <td class="duration" data-value="5076959016">5.087</td>
+              <td class="duration" data-value="30461754100">30.461</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_clicks_last_page_button_user()</td>
+              <td>5</td>
+              <td class="duration" data-value="6908541100">6.908</td>
+              <td class="duration" data-value="6908541100">14.052</td>
+              <td class="duration" data-value="34542705500">34.542</td>
+              <td class="failed">80.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_clicks_list_drop_down_button()</td>
+              <td>3</td>
+              <td class="duration" data-value="181414433">0.181</td>
+              <td class="duration" data-value="181414433">0.233</td>
+              <td class="duration" data-value="544243300">0.544</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_clicks_next_page_button_asset()</td>
+              <td>3</td>
+              <td class="duration" data-value="7086155566">7.086</td>
+              <td class="duration" data-value="7086155566">7.095</td>
+              <td class="duration" data-value="21258466700">21.258</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_clicks_next_page_button_user()</td>
+              <td>6</td>
+              <td class="duration" data-value="3137312433">3.137</td>
+              <td class="duration" data-value="3137312433">3.155</td>
+              <td class="duration" data-value="18823874600">18.823</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_clicks_previous_page_button_user()</td>
+              <td>3</td>
+              <td class="duration" data-value="92724266">0.092</td>
+              <td class="duration" data-value="92724266">0.103</td>
+              <td class="duration" data-value="278172800">0.278</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_clicks_removed_button()</td>
+              <td>1</td>
+              <td class="duration" data-value="1228076000">1.228</td>
+              <td class="duration" data-value="1228076000">1.228</td>
+              <td class="duration" data-value="1228076000">1.228</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_firstPage_button_is_not_clickable_asset()</td>
+              <td>1</td>
+              <td class="duration" data-value="6060964100">6.060</td>
+              <td class="duration" data-value="6060964100">6.060</td>
+              <td class="duration" data-value="6060964100">6.060</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_first_page_button_is_clickable_asset()</td>
+              <td>2</td>
+              <td class="duration" data-value="6053406700">6.053</td>
+              <td class="duration" data-value="6053406700">6.054</td>
+              <td class="duration" data-value="12106813400">12.106</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_first_page_button_is_clickable_user()</td>
+              <td>1</td>
+              <td class="duration" data-value="6056139200">6.056</td>
+              <td class="duration" data-value="6056139200">6.056</td>
+              <td class="duration" data-value="6056139200">6.056</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_first_page_button_is_not_clickable_user()</td>
+              <td>2</td>
+              <td class="duration" data-value="1052296900">1.052</td>
+              <td class="duration" data-value="1052296900">1.053</td>
+              <td class="duration" data-value="2104593800">2.104</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_last_button_is_clickable_asset()</td>
+              <td>2</td>
+              <td class="duration" data-value="6064467550">6.064</td>
+              <td class="duration" data-value="6064467550">6.066</td>
+              <td class="duration" data-value="12128935100">12.128</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_last_button_is_clickable_user()</td>
+              <td>2</td>
+              <td class="duration" data-value="8040092400">8.040</td>
+              <td class="duration" data-value="8040092400">8.050</td>
+              <td class="duration" data-value="16080184800">16.080</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_last_button_is_unclickable_asset()</td>
+              <td>2</td>
+              <td class="duration" data-value="8048275200">8.048</td>
+              <td class="duration" data-value="8048275200">8.055</td>
+              <td class="duration" data-value="16096550400">16.096</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_next_button_is_clickable_asset()</td>
+              <td>1</td>
+              <td class="duration" data-value="8062300400">8.062</td>
+              <td class="duration" data-value="8062300400">8.062</td>
+              <td class="duration" data-value="8062300400">8.062</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_next_button_is_clickable_user()</td>
+              <td>2</td>
+              <td class="duration" data-value="6044413150">6.044</td>
+              <td class="duration" data-value="6044413150">6.045</td>
+              <td class="duration" data-value="12088826300">12.088</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_next_button_is_unclickable_asset()</td>
+              <td>3</td>
+              <td class="duration" data-value="6095047966">6.095</td>
+              <td class="duration" data-value="6095047966">6.110</td>
+              <td class="duration" data-value="18285143900">18.285</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_next_button_is_unclickable_user()</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="failed">0.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_previous_button_is_clickable_asset()</td>
+              <td>2</td>
+              <td class="duration" data-value="6060490000">6.060</td>
+              <td class="duration" data-value="6060490000">6.066</td>
+              <td class="duration" data-value="12120980000">12.120</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_previous_button_is_clickable_user()</td>
+              <td>2</td>
+              <td class="duration" data-value="6051930950">6.051</td>
+              <td class="duration" data-value="6051930950">6.054</td>
+              <td class="duration" data-value="12103861900">12.103</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_previous_page_button_is_not_clickable_asset()</td>
+              <td>2</td>
+              <td class="duration" data-value="6062207500">6.062</td>
+              <td class="duration" data-value="6062207500">6.064</td>
+              <td class="duration" data-value="12124415000">12.124</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_verifies_previous_page_button_is_not_clickable_user()</td>
+              <td>2</td>
+              <td class="duration" data-value="6051679800">6.051</td>
+              <td class="duration" data-value="6051679800">6.052</td>
+              <td class="duration" data-value="12103359600">12.103</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetEditStep.the_user_waits_ten_seconds()</td>
+              <td>2</td>
+              <td class="duration" data-value="10030579900">10.030</td>
+              <td class="duration" data-value="10030579900">10.031</td>
+              <td class="duration" data-value="20061159800">20.061</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetHomePageSteps.the_user_presses_the_down_arrow_key_and_then_presses_enter_in_the_element(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="166132000">0.166</td>
+              <td class="duration" data-value="166132000">0.166</td>
+              <td class="duration" data-value="166132000">0.166</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_cancel_button_in_delete_popup()</td>
+              <td>1</td>
+              <td class="duration" data-value="587686000">0.587</td>
+              <td class="duration" data-value="587686000">0.587</td>
+              <td class="duration" data-value="587686000">0.587</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_cancel_button_in_popup()</td>
+              <td>3</td>
+              <td class="duration" data-value="207278900">0.207</td>
+              <td class="duration" data-value="207278900">0.219</td>
+              <td class="duration" data-value="621836700">0.621</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_cancel_button_new_list()</td>
+              <td>1</td>
+              <td class="duration" data-value="66473500">0.066</td>
+              <td class="duration" data-value="66473500">0.066</td>
+              <td class="duration" data-value="66473500">0.066</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_create_button_new_list()</td>
+              <td>2</td>
+              <td class="duration" data-value="81892800">0.081</td>
+              <td class="duration" data-value="81892800">0.082</td>
+              <td class="duration" data-value="163785600">0.163</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_delete_button(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="5232798250">5.232</td>
+              <td class="duration" data-value="5232798250">5.255</td>
+              <td class="duration" data-value="20931193000">20.931</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_delete_button_in_delete_popup()</td>
+              <td>1</td>
+              <td class="duration" data-value="605159900">0.605</td>
+              <td class="duration" data-value="605159900">0.605</td>
+              <td class="duration" data-value="605159900">0.605</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_delete_button_in_popup()</td>
+              <td>1</td>
+              <td class="duration" data-value="212793400">0.212</td>
+              <td class="duration" data-value="212793400">0.212</td>
+              <td class="duration" data-value="212793400">0.212</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_on_the_asset_element()</td>
+              <td>57</td>
+              <td class="duration" data-value="1321861396">1.321</td>
+              <td class="duration" data-value="1321861396">2.143</td>
+              <td class="duration" data-value="75346099600">1:15.346</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_clicks_plus_icon()</td>
+              <td>10</td>
+              <td class="duration" data-value="97221530">0.097</td>
+              <td class="duration" data-value="97221530">0.127</td>
+              <td class="duration" data-value="972215300">0.972</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_enters_can_edit(java.lang.String)</td>
+              <td>3</td>
+              <td class="duration" data-value="129040900">0.129</td>
+              <td class="duration" data-value="129040900">0.150</td>
+              <td class="duration" data-value="387122700">0.387</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_enters_can_view(java.lang.String)</td>
+              <td>3</td>
+              <td class="duration" data-value="168403966">0.168</td>
+              <td class="duration" data-value="168403966">0.171</td>
+              <td class="duration" data-value="505211900">0.505</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_enters_list_name(java.lang.String)</td>
+              <td>10</td>
+              <td class="duration" data-value="91122080">0.091</td>
+              <td class="duration" data-value="91122080">0.106</td>
+              <td class="duration" data-value="911220800">0.911</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_gets_the_current_url_and_stores_it_in_asset_page(java.lang.String)</td>
+              <td>97</td>
+              <td class="duration" data-value="5028948182">5.028</td>
+              <td class="duration" data-value="5028948182">5.054</td>
+              <td class="duration" data-value="487807973700">8:7.807</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_performs_a_mouseover_on_the_asset_element()</td>
+              <td>57</td>
+              <td class="duration" data-value="166710756">0.166</td>
+              <td class="duration" data-value="166710756">0.187</td>
+              <td class="duration" data-value="9502513100">9.502</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_performs_a_mouseover_on_the_asset_management_element()</td>
+              <td>57</td>
+              <td class="duration" data-value="205802815">0.205</td>
+              <td class="duration" data-value="205802815">0.283</td>
+              <td class="duration" data-value="11730760500">11.730</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_presses_the_down_arrow_key_and_then_presses_enter_in_the_cooler_element()</td>
+              <td>2</td>
+              <td class="duration" data-value="168158250">0.168</td>
+              <td class="duration" data-value="168158250">0.189</td>
+              <td class="duration" data-value="336316500">0.336</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_verifies_error_message_is_displayed(java.lang.String)</td>
+              <td>3</td>
+              <td class="duration" data-value="763557366">0.763</td>
+              <td class="duration" data-value="763557366">1.191</td>
+              <td class="duration" data-value="2290672100">2.290</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_verifies_is_not_visible(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="7082245700">7.082</td>
+              <td class="duration" data-value="7082245700">7.091</td>
+              <td class="duration" data-value="14164491400">14.164</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_verifies_is_visible(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="7075444900">7.075</td>
+              <td class="duration" data-value="7075444900">7.087</td>
+              <td class="duration" data-value="14150889800">14.150</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_verifies_new_list_pop_up_is_open()</td>
+              <td>10</td>
+              <td class="duration" data-value="806462100">0.806</td>
+              <td class="duration" data-value="806462100">1.691</td>
+              <td class="duration" data-value="8064621000">8.064</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_waits_until_the_element_with_id_&#305;nfoitem_is_visible()</td>
+              <td>4</td>
+              <td class="duration" data-value="592056475">0.592</td>
+              <td class="duration" data-value="592056475">0.604</td>
+              <td class="duration" data-value="2368225900">2.368</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_waits_until_the_page_contains_with_a_timeout_of_seconds_Asset(java.lang.String,java.lang.Integer)</td>
+              <td>1</td>
+              <td class="duration" data-value="262232300">0.262</td>
+              <td class="duration" data-value="262232300">0.262</td>
+              <td class="duration" data-value="262232300">0.262</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMAssetStepDefs.the_user_waits_until_the_root_categories_element_is_visible_with_a_timeout_of_seconds(java.lang.Integer)</td>
+              <td>2</td>
+              <td class="duration" data-value="759611700">0.759</td>
+              <td class="duration" data-value="759611700">0.945</td>
+              <td class="duration" data-value="1519223400">1.519</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.theUserClicksDeleteIconOfList(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="6454626200">6.454</td>
+              <td class="duration" data-value="6454626200">6.484</td>
+              <td class="duration" data-value="12909252400">12.909</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.the_user_clicks_on_the_campaign_element()</td>
+              <td>40</td>
+              <td class="duration" data-value="1453948740">1.453</td>
+              <td class="duration" data-value="1453948740">6.060</td>
+              <td class="duration" data-value="58157949600">58.157</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.the_user_performs_a_mouseover_on_the_campaign_element()</td>
+              <td>40</td>
+              <td class="duration" data-value="166637897">0.166</td>
+              <td class="duration" data-value="166637897">0.186</td>
+              <td class="duration" data-value="6665515900">6.665</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.the_user_performs_a_mouseover_on_the_campaign_management_element()</td>
+              <td>40</td>
+              <td class="duration" data-value="186468665">0.186</td>
+              <td class="duration" data-value="186468665">0.217</td>
+              <td class="duration" data-value="7458746600">7.458</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.the_user_verify_on_code_filter_functionality_campaign(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="10045639800">10.045</td>
+              <td class="duration" data-value="10045639800">10.045</td>
+              <td class="duration" data-value="10045639800">10.045</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.the_user_verify_on_code_filter_functionality_with_partial_unique_code_campaign(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="38767600">0.038</td>
+              <td class="duration" data-value="38767600">0.038</td>
+              <td class="duration" data-value="38767600">0.038</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.the_user_verify_on_label_filter_functionality_with_partial_unique_code_campaign(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="43436400">0.043</td>
+              <td class="duration" data-value="43436400">0.043</td>
+              <td class="duration" data-value="86872800">0.086</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMCampaignHomePageStepDefs.the_user_verify_that_is_visible(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="34300200">0.034</td>
+              <td class="duration" data-value="34300200">0.034</td>
+              <td class="duration" data-value="34300200">0.034</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.theUserClicksCategoryAccordionButton()</td>
+              <td>2</td>
+              <td class="duration" data-value="44645900">0.044</td>
+              <td class="duration" data-value="44645900">0.045</td>
+              <td class="duration" data-value="89291800">0.089</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.the_user_clicks_on_the_connector_element()</td>
+              <td>47</td>
+              <td class="duration" data-value="1953345589">1.953</td>
+              <td class="duration" data-value="1953345589">10.547</td>
+              <td class="duration" data-value="91807242700">1:31.807</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.the_user_performs_a_mouseover_on_the_connector_element()</td>
+              <td>47</td>
+              <td class="duration" data-value="166905063">0.166</td>
+              <td class="duration" data-value="166905063">0.188</td>
+              <td class="duration" data-value="7844538000">7.844</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.the_user_performs_a_mouseover_on_the_connector_management_element()</td>
+              <td>47</td>
+              <td class="duration" data-value="186474759">0.186</td>
+              <td class="duration" data-value="186474759">0.217</td>
+              <td class="duration" data-value="8764313700">8.764</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.the_user_verify_edit_page()</td>
+              <td>1</td>
+              <td class="duration" data-value="5043483300">5.043</td>
+              <td class="duration" data-value="5043483300">5.043</td>
+              <td class="duration" data-value="5043483300">5.043</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.the_user_verify_on_code_filter_functionality_connector(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="10048282600">10.048</td>
+              <td class="duration" data-value="10048282600">10.048</td>
+              <td class="duration" data-value="10048282600">10.048</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.the_user_verify_on_code_filter_functionality_with_partial_unique_code_connector(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMConnectorHomePage.the_user_verify_reset_button_functionality_connector()</td>
+              <td>1</td>
+              <td class="duration" data-value="5001364900">5.001</td>
+              <td class="duration" data-value="5001364900">5.001</td>
+              <td class="duration" data-value="5001364900">5.001</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.theUserClicksCancelButton()</td>
+              <td>2</td>
+              <td class="duration" data-value="350902750">0.350</td>
+              <td class="duration" data-value="350902750">0.630</td>
+              <td class="duration" data-value="701805500">0.701</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.theUserVerifiesItemStatusSuccessMessage()</td>
+              <td>9</td>
+              <td class="duration" data-value="821485922">0.821</td>
+              <td class="duration" data-value="821485922">2.099</td>
+              <td class="duration" data-value="7393373300">7.393</td>
+              <td class="failed">88.89%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_clicks_export_pdf_button()</td>
+              <td>1</td>
+              <td class="duration" data-value="905051800">0.905</td>
+              <td class="duration" data-value="905051800">0.905</td>
+              <td class="duration" data-value="905051800">0.905</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_clicks_new_list_item()</td>
+              <td>1</td>
+              <td class="duration" data-value="3204133700">3.204</td>
+              <td class="duration" data-value="3204133700">3.204</td>
+              <td class="duration" data-value="3204133700">3.204</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_clicks_on_unsaved_change_button()</td>
+              <td>11</td>
+              <td class="duration" data-value="104841445">0.104</td>
+              <td class="duration" data-value="104841445">0.144</td>
+              <td class="duration" data-value="1153255900">1.153</td>
+              <td class="failed">90.91%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_clicks_refresh_button()</td>
+              <td>1</td>
+              <td class="duration" data-value="118358600">0.118</td>
+              <td class="duration" data-value="118358600">0.118</td>
+              <td class="duration" data-value="118358600">0.118</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_clicks_save_button()</td>
+              <td>9</td>
+              <td class="duration" data-value="76820666">0.076</td>
+              <td class="duration" data-value="76820666">0.226</td>
+              <td class="duration" data-value="691386000">0.691</td>
+              <td class="failed">88.89%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_enters_in_comment_area1(java.lang.String)</td>
+              <td>9</td>
+              <td class="duration" data-value="587899133">0.587</td>
+              <td class="duration" data-value="587899133">0.685</td>
+              <td class="duration" data-value="5291092200">5.291</td>
+              <td class="failed">88.89%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_verifies_refresh_button()</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactEditPage.the_user_verifies_the_file_is_downloaded()</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageMyContactStepDefs.theUserEntersLastInteractionDay(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="105699700">0.105</td>
+              <td class="duration" data-value="105699700">0.105</td>
+              <td class="duration" data-value="105699700">0.105</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageMyContactStepDefs.theUserGeneralIwsaCheckbox()</td>
+              <td>1</td>
+              <td class="duration" data-value="61019300">0.061</td>
+              <td class="duration" data-value="61019300">0.061</td>
+              <td class="duration" data-value="61019300">0.061</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageMyContactStepDefs.the_user_verifies_its_contacts_is_displayed()</td>
+              <td>1</td>
+              <td class="duration" data-value="41476600">0.041</td>
+              <td class="duration" data-value="41476600">0.041</td>
+              <td class="duration" data-value="41476600">0.041</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageMyContactStepDefs.the_user_verifies_next_button_is_not_clickable()</td>
+              <td>4</td>
+              <td class="duration" data-value="9076998075">9.076</td>
+              <td class="duration" data-value="9076998075">9.086</td>
+              <td class="duration" data-value="36307992300">36.307</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageMyContactStepDefs.the_user_verifies_previous_button_is_not_clickable()</td>
+              <td>1</td>
+              <td class="duration" data-value="8067007900">8.067</td>
+              <td class="duration" data-value="8067007900">8.067</td>
+              <td class="duration" data-value="8067007900">8.067</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.theUserClicksOnTheRootCheckbox()</td>
+              <td>4</td>
+              <td class="duration" data-value="190407000">0.190</td>
+              <td class="duration" data-value="190407000">0.508</td>
+              <td class="duration" data-value="761628000">0.761</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.theUserEntersRequiredFieldsInCreateNewContactModal()</td>
+              <td>1</td>
+              <td class="duration" data-value="879057800">0.879</td>
+              <td class="duration" data-value="879057800">0.879</td>
+              <td class="duration" data-value="879057800">0.879</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_incoming_filter_for_should_contain(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="4040395800">4.040</td>
+              <td class="duration" data-value="4040395800">4.040</td>
+              <td class="duration" data-value="4040395800">4.040</td>
+              <td class="failed">0.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="3800680225">3.800</td>
+              <td class="duration" data-value="3800680225">12.152</td>
+              <td class="duration" data-value="15202720900">15.202</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_create_on_tab()</td>
+              <td>2</td>
+              <td class="duration" data-value="7101622950">7.101</td>
+              <td class="duration" data-value="7101622950">7.110</td>
+              <td class="duration" data-value="14203245900">14.203</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_id_tab()</td>
+              <td>2</td>
+              <td class="duration" data-value="5097678850">5.097</td>
+              <td class="duration" data-value="5097678850">5.106</td>
+              <td class="duration" data-value="10195357700">10.195</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_last_page_button()</td>
+              <td>17</td>
+              <td class="duration" data-value="8150880717">8.150</td>
+              <td class="duration" data-value="8150880717">9.115</td>
+              <td class="duration" data-value="138564972200">2:18.564</td>
+              <td class="failed">94.12%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_my_contact_button()</td>
+              <td>12</td>
+              <td class="duration" data-value="837344266">0.837</td>
+              <td class="duration" data-value="837344266">1.729</td>
+              <td class="duration" data-value="10048131200">10.048</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="414020500">0.414</td>
+              <td class="duration" data-value="414020500">0.439</td>
+              <td class="duration" data-value="1656082000">1.656</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_ItemStatuses()</td>
+              <td>4</td>
+              <td class="duration" data-value="196027050">0.196</td>
+              <td class="duration" data-value="196027050">0.248</td>
+              <td class="duration" data-value="784108200">0.784</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_contact_category()</td>
+              <td>45</td>
+              <td class="duration" data-value="95564193">0.095</td>
+              <td class="duration" data-value="95564193">0.119</td>
+              <td class="duration" data-value="4300388700">4.300</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_delete()</td>
+              <td>2</td>
+              <td class="duration" data-value="5217021150">5.217</td>
+              <td class="duration" data-value="5217021150">5.219</td>
+              <td class="duration" data-value="10434042300">10.434</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_editButton()</td>
+              <td>99</td>
+              <td class="duration" data-value="7710902086">7.710</td>
+              <td class="duration" data-value="7710902086">20.551</td>
+              <td class="duration" data-value="763379306600">12:43.379</td>
+              <td class="failed">98.99%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_export_button()</td>
+              <td>5</td>
+              <td class="duration" data-value="109412500">0.109</td>
+              <td class="duration" data-value="109412500">0.119</td>
+              <td class="duration" data-value="547062500">0.547</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_reset_button()</td>
+              <td>8</td>
+              <td class="duration" data-value="5103059037">5.103</td>
+              <td class="duration" data-value="5103059037">5.120</td>
+              <td class="duration" data-value="40824472300">40.824</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_search_button()</td>
+              <td>145</td>
+              <td class="duration" data-value="3101480526">3.101</td>
+              <td class="duration" data-value="3101480526">3.139</td>
+              <td class="duration" data-value="449714676400">7:29.714</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_star_items()</td>
+              <td>8</td>
+              <td class="duration" data-value="10038742287">10.038</td>
+              <td class="duration" data-value="10038742287">10.067</td>
+              <td class="duration" data-value="80309938300">1:20.309</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_the_contact_element()</td>
+              <td>102</td>
+              <td class="duration" data-value="1635306370">1.635</td>
+              <td class="duration" data-value="1635306370">4.475</td>
+              <td class="duration" data-value="166801249800">2:46.801</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_unassigned_records_category_category()</td>
+              <td>1</td>
+              <td class="duration" data-value="77104800">0.077</td>
+              <td class="duration" data-value="77104800">0.077</td>
+              <td class="duration" data-value="77104800">0.077</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_on_&#305;wsa_filtre()</td>
+              <td>2</td>
+              <td class="duration" data-value="10460993800">10.460</td>
+              <td class="duration" data-value="10460993800">10.465</td>
+              <td class="duration" data-value="20921987600">20.921</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_clicks_tab(java.lang.String)</td>
+              <td>42</td>
+              <td class="duration" data-value="6931887721">6.931</td>
+              <td class="duration" data-value="6931887721">7.453</td>
+              <td class="duration" data-value="291139284300">4:51.139</td>
+              <td class="failed">97.62%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_declines_the_popup_message()</td>
+              <td>2</td>
+              <td class="duration" data-value="8075744650">8.075</td>
+              <td class="duration" data-value="8075744650">8.077</td>
+              <td class="duration" data-value="16151489300">16.151</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_enters_a_d&#305;a_first_name_input_fields(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="1065848600">1.065</td>
+              <td class="duration" data-value="1065848600">1.065</td>
+              <td class="duration" data-value="1065848600">1.065</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_enters_a_surname_input_fields(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="90917600">0.090</td>
+              <td class="duration" data-value="90917600">0.090</td>
+              <td class="duration" data-value="90917600">0.090</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_enters_into_code_field(java.lang.String)</td>
+              <td>132</td>
+              <td class="duration" data-value="284602387">0.284</td>
+              <td class="duration" data-value="284602387">0.400</td>
+              <td class="duration" data-value="37567515200">37.567</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_enters_into_label_field(java.lang.String)</td>
+              <td>14</td>
+              <td class="duration" data-value="7286577057">7.286</td>
+              <td class="duration" data-value="7286577057">7.330</td>
+              <td class="duration" data-value="102012078800">1:42.012</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_performs_a_mouseover_on_the_contact_element()</td>
+              <td>102</td>
+              <td class="duration" data-value="168427814">0.168</td>
+              <td class="duration" data-value="168427814">0.186</td>
+              <td class="duration" data-value="17179637100">17.179</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_performs_a_mouseover_on_the_contact_management_element()</td>
+              <td>102</td>
+              <td class="duration" data-value="189167367">0.189</td>
+              <td class="duration" data-value="189167367">0.219</td>
+              <td class="duration" data-value="19295071500">19.295</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_selects_deleted_element_asset()</td>
+              <td>6</td>
+              <td class="duration" data-value="16401166">0.016</td>
+              <td class="duration" data-value="16401166">0.039</td>
+              <td class="duration" data-value="98407000">0.098</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_selects_into_show_entries(java.lang.String)</td>
+              <td>24</td>
+              <td class="duration" data-value="140516483">0.140</td>
+              <td class="duration" data-value="140516483">0.173</td>
+              <td class="duration" data-value="3372395600">3.372</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_should_see_entrie_in_everypage(java.lang.String)</td>
+              <td>24</td>
+              <td class="duration" data-value="5091206954">5.091</td>
+              <td class="duration" data-value="5091206954">5.110</td>
+              <td class="duration" data-value="122188966900">2:2.188</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_first_page_button_is_clickable()</td>
+              <td>4</td>
+              <td class="duration" data-value="6063249025">6.063</td>
+              <td class="duration" data-value="6063249025">6.072</td>
+              <td class="duration" data-value="24252996100">24.252</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_first_page_button_is_not_clickable()</td>
+              <td>5</td>
+              <td class="duration" data-value="9073418560">9.073</td>
+              <td class="duration" data-value="9073418560">9.094</td>
+              <td class="duration" data-value="45367092800">45.367</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_last_page_button_is_clickable()</td>
+              <td>4</td>
+              <td class="duration" data-value="6071829250">6.071</td>
+              <td class="duration" data-value="6071829250">6.084</td>
+              <td class="duration" data-value="24287317000">24.287</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_last_page_button_is_not_clickable()</td>
+              <td>2</td>
+              <td class="duration" data-value="8065686000">8.065</td>
+              <td class="duration" data-value="8065686000">8.069</td>
+              <td class="duration" data-value="16131372000">16.131</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_next_button_is_clickable()</td>
+              <td>4</td>
+              <td class="duration" data-value="6060472125">6.060</td>
+              <td class="duration" data-value="6060472125">6.076</td>
+              <td class="duration" data-value="24241888500">24.241</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_preview_tab_details_is_displayed()</td>
+              <td>1</td>
+              <td class="duration" data-value="34226300">0.034</td>
+              <td class="duration" data-value="34226300">0.034</td>
+              <td class="duration" data-value="34226300">0.034</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_previous_page_button_is_clickable()</td>
+              <td>4</td>
+              <td class="duration" data-value="8059808075">8.059</td>
+              <td class="duration" data-value="8059808075">8.064</td>
+              <td class="duration" data-value="32239232300">32.239</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_previous_page_button_is_not_clickable()</td>
+              <td>4</td>
+              <td class="duration" data-value="10056364950">10.056</td>
+              <td class="duration" data-value="10056364950">10.077</td>
+              <td class="duration" data-value="40225459800">40.225</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_sort_id_numbers_from(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="44599500">0.044</td>
+              <td class="duration" data-value="44599500">0.044</td>
+              <td class="duration" data-value="44599500">0.044</td>
+              <td class="failed">0.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_that_is_visible(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="2088448600">2.088</td>
+              <td class="duration" data-value="2088448600">2.111</td>
+              <td class="duration" data-value="8353794400">8.353</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_that_the_badge_count_for_is_correct()</td>
+              <td>2</td>
+              <td class="duration" data-value="5010937350">5.010</td>
+              <td class="duration" data-value="5010937350">5.013</td>
+              <td class="duration" data-value="10021874700">10.021</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_that_the_codes_shown_in_the_contact_label_filter_are_contact_categories()</td>
+              <td>1</td>
+              <td class="duration" data-value="19055226100">19.055</td>
+              <td class="duration" data-value="19055226100">19.055</td>
+              <td class="duration" data-value="19055226100">19.055</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verifies_that_the_codes_shown_in_the_unassigned_label_filter_are_contact_categories()</td>
+              <td>1</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_edit_page()</td>
+              <td>5</td>
+              <td class="duration" data-value="5052285680">5.052</td>
+              <td class="duration" data-value="5052285680">5.055</td>
+              <td class="duration" data-value="25261428400">25.261</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_my_count_badge_count_is_correct()</td>
+              <td>4</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_on_code_filter_functionality(java.lang.String)</td>
+              <td>3</td>
+              <td class="duration" data-value="5047758600">5.047</td>
+              <td class="duration" data-value="5047758600">5.059</td>
+              <td class="duration" data-value="15143275800">15.143</td>
+              <td class="failed">66.67%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_on_code_filter_functionality_with_invalid_unique_code(java.lang.String)</td>
+              <td>8</td>
+              <td class="duration" data-value="4045561250">4.045</td>
+              <td class="duration" data-value="4045561250">4.052</td>
+              <td class="duration" data-value="32364490000">32.364</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_on_code_filter_functionality_with_partial_unique_code(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="43959000">0.043</td>
+              <td class="duration" data-value="43959000">0.055</td>
+              <td class="duration" data-value="87918000">0.087</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_on_family_filter_&#305;wsa_functionality()</td>
+              <td>1</td>
+              <td class="duration" data-value="108082000">0.108</td>
+              <td class="duration" data-value="108082000">0.108</td>
+              <td class="duration" data-value="108082000">0.108</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_on_label_filter_functionality_with_partial_unique_code(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="4554990300">4.554</td>
+              <td class="duration" data-value="4554990300">12.068</td>
+              <td class="duration" data-value="18219961200">18.219</td>
+              <td class="failed">25.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_reset_button_functionality()</td>
+              <td>4</td>
+              <td class="duration" data-value="5097459000">5.097</td>
+              <td class="duration" data-value="5097459000">5.107</td>
+              <td class="duration" data-value="20389836000">20.389</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_verify_that_is_visible(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="66643800">0.066</td>
+              <td class="duration" data-value="66643800">0.066</td>
+              <td class="duration" data-value="66643800">0.066</td>
+              <td class="failed">0.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContactHomePageStepDef.the_user_waits_until_the_contact_element_is_visible_with_a_timeout_of_seconds(java.lang.Integer)</td>
+              <td>1</td>
+              <td class="duration" data-value="602002800">0.602</td>
+              <td class="duration" data-value="602002800">0.602</td>
+              <td class="duration" data-value="602002800">0.602</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_clicks_on_the_cancel_button_element()</td>
+              <td>2</td>
+              <td class="duration" data-value="81866700">0.081</td>
+              <td class="duration" data-value="81866700">0.092</td>
+              <td class="duration" data-value="163733400">0.163</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_clicks_on_the_categories_element()</td>
+              <td>6</td>
+              <td class="duration" data-value="68585800">0.068</td>
+              <td class="duration" data-value="68585800">0.112</td>
+              <td class="duration" data-value="411514800">0.411</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_clicks_on_the_contract_element()</td>
+              <td>4</td>
+              <td class="duration" data-value="1099452200">1.099</td>
+              <td class="duration" data-value="1099452200">1.165</td>
+              <td class="duration" data-value="4397808800">4.397</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_clicks_on_the_create_button_element()</td>
+              <td>7</td>
+              <td class="duration" data-value="71113114">0.071</td>
+              <td class="duration" data-value="71113114">0.084</td>
+              <td class="duration" data-value="497791800">0.497</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_clicks_on_the_create_&#305;tem_element()</td>
+              <td>9</td>
+              <td class="duration" data-value="57472177">0.057</td>
+              <td class="duration" data-value="57472177">0.083</td>
+              <td class="duration" data-value="517249600">0.517</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_clicks_on_the_root_element()</td>
+              <td>2</td>
+              <td class="duration" data-value="50950700">0.050</td>
+              <td class="duration" data-value="50950700">0.055</td>
+              <td class="duration" data-value="101901400">0.101</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_clicks_the_submit_button()</td>
+              <td>308</td>
+              <td class="duration" data-value="2705922474">2.705</td>
+              <td class="duration" data-value="2705922474">54.128</td>
+              <td class="duration" data-value="833424122100">13:53.424</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_gets_the_current_url_and_stores_it_in(java.lang.String)</td>
+              <td>156</td>
+              <td class="duration" data-value="5021989864">5.021</td>
+              <td class="duration" data-value="5021989864">5.339</td>
+              <td class="duration" data-value="783430418900">13:3.430</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_inputs_a_valid_password(java.lang.String)</td>
+              <td>308</td>
+              <td class="duration" data-value="79659379">0.079</td>
+              <td class="duration" data-value="79659379">0.114</td>
+              <td class="duration" data-value="24535088900">24.535</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_inputs_a_valid_username(java.lang.String)</td>
+              <td>308</td>
+              <td class="duration" data-value="132124680">0.132</td>
+              <td class="duration" data-value="132124680">12.564</td>
+              <td class="duration" data-value="40694401700">40.694</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_inputs_the_value_from_cont_into_the_input_code_field()</td>
+              <td>7</td>
+              <td class="duration" data-value="57911571">0.057</td>
+              <td class="duration" data-value="57911571">0.069</td>
+              <td class="duration" data-value="405381000">0.405</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_opens_the_browser_with_the_given_url()</td>
+              <td>308</td>
+              <td class="duration" data-value="28991464">0.028</td>
+              <td class="duration" data-value="28991464">0.329</td>
+              <td class="duration" data-value="8929371200">8.929</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_performs_a_mouseover_on_the_contract_element()</td>
+              <td>4</td>
+              <td class="duration" data-value="166478050">0.166</td>
+              <td class="duration" data-value="166478050">0.171</td>
+              <td class="duration" data-value="665912200">0.665</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_performs_a_mouseover_on_the_contract_management_element()</td>
+              <td>4</td>
+              <td class="duration" data-value="175014250">0.175</td>
+              <td class="duration" data-value="175014250">0.188</td>
+              <td class="duration" data-value="700057000">0.700</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_performs_a_mouseover_on_the_mdm_element()</td>
+              <td>250</td>
+              <td class="duration" data-value="140529252">0.140</td>
+              <td class="duration" data-value="140529252">0.166</td>
+              <td class="duration" data-value="35132313000">35.132</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_presses_the_down_arrow_key_and_then_presses_enter_in_the_choose_family_element()</td>
+              <td>2</td>
+              <td class="duration" data-value="158395950">0.158</td>
+              <td class="duration" data-value="158395950">0.171</td>
+              <td class="duration" data-value="316791900">0.316</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_presses_the_down_arrow_key_and_then_presses_enter_in_the_contract_family_element()</td>
+              <td>2</td>
+              <td class="duration" data-value="158411800">0.158</td>
+              <td class="duration" data-value="158411800">0.165</td>
+              <td class="duration" data-value="316823600">0.316</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_presses_the_down_arrow_key_and_then_presses_enter_in_the_element(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="728720650">0.728</td>
+              <td class="duration" data-value="728720650">0.740</td>
+              <td class="duration" data-value="1457441300">1.457</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_waits_until_the_create_item_element_is_visible_with_a_timeout_of_seconds(java.lang.Integer)</td>
+              <td>16</td>
+              <td class="duration" data-value="58820237">0.058</td>
+              <td class="duration" data-value="58820237">0.065</td>
+              <td class="duration" data-value="941123800">0.941</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_waits_until_the_mdm_element_is_visible_with_a_timeout_of_seconds(java.lang.Integer)</td>
+              <td>250</td>
+              <td class="duration" data-value="1087540840">1.087</td>
+              <td class="duration" data-value="1087540840">5.868</td>
+              <td class="duration" data-value="271885210100">4:31.885</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_waits_until_the_page_contains_text_with_a_timeout_of_seconds(java.lang.String,java.lang.Integer)</td>
+              <td>3</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="duration" data-value="0">0.000</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_waits_until_the_page_contains_with_a_timeout_of_seconds(java.lang.String,java.lang.Integer)</td>
+              <td>2</td>
+              <td class="duration" data-value="588700">0.000</td>
+              <td class="duration" data-value="588700">0.001</td>
+              <td class="duration" data-value="1177400">0.001</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_waits_until_the_root_element_is_visible_with_a_timeout_of_seconds(java.lang.Integer)</td>
+              <td>2</td>
+              <td class="duration" data-value="592323150">0.592</td>
+              <td class="duration" data-value="592323150">0.600</td>
+              <td class="duration" data-value="1184646300">1.184</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.MDMContractStepDefs.the_user_waits_until_the_unique_code_element_is_visible_with_a_timeout_of_seconds(java.lang.Integer)</td>
+              <td>7</td>
+              <td class="duration" data-value="280558114">0.280</td>
+              <td class="duration" data-value="280558114">0.595</td>
+              <td class="duration" data-value="1963906800">1.963</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksFirstPaginationButtonInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="1086065400">1.086</td>
+              <td class="duration" data-value="1086065400">1.086</td>
+              <td class="duration" data-value="1086065400">1.086</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksIdHeaderForDescendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="3165563500">3.165</td>
+              <td class="duration" data-value="3165563500">3.165</td>
+              <td class="duration" data-value="3165563500">3.165</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksItemTypeHeaderForAscendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="1152623700">1.152</td>
+              <td class="duration" data-value="1152623700">1.152</td>
+              <td class="duration" data-value="1152623700">1.152</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksItemTypeHeaderForDescendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="4291188300">4.291</td>
+              <td class="duration" data-value="4291188300">4.291</td>
+              <td class="duration" data-value="4291188300">4.291</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksLabelHeaderForAscendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="1143338000">1.143</td>
+              <td class="duration" data-value="1143338000">1.143</td>
+              <td class="duration" data-value="1143338000">1.143</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksLabelHeaderForDescendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="4227934200">4.227</td>
+              <td class="duration" data-value="4227934200">4.227</td>
+              <td class="duration" data-value="4227934200">4.227</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksLastPaginationButtonInTagsPage()</td>
+              <td>2</td>
+              <td class="duration" data-value="1114114500">1.114</td>
+              <td class="duration" data-value="1114114500">1.116</td>
+              <td class="duration" data-value="2228229000">2.228</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksNextPaginationButtonInTagsPage()</td>
+              <td>2</td>
+              <td class="duration" data-value="3128616400">3.128</td>
+              <td class="duration" data-value="3128616400">3.137</td>
+              <td class="duration" data-value="6257232800">6.257</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksPreviousPaginationButtonInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="1096834400">1.096</td>
+              <td class="duration" data-value="1096834400">1.096</td>
+              <td class="duration" data-value="1096834400">1.096</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksTagDeleteButton()</td>
+              <td>1</td>
+              <td class="duration" data-value="706288500">0.706</td>
+              <td class="duration" data-value="706288500">0.706</td>
+              <td class="duration" data-value="706288500">0.706</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserClicksUpdateButtonInIdFilter()</td>
+              <td>2</td>
+              <td class="duration" data-value="2125328850">2.125</td>
+              <td class="duration" data-value="2125328850">2.126</td>
+              <td class="duration" data-value="4250657700">4.250</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserEntersAndInToIdFilter(int,int)</td>
+              <td>3</td>
+              <td class="duration" data-value="207849133">0.207</td>
+              <td class="duration" data-value="207849133">0.220</td>
+              <td class="duration" data-value="623547400">0.623</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserEntersInToLabelFilter(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="5099264675">5.099</td>
+              <td class="duration" data-value="5099264675">5.112</td>
+              <td class="duration" data-value="20397058700">20.397</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserEntersLastPageNumberInToPaginationInputBoxInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="5178863800">5.178</td>
+              <td class="duration" data-value="5178863800">5.178</td>
+              <td class="duration" data-value="5178863800">5.178</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserIsOnTheTagsPage()</td>
+              <td>24</td>
+              <td class="duration" data-value="2934754654">2.934</td>
+              <td class="duration" data-value="2934754654">3.236</td>
+              <td class="duration" data-value="70434111700">1:10.434</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserSelectAccountFromTypeFilter(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="1153255600">1.153</td>
+              <td class="duration" data-value="1153255600">1.162</td>
+              <td class="duration" data-value="2306511200">2.306</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatFirstAndPreviousPaginationButtonsAreInactiveInFirstPageOfTableInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="2074583700">2.074</td>
+              <td class="duration" data-value="2074583700">2.074</td>
+              <td class="duration" data-value="2074583700">2.074</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatIdFilterHasNoValue()</td>
+              <td>1</td>
+              <td class="duration" data-value="26913400">0.026</td>
+              <td class="duration" data-value="26913400">0.026</td>
+              <td class="duration" data-value="26913400">0.026</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatIdFromMustBeLessThanIdToWarningIsDisplayed(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="46731700">0.046</td>
+              <td class="duration" data-value="46731700">0.046</td>
+              <td class="duration" data-value="46731700">0.046</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatIdValuesAreAscendingOrderWithNoAction()</td>
+              <td>1</td>
+              <td class="duration" data-value="98230200">0.098</td>
+              <td class="duration" data-value="98230200">0.098</td>
+              <td class="duration" data-value="98230200">0.098</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatIdValuesAreDescendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="90843300">0.090</td>
+              <td class="duration" data-value="90843300">0.090</td>
+              <td class="duration" data-value="90843300">0.090</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatIdsAreBetweenAndInclusive(int,int)</td>
+              <td>1</td>
+              <td class="duration" data-value="74698600">0.074</td>
+              <td class="duration" data-value="74698600">0.074</td>
+              <td class="duration" data-value="74698600">0.074</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatItemTypeFilterHasValueTypeAll(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="31315800">0.031</td>
+              <td class="duration" data-value="31315800">0.031</td>
+              <td class="duration" data-value="31315800">0.031</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatItemTypeValuesAreAscendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="2097268000">2.097</td>
+              <td class="duration" data-value="2097268000">2.097</td>
+              <td class="duration" data-value="2097268000">2.097</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatItemTypeValuesAreDescendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="2100084100">2.100</td>
+              <td class="duration" data-value="2100084100">2.100</td>
+              <td class="duration" data-value="2100084100">2.100</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatLabelFilterHasNoValue()</td>
+              <td>1</td>
+              <td class="duration" data-value="15947200">0.015</td>
+              <td class="duration" data-value="15947200">0.015</td>
+              <td class="duration" data-value="15947200">0.015</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatLabelFilterResultsContains(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="32063400">0.032</td>
+              <td class="duration" data-value="32063400">0.033</td>
+              <td class="duration" data-value="64126800">0.064</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatLabelValuesAreAscendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="2093998900">2.093</td>
+              <td class="duration" data-value="2093998900">2.093</td>
+              <td class="duration" data-value="2093998900">2.093</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatLabelValuesAreDescendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="2099637000">2.099</td>
+              <td class="duration" data-value="2099637000">2.099</td>
+              <td class="duration" data-value="2099637000">2.099</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatLastAndNextPaginationButtonsAreInactiveInLastPageOfTableInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="2136193000">2.136</td>
+              <td class="duration" data-value="2136193000">2.136</td>
+              <td class="duration" data-value="2136193000">2.136</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatNoDataAvailableInTableIsDisplayedInTable(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="65289700">0.065</td>
+              <td class="duration" data-value="65289700">0.079</td>
+              <td class="duration" data-value="130579400">0.130</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatTableGoToNextPageInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="31646200">0.031</td>
+              <td class="duration" data-value="31646200">0.031</td>
+              <td class="duration" data-value="31646200">0.031</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatTableGoToPreviousPageInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="20823300">0.020</td>
+              <td class="duration" data-value="20823300">0.020</td>
+              <td class="duration" data-value="20823300">0.020</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatTableHasOnlyFilteredValues(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="124825200">0.124</td>
+              <td class="duration" data-value="124825200">0.124</td>
+              <td class="duration" data-value="124825200">0.124</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatTableIsInFirstPageInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="25731900">0.025</td>
+              <td class="duration" data-value="25731900">0.025</td>
+              <td class="duration" data-value="25731900">0.025</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SettingsTagsStepDefs.theUserVerifiesThatTableIsInLastPageInTagsPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="138144900">0.138</td>
+              <td class="duration" data-value="138144900">0.138</td>
+              <td class="duration" data-value="138144900">0.138</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksACurrencyDeleteButton()</td>
+              <td>4</td>
+              <td class="duration" data-value="2732837675">2.732</td>
+              <td class="duration" data-value="2732837675">2.747</td>
+              <td class="duration" data-value="10931350700">10.931</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksACurrencyEditButton()</td>
+              <td>8</td>
+              <td class="duration" data-value="8722402187">8.722</td>
+              <td class="duration" data-value="8722402187">8.736</td>
+              <td class="duration" data-value="69779217500">1:9.779</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksCancelButtonInAddCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="1042793400">1.042</td>
+              <td class="duration" data-value="1042793400">1.042</td>
+              <td class="duration" data-value="1042793400">1.042</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksCancelButtonInDeleteCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="46918500">0.046</td>
+              <td class="duration" data-value="46918500">0.046</td>
+              <td class="duration" data-value="46918500">0.046</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksCancelButtonInEditCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="1073109100">1.073</td>
+              <td class="duration" data-value="1073109100">1.073</td>
+              <td class="duration" data-value="1073109100">1.073</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksCreateNewButtonInCurrenciesPage()</td>
+              <td>6</td>
+              <td class="duration" data-value="2103028383">2.103</td>
+              <td class="duration" data-value="2103028383">2.115</td>
+              <td class="duration" data-value="12618170300">12.618</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksDataHeaderForDescendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="3142462000">3.142</td>
+              <td class="duration" data-value="3142462000">3.142</td>
+              <td class="duration" data-value="3142462000">3.142</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksDeleteButtonInDeleteCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="51413800">0.051</td>
+              <td class="duration" data-value="51413800">0.051</td>
+              <td class="duration" data-value="51413800">0.051</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksFirstPaginationButtonInCurrenciesPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="1099780600">1.099</td>
+              <td class="duration" data-value="1099780600">1.099</td>
+              <td class="duration" data-value="1099780600">1.099</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksLastPaginationButtonInCurrenciesPage()</td>
+              <td>2</td>
+              <td class="duration" data-value="1106020700">1.106</td>
+              <td class="duration" data-value="1106020700">1.106</td>
+              <td class="duration" data-value="2212041400">2.212</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksNextPaginationButtonInCurrenciesPage()</td>
+              <td>2</td>
+              <td class="duration" data-value="3125804350">3.125</td>
+              <td class="duration" data-value="3125804350">3.126</td>
+              <td class="duration" data-value="6251608700">6.251</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksPreviousPaginationButtonInCurrenciesPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="1082886900">1.082</td>
+              <td class="duration" data-value="1082886900">1.082</td>
+              <td class="duration" data-value="1082886900">1.082</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksResetButton()</td>
+              <td>4</td>
+              <td class="duration" data-value="89107625">0.089</td>
+              <td class="duration" data-value="89107625">0.117</td>
+              <td class="duration" data-value="356430500">0.356</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksSaveButtonInAddCurrencyPopup()</td>
+              <td>2</td>
+              <td class="duration" data-value="1098677900">1.098</td>
+              <td class="duration" data-value="1098677900">1.101</td>
+              <td class="duration" data-value="2197355800">2.197</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksSaveButtonInEditCurrencyPopup()</td>
+              <td>3</td>
+              <td class="duration" data-value="1095893266">1.095</td>
+              <td class="duration" data-value="1095893266">1.097</td>
+              <td class="duration" data-value="3287679800">3.287</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksStatusCheckboxInEditCurrencyPopup()</td>
+              <td>2</td>
+              <td class="duration" data-value="64940200">0.064</td>
+              <td class="duration" data-value="64940200">0.065</td>
+              <td class="duration" data-value="129880400">0.129</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksStatusHeaderForAscendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="1147558700">1.147</td>
+              <td class="duration" data-value="1147558700">1.147</td>
+              <td class="duration" data-value="1147558700">1.147</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserClicksStatusHeaderForDescendingSort()</td>
+              <td>1</td>
+              <td class="duration" data-value="4290820800">4.290</td>
+              <td class="duration" data-value="4290820800">4.290</td>
+              <td class="duration" data-value="4290820800">4.290</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserEnterAInToCurrencyCodeInputBoxInEditCurrencyPopup(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="1097623700">1.097</td>
+              <td class="duration" data-value="1097623700">1.097</td>
+              <td class="duration" data-value="1097623700">1.097</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserEntersAInToCurrencyCodeInputBoxInAddCurrencyPopup(java.lang.String)</td>
+              <td>1</td>
+              <td class="duration" data-value="1073936100">1.073</td>
+              <td class="duration" data-value="1073936100">1.073</td>
+              <td class="duration" data-value="1073936100">1.073</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserEntersANonExistingCodeValueInToCurrencyCodeInputBoxEditCurrency(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="111968300">0.111</td>
+              <td class="duration" data-value="111968300">0.134</td>
+              <td class="duration" data-value="223936600">0.223</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserEntersAnAlreadyExistingCodeValueInToCurrencyCodeInputBox(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="114752500">0.114</td>
+              <td class="duration" data-value="114752500">0.141</td>
+              <td class="duration" data-value="229505000">0.229</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserEntersInToCodeFilter(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="5077219325">5.077</td>
+              <td class="duration" data-value="5077219325">5.092</td>
+              <td class="duration" data-value="20308877300">20.308</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserEntersInToPaginationInputBox(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="6124477450">6.124</td>
+              <td class="duration" data-value="6124477450">6.145</td>
+              <td class="duration" data-value="12248954900">12.248</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserEntersLastPageNumberInToPaginationInputBoxInCurrenciesPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="5165596300">5.165</td>
+              <td class="duration" data-value="5165596300">5.165</td>
+              <td class="duration" data-value="5165596300">5.165</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatAddCurrencyPopupIsClosed()</td>
+              <td>1</td>
+              <td class="duration" data-value="12029307800">12.029</td>
+              <td class="duration" data-value="12029307800">12.029</td>
+              <td class="duration" data-value="12029307800">12.029</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCancelButtonIsActiveInAddCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="1045226400">1.045</td>
+              <td class="duration" data-value="1045226400">1.045</td>
+              <td class="duration" data-value="1045226400">1.045</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCancelButtonIsActiveInDeleteCurrencyPopup()</td>
+              <td>2</td>
+              <td class="duration" data-value="1061755500">1.061</td>
+              <td class="duration" data-value="1061755500">1.066</td>
+              <td class="duration" data-value="2123511000">2.123</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCancelButtonIsActiveInEditCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="33996700">0.033</td>
+              <td class="duration" data-value="33996700">0.033</td>
+              <td class="duration" data-value="33996700">0.033</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCodeFilterHasNoValue()</td>
+              <td>1</td>
+              <td class="duration" data-value="13025600">0.013</td>
+              <td class="duration" data-value="13025600">0.013</td>
+              <td class="duration" data-value="13025600">0.013</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCodeFilterResultsContains(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="53069700">0.053</td>
+              <td class="duration" data-value="53069700">0.063</td>
+              <td class="duration" data-value="106139400">0.106</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCodeValuesAreAscendingOrderWithNoAction()</td>
+              <td>1</td>
+              <td class="duration" data-value="2114784600">2.114</td>
+              <td class="duration" data-value="2114784600">2.114</td>
+              <td class="duration" data-value="2114784600">2.114</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCodeValuesAreDescendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="2116412400">2.116</td>
+              <td class="duration" data-value="2116412400">2.116</td>
+              <td class="duration" data-value="2116412400">2.116</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCurrentCurrenciesDoNotIncludeDeletedCurrency()</td>
+              <td>1</td>
+              <td class="duration" data-value="134189100">0.134</td>
+              <td class="duration" data-value="134189100">0.134</td>
+              <td class="duration" data-value="134189100">0.134</td>
+              <td class="failed">0.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCurrentCurrenciesIncludeEditedCurrency()</td>
+              <td>1</td>
+              <td class="duration" data-value="44688100">0.044</td>
+              <td class="duration" data-value="44688100">0.044</td>
+              <td class="duration" data-value="44688100">0.044</td>
+              <td class="failed">0.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatCurrentCurrenciesIncludeNewCurrency()</td>
+              <td>1</td>
+              <td class="duration" data-value="7213512700">7.213</td>
+              <td class="duration" data-value="7213512700">7.213</td>
+              <td class="duration" data-value="7213512700">7.213</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatDeleteButtonIsActiveInDeleteCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="1025071500">1.025</td>
+              <td class="duration" data-value="1025071500">1.025</td>
+              <td class="duration" data-value="1025071500">1.025</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatDeleteCurrencyPopupIsClosed()</td>
+              <td>1</td>
+              <td class="duration" data-value="2051818000">2.051</td>
+              <td class="duration" data-value="2051818000">2.051</td>
+              <td class="duration" data-value="2051818000">2.051</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatEditCurrencyPopupIsClosed()</td>
+              <td>1</td>
+              <td class="duration" data-value="12055135600">12.055</td>
+              <td class="duration" data-value="12055135600">12.055</td>
+              <td class="duration" data-value="12055135600">12.055</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatFirstAndPreviousPaginationButtonsAreInactiveInFirstPageOfTableInCurrencies()</td>
+              <td>1</td>
+              <td class="duration" data-value="2110188600">2.110</td>
+              <td class="duration" data-value="2110188600">2.110</td>
+              <td class="duration" data-value="2110188600">2.110</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatLastAndNextPaginationButtonsAreInactiveInLastPageOfTableInCurrenciesPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="2130853700">2.130</td>
+              <td class="duration" data-value="2130853700">2.130</td>
+              <td class="duration" data-value="2130853700">2.130</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatReachedThePage(java.lang.String)</td>
+              <td>2</td>
+              <td class="duration" data-value="27433400">0.027</td>
+              <td class="duration" data-value="27433400">0.045</td>
+              <td class="duration" data-value="54866800">0.054</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatRefreshButtonIsActive()</td>
+              <td>2</td>
+              <td class="duration" data-value="1071694200">1.071</td>
+              <td class="duration" data-value="1071694200">1.084</td>
+              <td class="duration" data-value="2143388400">2.143</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatSaveButtonIsActiveInAddCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="1056055900">1.056</td>
+              <td class="duration" data-value="1056055900">1.056</td>
+              <td class="duration" data-value="1056055900">1.056</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatSaveButtonIsActiveInEditCurrencyPopup()</td>
+              <td>2</td>
+              <td class="duration" data-value="1039255850">1.039</td>
+              <td class="duration" data-value="1039255850">1.048</td>
+              <td class="duration" data-value="2078511700">2.078</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatSaveButtonIsInactiveWithoutChangeInAddCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="1039932600">1.039</td>
+              <td class="duration" data-value="1039932600">1.039</td>
+              <td class="duration" data-value="1039932600">1.039</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatSaveButtonIsInactiveWithoutChangeInEditCurrencyPopup()</td>
+              <td>1</td>
+              <td class="duration" data-value="1047242500">1.047</td>
+              <td class="duration" data-value="1047242500">1.047</td>
+              <td class="duration" data-value="1047242500">1.047</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatStatusValuesAreAscendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="2125622500">2.125</td>
+              <td class="duration" data-value="2125622500">2.125</td>
+              <td class="duration" data-value="2125622500">2.125</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatStatusValuesAreDescendingOrder()</td>
+              <td>1</td>
+              <td class="duration" data-value="2122115600">2.122</td>
+              <td class="duration" data-value="2122115600">2.122</td>
+              <td class="duration" data-value="2122115600">2.122</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatTableGoToNextPageInCurrenciesPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="31118300">0.031</td>
+              <td class="duration" data-value="31118300">0.031</td>
+              <td class="duration" data-value="31118300">0.031</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatTableGoToPreviousPageInCurrenciesPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="12992700">0.012</td>
+              <td class="duration" data-value="12992700">0.012</td>
+              <td class="duration" data-value="12992700">0.012</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatTableIsInFirstPageInCurrenciesPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="26468400">0.026</td>
+              <td class="duration" data-value="26468400">0.026</td>
+              <td class="duration" data-value="26468400">0.026</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatTableIsInLastPage()</td>
+              <td>1</td>
+              <td class="duration" data-value="118134900">0.118</td>
+              <td class="duration" data-value="118134900">0.118</td>
+              <td class="duration" data-value="118134900">0.118</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatTheChangesSavedSuccessfullyInfoAppearsInTheTopRight(java.lang.String)</td>
+              <td>6</td>
+              <td class="duration" data-value="394185233">0.394</td>
+              <td class="duration" data-value="394185233">0.516</td>
+              <td class="duration" data-value="2365111400">2.365</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.theUserVerifiesThatWarningAppearsInTheTopRight(java.lang.String)</td>
+              <td>4</td>
+              <td class="duration" data-value="349191825">0.349</td>
+              <td class="duration" data-value="349191825">0.488</td>
+              <td class="duration" data-value="1396767300">1.396</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.the_user_on_the_currencies_page()</td>
+              <td>34</td>
+              <td class="duration" data-value="1433842414">1.433</td>
+              <td class="duration" data-value="1433842414">3.149</td>
+              <td class="duration" data-value="48750642100">48.750</td>
+              <td class="passed">100.00%</td>
+            </tr>
+            <tr>
+              <td class="location">com.efectura.stepDefs.SystemCurrenciesStepDefs.userVerifiesThatStatusOfTheCurrencyHasChanged()</td>
+              <td>1</td>
+              <td class="duration" data-value="141236600">0.141</td>
+              <td class="duration" data-value="141236600">0.141</td>
+              <td class="duration" data-value="141236600">0.141</td>
+              <td class="passed">100.00%</td>
+            </tr>
+        </tbody>
+
+        <tfoot class="total">
+          <tr>
+            <td>275</td>
+            <td>4667</td>
+            <td class="duration">2.394</td>
+            <td class="duration">42:16.573</td>
+            <td class="duration">3:6:15.170</td>
+            <td>Totals</td>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<nav class="navbar navbar-default" id="footer">
+  <div class="container-fluid">
+    <p class="navbar-text navbar-right">
+        <small>generate Cucumber HTML reports via:&nbsp;</small>
+        <a class="navbar-link" href="https://github.com/jenkinsci/cucumber-reports-plugin">Jenkins Plugin</a> |
+        <a class="navbar-link" href="https://github.com/damianszczepanik/cucumber-reporting">Standalone</a> |
+        <a class="navbar-link" href="https://github.com/damianszczepanik/cucumber-sandwich">Sandwich</a> |
+        <a class="navbar-link" href="https://github.com/damianszczepanik/maven-cucumber-reporting">Maven</a>
+        &nbsp;&nbsp;
+    </p>
+  </div>
+</nav>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+package com.efectura.utilities;
+
+import com.efectura.pages.BPM.ModulFlows;
+import com.efectura.pages.BPM.TaskList;
+import com.efectura.pages.HomePage;
+import com.efectura.pages.LoginPage;
+import com.efectura.pages.MDMPages.AccountManagement.AccountHomePage;
+import com.efectura.pages.MDMPages.AssetManagement.Asset;
+import com.efectura.pages.MDMPages.AssetManagement.AssetEditPage;
+import com.efectura.pages.MDMPages.CampaignManagement.CampaignHomePage;
+import com.efectura.pages.MDMPages.ConnectorManagement4.ConnectorHomePage;
+import com.efectura.pages.MDMPages.ContactManagement.ContactEditPage;
+import com.efectura.pages.MDMPages.ContactManagement.ContactHomePage;
+import com.efectura.pages.MDMPages.ContactManagement.ContactHomePageMyContactPage;
+import com.efectura.pages.MDMPages.ContractManagement.Contract;
+import com.efectura.pages.MDMPages.GiftManagement.Gift;
+import com.efectura.pages.MDMPages.GiftManagement.GiftHomePage;
+import com.efectura.pages.SettingsPages.Families;
+import com.efectura.pages.SettingsPages.TagsPage;
+import com.efectura.pages.SystemPages.BlackListPage;
+import com.efectura.pages.SystemPages.CurrenciesPage;
+//import com.efectura.pages.SystemPage.UserManagement.Users;
+//import com.efectura.pages.SystemPage.UserManagement.UsersLogs;
+
+
+public class Pages {
+
+    private HomePage homePage;
+    private LoginPage loginPage;
+    private Contract contract;
+    private Asset asset;
+    private Gift gift;
+    private GiftHomePage giftHomePage;
+    private ContactHomePage contactHomePage;
+    private ContactHomePageMyContactPage contactHomePageMyContactPage;
+    private ContactEditPage contactEditPage;
+    private AssetEditPage assetEditPage;
+    private BlackListPage  blackListPage;
+//    private EventHomePage  eventHomePage;
+    private CampaignHomePage campaignHomePage;
+//    private KPIHomePage kpiHomePage;
+    private Families families;
+//    private Attributes attributes;
+//    private Users users;
+    private ConnectorHomePage connectorHomePage;
+//    private UserHomePage userHomePage;
+//    private UsersLogs usersLogs;
+    private AccountHomePage accountHomePage;
+//    private ProductHomePage productHomePage;
+    private CurrenciesPage currenciesPage;
+    private TagsPage tagsPage;
+//    private Import importPage;
+    private ModulFlows modulFlows;
+    private TaskList taskList;
+
+    public Pages() {
+            this.homePage =new HomePage();
+            this.loginPage =new LoginPage();
+            this.contract=new Contract();
+            this.asset= new Asset();
+            this.gift=new Gift();
+            this.contactHomePage=new ContactHomePage();
+            this.contactHomePageMyContactPage= new ContactHomePageMyContactPage();
+            this.contactEditPage= new ContactEditPage();
+            this.assetEditPage= new AssetEditPage();
+            this.blackListPage=new BlackListPage();
+//            this.eventHomePage=new EventHomePage();
+            this.campaignHomePage=new CampaignHomePage();
+//            this.kpiHomePage=new KPIHomePage();
+            this.families=new Families();
+//            this.attributes=new Attributes();
+//            this.users=new Users();
+            this.connectorHomePage= new ConnectorHomePage();
+//            this.userHomePage= new UserHomePage();
+//            this.usersLogs= new UsersLogs();
+            this.accountHomePage=new AccountHomePage();
+//            this.productHomePage=new ProductHomePage();
+            this.giftHomePage=new GiftHomePage();
+            this.currenciesPage = new CurrenciesPage();
+            this.giftHomePage=new GiftHomePage();
+            this.tagsPage=new TagsPage();
+//            this.importPage=new Import();
+        this.modulFlows = new ModulFlows();
+        this.taskList = new TaskList();
+    }
+    // Getter metotları
+    public HomePage homePage() {
+        return homePage;
+    }
+    public LoginPage loginPage(){
+        return loginPage;
+    }
+    public Contract contract(){ return contract;}
+    public Asset asset() {return asset;}
+    public Gift gift(){return gift;}
+    public ContactHomePage contactHomePage(){ return contactHomePage;}
+    public ContactHomePageMyContactPage contactHomePageMyContactPage(){return contactHomePageMyContactPage;}
+    public ContactEditPage contactEditPage(){return contactEditPage;}
+    public AssetEditPage assetEditPage(){return assetEditPage;}
+    public BlackListPage blackListPage(){return blackListPage;}
+//    public EventHomePage eventHomePage(){return eventHomePage;}
+    public CampaignHomePage campaignHomePage(){return campaignHomePage;}
+//    public KPIHomePage kpiHomePage(){return kpiHomePage;}
+    public Families families(){return families;}
+//    public Attributes attributes(){return attributes;}
+//    public  Users users(){return users;}
+    public ConnectorHomePage connectorHomePage(){return connectorHomePage;}
+//    public UserHomePage userHomePage(){return userHomePage;}
+//    public UsersLogs userLogs(){return usersLogs;}
+    public AccountHomePage accountHomePage(){return accountHomePage;}
+//    public ProductHomePage productHomePage(){return productHomePage;}
+    public GiftHomePage giftHomePage(){return giftHomePage;}
+    public CurrenciesPage currenciesPage(){return currenciesPage;}
+    public TagsPage tagsPage(){return tagsPage;}
+//    public Import importPage(){return importPage;}
+    public ModulFlows modulFlows() {return modulFlows;}
+    public TaskList taskList() {return taskList;}
+}
+
+
+

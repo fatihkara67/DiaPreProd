@@ -1,0 +1,8 @@
+file:src/test/resources/features/MDM/assetManagement/assetHomePage.feature:16
+file:src/test/resources/features/MDM/contactManagement/contactHomePage.feature:91:223
+file:src/test/resources/features/MDM/connectorManagement/connectorHomePage.feature:20:25
+file:src/test/resources/features/MDM/contactManagement/myContactPage.feature:47
+file:src/test/resources/features/MDM/contactManagement/contactEditPage.feature:220
+file:src/test/resources/features/System/currencies.feature:140:169
+file:src/test/resources/features/MDM/campaignManagement/campaignHomePage.feature:53:93
+file:src/test/resources/features/MDM/assetManagement/assetEditPage.feature:186
