@@ -38,7 +38,6 @@ Feature: Module Flows Cases
     Given The user verify blocked budget with "0"
     Given The user verify actual budget with "1000"
 
-
   Scenario: Plain Modul Made Flow With Reject sales
     Given The user get blocked budget
     Given The user get actual budget
@@ -66,7 +65,6 @@ Feature: Module Flows Cases
     Given The user go in Task "DIA: ConfirmationForm"
     Given The user revise the task
     Given The user verify blocked budget with "10000"
-
 
   Scenario: Plain Modul Made Flow With Reject offtrade
     Given The user get blocked budget
