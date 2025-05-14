@@ -3,6 +3,7 @@ package com.efectura.utilities;
 import com.efectura.pages.BPM.ModulFlows;
 import com.efectura.pages.BPM.Offstand;
 import com.efectura.pages.BPM.TaskList;
+import com.efectura.pages.GeneralPage;
 import com.efectura.pages.HomePage;
 import com.efectura.pages.LoginPage;
 import com.efectura.pages.MDMPages.AccountManagement.AccountHomePage;
@@ -14,6 +15,7 @@ import com.efectura.pages.MDMPages.ContactManagement.ContactEditPage;
 import com.efectura.pages.MDMPages.ContactManagement.ContactHomePage;
 import com.efectura.pages.MDMPages.ContactManagement.ContactHomePageMyContactPage;
 import com.efectura.pages.MDMPages.ContractManagement.Contract;
+import com.efectura.pages.MDMPages.EditItemPage;
 import com.efectura.pages.MDMPages.GiftManagement.Gift;
 import com.efectura.pages.MDMPages.GiftManagement.GiftHomePage;
 import com.efectura.pages.SettingsPages.Families;
@@ -54,6 +56,8 @@ public class Pages {
     private ModulFlows modulFlows;
     private TaskList taskList;
     private Offstand offstand;
+    private EditItemPage editItemPage;
+    private GeneralPage generalPage;
 
     public Pages() {
             this.homePage =new HomePage();
@@ -85,6 +89,8 @@ public class Pages {
         this.modulFlows = new ModulFlows();
         this.taskList = new TaskList();
         this.offstand = new Offstand();
+        this.editItemPage= new EditItemPage();
+        this.generalPage = new GeneralPage();
     }
     // Getter metotları
     public HomePage homePage() {
@@ -119,6 +125,8 @@ public class Pages {
     public ModulFlows modulFlows() {return modulFlows;}
     public TaskList taskList() {return taskList;}
     public Offstand offstand() {return offstand;}
+    public EditItemPage editItemPage() {return editItemPage;}
+    public GeneralPage generalPage() {return  generalPage;}
 }
 
 

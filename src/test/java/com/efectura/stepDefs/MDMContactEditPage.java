@@ -1,5 +1,6 @@
 package com.efectura.stepDefs;
 
+import com.efectura.utilities.BrowserUtils;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -25,7 +26,8 @@ public class MDMContactEditPage extends BaseStep {
 
     @When("The user enters {string} in comment area")
     public void the_user_enters_in_comment_area(String comment) {
-        pages.contactEditPage().uploadCommentArea(comment);
+        BrowserUtils.waitForVisibility(pages.generalPage().getChangeSaveCommentTextArea(),15);
+        pages.generalPage().getChangeSaveCommentTextArea().sendKeys(comment);
     }
 
     @When("The user clicks upload photo cancel button")
