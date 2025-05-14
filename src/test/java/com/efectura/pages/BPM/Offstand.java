@@ -5,6 +5,8 @@ import com.efectura.utilities.BrowserUtils;
 import com.efectura.utilities.Database;
 import com.efectura.utilities.Driver;
 import lombok.Getter;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -44,6 +46,9 @@ public class Offstand extends BasePage {
 
     @FindBy(xpath = "//ul[@class='nav nav-tabs current_nav_tabs']//li//a")
     private List<WebElement> editItemTabs;
+
+    @FindBy(xpath = "//a[contains(@class,'s_localizable')]")
+    private List<WebElement> attributeGroups;
 
     public static String getExcelPath(String fileName) {
         String projectDir = System.getProperty("user.dir");
@@ -218,5 +223,22 @@ public class Offstand extends BasePage {
             }
         }
         BrowserUtils.adjustScreenSize(75,driver);
+    }
+
+    public void clickAttributeGroup(String attrGroup) {
+        BrowserUtils.wait(5);
+        for (WebElement attributeGroup : attributeGroups) {
+            if (attributeGroup.getText().contains(attrGroup)) {
+                attributeGroup.click();
+                BrowserUtils.wait(2);
+            }
+        }
+    }
+
+    public void updateAttribute(String attrLabel, String value) {
+        WebElement attrInput = Driver.getDriver().
+                findElement(By.xpath("//header[.//span[contains(text(), '" + attrLabel + "')]]/following::input[1]"));
+        attrInput.sendKeys(Keys.CONTROL + "A");
+        attrInput.sendKeys(value);
     }
 }

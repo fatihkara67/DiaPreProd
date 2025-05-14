@@ -327,6 +327,8 @@ public class BrowserUtils {
         select.selectByValue(value);
     }
 
+
+
     // Seçenek seçilmiş mi kontrol etme metodunu tanımla
     public static boolean isOptionSelected(WebElement selectElement, String value) {
         Select select = new Select(selectElement);
@@ -379,6 +381,26 @@ public class BrowserUtils {
         }
 
         throw new RuntimeException("Expected tab with title '" + expectedTitle + "' was not found.");
+    }
+
+    public static boolean isElementDisplayed(WebElement element) {
+        try {
+            return element.isDisplayed();
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            return false;
+        }
+    }
+
+
+    public static boolean isButtonActive(WebElement button) {
+        String classAttribute = button.getAttribute("class");
+        return !classAttribute.contains("disabled");
+    }
+
+    public static void scrollToRightEnd(WebDriver driver) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        // Sayfanın toplam genişliği kadar sağa kaydır
+        js.executeScript("window.scrollTo(document.body.scrollWidth, 0)");
     }
 
 

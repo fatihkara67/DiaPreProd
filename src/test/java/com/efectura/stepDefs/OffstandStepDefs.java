@@ -69,4 +69,47 @@ public class OffstandStepDefs extends BaseStep {
     public void theUserGoInDigitalAssetItem() {
         pages.offstand().goInDigitalAssetItem();
     }
+
+    @When("The user clicks {string} attribute group")
+    public void theUserClicksAttributeGroup(String attrGroup) {
+        pages.offstand().clickAttributeGroup(attrGroup);
+    }
+
+    @When("The user update {string} attribute with value {string}")
+    public void theUserUpdateTOPLAMKALEMTUTARIAttributeWithValue(String attrLabel, String value) {
+        pages.offstand().updateAttribute(attrLabel,value);
+    }
+
+    @And("The user clicks save button in edit item")
+    public void theUserClicksSaveButtonInEditItem() {
+        BrowserUtils.wait(2);
+//        pages.editItemPage().getAccordionButton().click();
+        BrowserUtils.wait(2);
+        BrowserUtils.waitForVisibility(pages.editItemPage().getSaveButton(),10);
+        pages.editItemPage().getSaveButton().click();
+    }
+
+    @And("The user clicks save button in edit item save modal")
+    public void theUserClicksSaveButtonInEditItemSaveModal() {
+        pages.editItemPage().getSaveBtnInEditItemSaveModal().click();
+    }
+
+    @Then("The user verifies info {string} appears")
+    public void theUserVerifiesInfoAppears(String expectedMessage) {
+        BrowserUtils.wait(3);
+        BrowserUtils.waitForVisibility(pages.editItemPage().getInfoMessage(),20);
+        Assert.assertEquals(expectedMessage, pages.editItemPage().getInfoMessage().getText());
+        System.out.println(pages.editItemPage().getInfoMessage().getText());
+    }
+
+    @When("The user delete item")
+    public void theUserDeleteItem() {
+        if (BrowserUtils.isElementDisplayed(pages.editItemPage().getScrollUpButton())) {
+            pages.editItemPage().getScrollUpButton().click();
+        }
+        BrowserUtils.wait(2);
+        pages.editItemPage().getDeleteItemButton().click();
+        pages.editItemPage().getDeleteButtonInDeleteItemModal().click();
+        BrowserUtils.wait(2);
+    }
 }

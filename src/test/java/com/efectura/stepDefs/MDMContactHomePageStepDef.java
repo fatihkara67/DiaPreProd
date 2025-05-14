@@ -311,7 +311,7 @@ public class MDMContactHomePageStepDef extends BaseStep {
         pages.contactHomePage().verifyLastPageButtonClickable();
     }
 
-    @Then("The user clicks {string} tab")
+    @When("The user clicks {string} tab")
     public void the_user_clicks_tab(String tabName) {
         pages.contactHomePage().clickEditItemTab(tabName);
     }
