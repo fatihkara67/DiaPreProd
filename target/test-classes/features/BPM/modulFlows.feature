@@ -136,6 +136,19 @@ Feature: Module Flows Cases
     Given The user verify blocked budget with "1250"
     Given The user submit the task
 
+  Scenario: Plain Modul Budget Flow With Reject
+    Given The user get blocked budget
+    Given The user get actual budget
+    Given The user login with "sahamuduru"
+    Given The user go to "panel" page
+    Given The user go in "Modül Akışı" flow
+    Given The user select "Modül Bütçe Desteği" as form type
+    Given The user fill start form with musteri code "999999999" and budget "1250"
+    Given The user verify blocked budget with "1250"
+    Given The user login with "satismuduru"
+    Given The user reject the task
+    Given The user verify blocked budget with "0"
+
 
 
 

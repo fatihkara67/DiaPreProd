@@ -12,7 +12,8 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserLoginWith(String username) {
         BrowserUtils.wait(3);
         Driver.getDriver().get(ConfigurationReader.getProperty("url"));
-        BrowserUtils.wait(9);
+        BrowserUtils.wait(3);
+        BrowserUtils.waitForVisibility(pages.loginPage().getUsernameField(),60);
         pages.loginPage().loginWith(username);
     }
 
@@ -56,15 +57,15 @@ public class ModuleFlowsStepDefs extends BaseStep {
     @Given("The user fill vendor form with initial budget {string}")
     public void theUserFillVendorFormWithInitialBudget(String budget) {
         pages.modulFlows().fillVendorInitialForm(budget);
-        Driver.getDriver().get(ConfigurationReader.getProperty("url"));
-        BrowserUtils.wait(19);
+//        Driver.getDriver().get(ConfigurationReader.getProperty("url"));
+//        BrowserUtils.wait(19);
     }
 
     @Given("The user fill vendor invoice form with invoice {string}")
     public void theUserFillVendorInvoiceFormWithInvoice(String invoiceAmount) {
         pages.modulFlows().fillVendorInvoiceForm(invoiceAmount);
-        Driver.getDriver().get(ConfigurationReader.getProperty("url"));
-        BrowserUtils.wait(19);
+//        Driver.getDriver().get(ConfigurationReader.getProperty("url"));
+//        BrowserUtils.wait(19);
     }
 
     @Given("The user get actual budget")

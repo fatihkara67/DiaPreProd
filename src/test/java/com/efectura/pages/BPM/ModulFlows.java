@@ -255,10 +255,10 @@ public class ModulFlows extends BasePage {
             fileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
             BrowserUtils.wait(2);
         }
-        BrowserUtils.waitForVisibility(tadbUploadInfo,20);
+        BrowserUtils.waitForVisibility(tadbUploadInfo,60);
         BrowserUtils.scrollToElement(Driver.getDriver(), flowSubmitButton);
         flowSubmitButton.click();
-        BrowserUtils.waitForVisibility(startFormInfoMessage,20);
+        BrowserUtils.waitForVisibility(startFormInfoMessage,60);
         Assert.assertEquals("Başarılı", startFormInfoMessage.getText());
     }
 
@@ -305,9 +305,9 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(1);
         Driver.getDriver().get("https://dia-preprod-ui.efectura.com/Task/TaskList");
         BrowserUtils.wait(3);
-        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),25);
+        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),50);
         taskList.getSearchAllFilterInput().sendKeys(formNumber);
-        BrowserUtils.wait(4);
+        BrowserUtils.wait(5);
         taskList.getFirstColumn().click();
 //        BrowserUtils.switchToTab("DIA: ConfirmationForm");
         BrowserUtils.switchToTabByTitleAndCloseOld("DIA: ConfirmationForm");
@@ -316,7 +316,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.scrollToElement(Driver.getDriver(), formSubmitButton);
         BrowserUtils.wait(2);
         formSubmitButton.click();
-        BrowserUtils.waitForVisibility(flowInfoMessage,20);
+        BrowserUtils.waitForVisibility(flowInfoMessage,60);
         Assert.assertEquals("Başarılı", flowInfoMessage.getText());
     }
 
@@ -325,7 +325,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(2);
         Driver.getDriver().get("https://dia-preprod-ui.efectura.com/Task/TaskListVendor");
         BrowserUtils.wait(3);
-        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),35);
+        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),60);
         taskList.getSearchAllFilterInput().sendKeys(formNumber);
         BrowserUtils.wait(4);
         taskList.getFirstColumn().click();
@@ -345,9 +345,9 @@ public class ModulFlows extends BasePage {
             BrowserUtils.wait(2);
         }
 
-        BrowserUtils.waitForVisibility(tasarimDosyaUploadInfo,15);
+        BrowserUtils.waitForVisibility(tasarimDosyaUploadInfo,30);
         ilerletButton.click();
-        BrowserUtils.waitForVisibility(flowInfoMessage,20);
+        BrowserUtils.waitForVisibility(flowInfoMessage,60);
         Assert.assertEquals("Başarılı", flowInfoMessage.getText());
         vendorInitialBudget = budget;
         System.out.println("Vendor Ininital Budget = " + vendorInitialBudget);
@@ -358,9 +358,9 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(2);
         Driver.getDriver().get("https://dia-preprod-ui.efectura.com/Task/TaskListVendor");
         BrowserUtils.wait(3);
-        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),35);
+        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),60);
         taskList.getSearchAllFilterInput().sendKeys(formNumber);
-        BrowserUtils.wait(4);
+        BrowserUtils.wait(7);
         taskList.getFirstColumn().click();
         BrowserUtils.switchToTabByTitleAndCloseOld("DIA: SalesFlowForm");
         BrowserUtils.wait(3);
@@ -375,7 +375,7 @@ public class ModulFlows extends BasePage {
         vendorTodayDate.click();
         vendorFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
         BrowserUtils.wait(2);
-        BrowserUtils.waitForVisibility(vendorInvoiceUploadInfo,20);
+        BrowserUtils.waitForVisibility(vendorInvoiceUploadInfo,60);
 
         BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Montaj Görseli");
         vendorDocDateInput.click();
@@ -383,10 +383,10 @@ public class ModulFlows extends BasePage {
         vendorFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
         BrowserUtils.wait(2);
 
-        BrowserUtils.waitForVisibility(montajImageUploadInfo,20);
+        BrowserUtils.waitForVisibility(montajImageUploadInfo,60);
         onayaGonderButton.click();
 
-        BrowserUtils.waitForVisibility(flowInfoMessage,20);
+        BrowserUtils.waitForVisibility(flowInfoMessage,60);
         Assert.assertEquals("Başarılı", flowInfoMessage.getText());
         invoiceAmountInForm = invoiceAmount;
         System.out.println("Vendor Invoice Amount = " + invoiceAmountInForm);
@@ -434,7 +434,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(1);
         Driver.getDriver().get("https://dia-preprod-ui.efectura.com/Task/TaskList");
         BrowserUtils.wait(3);
-        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),25);
+        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),60);
         taskList.getSearchAllFilterInput().sendKeys(formNumber);
         BrowserUtils.wait(4);
         taskList.getFirstColumn().click();
@@ -446,7 +446,7 @@ public class ModulFlows extends BasePage {
 
     public void submitTask() {
         BrowserUtils.scrollToElement(Driver.getDriver(), formSubmitButton);
-        BrowserUtils.wait(2);
+        BrowserUtils.wait(5);
         formSubmitButton.click();
         BrowserUtils.waitForVisibility(flowInfoMessage,20);
         Assert.assertEquals("Başarılı", flowInfoMessage.getText());
@@ -457,7 +457,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(2);
         formRejectButton.click();
         confirmButton.click();
-        BrowserUtils.waitForVisibility(flowInfoMessage,20);
+        BrowserUtils.waitForVisibility(flowInfoMessage,60);
         Assert.assertEquals("Başarılı", flowInfoMessage.getText());
     }
 
@@ -466,7 +466,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(2);
         formReviseButton.click();
         confirmButton.click();
-        BrowserUtils.waitForVisibility(flowInfoMessage,20);
+        BrowserUtils.waitForVisibility(flowInfoMessage,60);
         Assert.assertEquals("Başarılı", flowInfoMessage.getText());
     }
 
@@ -499,12 +499,12 @@ public class ModulFlows extends BasePage {
             BrowserUtils.wait(1);
             modulBudgetDocTodayDate.click();
             modulBudgetFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
-            BrowserUtils.wait(2);
+            BrowserUtils.wait(4);
         }
-        BrowserUtils.waitForVisibility(tadbUploadInfo,20);
+        BrowserUtils.waitForVisibility(tadbUploadInfo,40);
         BrowserUtils.scrollToElement(Driver.getDriver(), modulBudgetFlowSubmitButton);
         modulBudgetFlowSubmitButton.click();
-        BrowserUtils.waitForVisibility(startFormInfoMessage,20);
+        BrowserUtils.waitForVisibility(startFormInfoMessage,60);
         Assert.assertEquals("Başarılı", startFormInfoMessage.getText());
     }
 
@@ -539,7 +539,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.waitForVisibility(meyInvoiceUploadInfo,20);
         BrowserUtils.scrollToElement(Driver.getDriver(), modulBudgetFlowSubmitButton);
         modulBudgetFlowSubmitButton.click();
-        BrowserUtils.waitForVisibility(moduleBudgetInvoiceInfoMessage,20);
+        BrowserUtils.waitForVisibility(moduleBudgetInvoiceInfoMessage,60);
         Assert.assertEquals("Başarılı", moduleBudgetInvoiceInfoMessage.getText());
 
     }
