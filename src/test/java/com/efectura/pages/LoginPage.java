@@ -4,10 +4,12 @@ package com.efectura.pages;
 import com.efectura.utilities.BrowserUtils;
 import com.efectura.utilities.ConfigurationReader;
 import com.efectura.utilities.Constants;
+import lombok.Getter;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+@Getter
 public class LoginPage extends BasePage {
     @FindBy(xpath = "//iframe[@id='nr-ext-rsicon']")
     private WebElement iframe;

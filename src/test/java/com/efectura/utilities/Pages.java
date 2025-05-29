@@ -1,5 +1,6 @@
 package com.efectura.utilities;
 
+import com.efectura.pages.BPM.MenuFlows;
 import com.efectura.pages.BPM.ModulFlows;
 import com.efectura.pages.BPM.Offstand;
 import com.efectura.pages.BPM.TaskList;
@@ -58,6 +59,7 @@ public class Pages {
     private Offstand offstand;
     private EditItemPage editItemPage;
     private GeneralPage generalPage;
+    private MenuFlows menuFlows;
 
     public Pages() {
             this.homePage =new HomePage();
@@ -91,6 +93,7 @@ public class Pages {
         this.offstand = new Offstand();
         this.editItemPage= new EditItemPage();
         this.generalPage = new GeneralPage();
+        this.menuFlows = new MenuFlows();
     }
     // Getter metotları
     public HomePage homePage() {
@@ -127,6 +130,7 @@ public class Pages {
     public Offstand offstand() {return offstand;}
     public EditItemPage editItemPage() {return editItemPage;}
     public GeneralPage generalPage() {return  generalPage;}
+    public MenuFlows menuFlows() {return menuFlows;}
 }
 
 
