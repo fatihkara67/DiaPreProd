@@ -38,7 +38,7 @@ public class Offstand extends BasePage {
     @FindBy(xpath = "//button[@id='cancelUploadFile']/following-sibling::button[1]")
     private WebElement saveChangesButtonInAreYouSureModal;
 
-    @FindBy(xpath = "//span[@id='Import']/span[2]")
+    @FindBy(xpath = "//span[@id='Import']")
     private WebElement importButton;
 
     @FindBy(xpath = "//a[@id='_attributes']")

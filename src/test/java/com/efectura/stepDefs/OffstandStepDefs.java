@@ -16,6 +16,7 @@ public class OffstandStepDefs extends BaseStep {
 
     @Given("The user navigate to import page")
     public void theUserNavigateToImportPage() {
+        BrowserUtils.wait(3);
         Driver.getDriver().navigate().to("https://dia-preprod-ui.efectura.com/Import");
     }
 
@@ -60,6 +61,7 @@ public class OffstandStepDefs extends BaseStep {
 
     @Then("The user verify stand actual budget for {string} and markaisi {int} with budget {string}")
     public void theUserVerifyStandActualBudgetForAndMarkaisiWithBudget(String customerCode, int markaisi, String expectedActualBudget) {
+        BrowserUtils.wait(2);
         boolean isBudgetOk = pages.offstand().verifyStandActualBudget(customerCode,markaisi,expectedActualBudget);
         Assert.assertTrue(isBudgetOk);
         BrowserUtils.wait(3);

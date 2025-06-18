@@ -146,6 +146,7 @@ Feature: Module Flows Cases
     Given The user fill start form with musteri code "999999999" and budget "1250"
     Given The user verify blocked budget with "1250"
     Given The user login with "satismuduru"
+    Given The user go in Task "DIA: ConfirmationForm"
     Given The user reject the task
     Given The user verify blocked budget with "0"
 

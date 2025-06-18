@@ -6,7 +6,8 @@ Feature: Offstand Import Cases
     Given The user update 'MARKA_ISI' cells with '0' in 1 to 2
     Given The user update 'TOPLAM_TUTAR' cell with '25' in 1
     Given The user update 'TOPLAM_TUTAR' cell with '30' in 2
-    Given The user login with "offtrademanager"
+#    Given The user login with "offtrademanager"
+    Given The user login with "Efectura"
     Given The user navigate to import page
     And The user accepts import popup
     When The user select "OFFSTAND" for importType

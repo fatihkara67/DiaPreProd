@@ -19,6 +19,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @Given("The user go to {string} page")
     public void theUserGoToPage(String pageName) {
+        BrowserUtils.wait(2);
         Driver.getDriver().get(ConfigurationReader.getProperty(pageName));
     }
 
