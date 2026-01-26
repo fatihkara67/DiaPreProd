@@ -1,5 +1,6 @@
 package com.efectura.stepDefs;
 
+import com.efectura.utilities.BrowserConsoleUtils;
 import com.efectura.utilities.ConfigurationReader;
 import com.efectura.utilities.Driver;
 import io.cucumber.java.After;
@@ -27,6 +28,15 @@ public class Hooks {
     }
     @After
     public static void tearDown(Scenario scenario) {
+
+        try {
+            BrowserConsoleUtils.assertNoConsoleErrors(Driver.getDriver());
+        } catch (AssertionError e) {
+            // Senaryoya log düşsün diye
+            scenario.log(e.getMessage());
+            throw e; // test FAIL
+        }
+
         if (scenario.isFailed()) {
             TakesScreenshot takesScreenshot = (TakesScreenshot) Driver.getDriver();
             byte[] image = takesScreenshot.getScreenshotAs(OutputType.BYTES);

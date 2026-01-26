@@ -1,6 +1,7 @@
 package com.efectura.stepDefs;
 
 import com.efectura.utilities.BrowserUtils;
+import com.efectura.utilities.Driver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -313,7 +314,9 @@ public class MDMContactHomePageStepDef extends BaseStep {
 
     @When("The user clicks {string} tab")
     public void the_user_clicks_tab(String tabName) {
+        BrowserUtils.adjustScreenSize(50, Driver.getDriver());
         pages.contactHomePage().clickEditItemTab(tabName);
+        BrowserUtils.wait(2);
     }
 
     @Then("The user verifies preview tab details is displayed")

@@ -5,6 +5,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Driver {
 
 
@@ -41,6 +44,12 @@ public class Driver {
 
                     //     chromeOptions.setBinary("C:\\Users\\Sema\\Desktop\\PROGRAMLAR\\SELENİUM\\");
                     chromeOptions.addArguments("--start-maximized");
+                    chromeOptions.addArguments("--disable-notifications");
+                    chromeOptions.addArguments("--disable-popup-blocking");
+
+                    Map<String, Object> prefs = new HashMap<>();
+                    prefs.put("profile.default_content_setting_values.notifications", 2); // 2 = block
+                    chromeOptions.setExperimentalOption("prefs", prefs);
                     driverPool.set(new ChromeDriver(chromeOptions));
                     break;
                 case "firefox":

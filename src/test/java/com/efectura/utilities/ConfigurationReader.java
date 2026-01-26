@@ -1,5 +1,8 @@
 package com.efectura.utilities;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 public class ConfigurationReader {
@@ -31,6 +34,29 @@ public class ConfigurationReader {
      */
     public static String getProperty(String keyName) {
         return configFile.getProperty(keyName);
+    }
+
+    public static void setProperty(String key, String value) {
+        configFile.setProperty(key, value);
+    }
+
+    public static void updateProperty(String key, String value) {
+        Properties properties = new Properties();
+        String path = System.getProperty("user.dir") + "/Configuration.properties";
+        properties.setProperty(key, value);
+
+//        try (FileInputStream fis = new FileInputStream(path)) {
+//            properties.load(fis);
+//        } catch (IOException e) {
+//            throw new RuntimeException("Config okunamadı", e);
+//        }
+//
+//        try (FileOutputStream fos = new FileOutputStream(path)) {
+//            properties.setProperty(key, value);
+//            properties.store(fos, "Updated by automation");
+//        } catch (IOException e) {
+//            throw new RuntimeException("Config yazılamadı", e);
+//        }
     }
 
 }

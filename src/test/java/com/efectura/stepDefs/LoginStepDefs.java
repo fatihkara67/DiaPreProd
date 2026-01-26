@@ -34,7 +34,7 @@ public class LoginStepDefs extends BaseStep {
         pages.loginPage().setEmailBox(email);
     }
 
-    @When("The user clicks send button")
+    @When("The user clicks sendd button")
     public void the_user_clicks_send_button() {
         pages.loginPage().clickSendButton();
     }

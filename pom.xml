@@ -120,6 +120,20 @@
             <version>12.8.1.jre8</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.4.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>1.8.0</version><!-- veya en güncel kararlı sürüm -->
+            <scope>test</scope>      <!-- yalnızca testlerde lazım -->
+        </dependency>
+
     </dependencies>
 
     <build>

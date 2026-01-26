@@ -74,6 +74,7 @@ public class OffstandStepDefs extends BaseStep {
 
     @When("The user clicks {string} attribute group")
     public void theUserClicksAttributeGroup(String attrGroup) {
+        BrowserUtils.adjustScreenSize(55,Driver.getDriver());
         pages.offstand().clickAttributeGroup(attrGroup);
     }
 
@@ -98,7 +99,7 @@ public class OffstandStepDefs extends BaseStep {
 
     @Then("The user verifies info {string} appears")
     public void theUserVerifiesInfoAppears(String expectedMessage) {
-        BrowserUtils.wait(3);
+//        BrowserUtils.wait(1);
         BrowserUtils.waitForVisibility(pages.editItemPage().getInfoMessage(),20);
         Assert.assertEquals(expectedMessage, pages.editItemPage().getInfoMessage().getText());
         System.out.println(pages.editItemPage().getInfoMessage().getText());
@@ -106,10 +107,13 @@ public class OffstandStepDefs extends BaseStep {
 
     @When("The user delete item")
     public void theUserDeleteItem() {
-        if (BrowserUtils.isElementDisplayed(pages.editItemPage().getScrollUpButton())) {
-            pages.editItemPage().getScrollUpButton().click();
-        }
+//        if (BrowserUtils.isElementDisplayed(pages.editItemPage().getScrollUpButton())) {
+//            pages.editItemPage().getScrollUpButton().click();
+//        }
         BrowserUtils.wait(2);
+        pages.offstand().getSideBarButton().click();
+        BrowserUtils.wait(4);
+        BrowserUtils.adjustScreenSize(45,Driver.getDriver());
         pages.editItemPage().getDeleteItemButton().click();
         pages.editItemPage().getDeleteButtonInDeleteItemModal().click();
         BrowserUtils.wait(2);

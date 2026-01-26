@@ -1,12 +1,7 @@
 package com.efectura.utilities;
 
-import com.efectura.pages.BPM.MenuFlows;
-import com.efectura.pages.BPM.ModulFlows;
-import com.efectura.pages.BPM.Offstand;
-import com.efectura.pages.BPM.TaskList;
-import com.efectura.pages.GeneralPage;
-import com.efectura.pages.HomePage;
-import com.efectura.pages.LoginPage;
+import com.efectura.pages.*;
+import com.efectura.pages.BPM.*;
 import com.efectura.pages.MDMPages.AccountManagement.AccountHomePage;
 import com.efectura.pages.MDMPages.AssetManagement.Asset;
 import com.efectura.pages.MDMPages.AssetManagement.AssetEditPage;
@@ -19,10 +14,12 @@ import com.efectura.pages.MDMPages.ContractManagement.Contract;
 import com.efectura.pages.MDMPages.EditItemPage;
 import com.efectura.pages.MDMPages.GiftManagement.Gift;
 import com.efectura.pages.MDMPages.GiftManagement.GiftHomePage;
+import com.efectura.pages.MDMPages.ItemOverviewPage;
 import com.efectura.pages.SettingsPages.Families;
 import com.efectura.pages.SettingsPages.TagsPage;
 import com.efectura.pages.SystemPages.BlackListPage;
 import com.efectura.pages.SystemPages.CurrenciesPage;
+import com.efectura.pages.SystemPages.TableEditorPage;
 //import com.efectura.pages.SystemPage.UserManagement.Users;
 //import com.efectura.pages.SystemPage.UserManagement.UsersLogs;
 
@@ -60,6 +57,12 @@ public class Pages {
     private EditItemPage editItemPage;
     private GeneralPage generalPage;
     private MenuFlows menuFlows;
+    private Panel panel;
+    private ItemOverviewPage itemOverviewPage;
+    private DbProcess dbProcess;
+    private TableEditorPage tableEditorPage;
+    private ReportPage reportPage;
+    private Message message;
 
     public Pages() {
             this.homePage =new HomePage();
@@ -94,6 +97,12 @@ public class Pages {
         this.editItemPage= new EditItemPage();
         this.generalPage = new GeneralPage();
         this.menuFlows = new MenuFlows();
+        this.panel = new Panel();
+        this.itemOverviewPage = new ItemOverviewPage();
+        this.dbProcess = new DbProcess();
+        this.tableEditorPage = new TableEditorPage();
+        this.reportPage = new ReportPage();
+        this.message = new Message();
     }
     // Getter metotları
     public HomePage homePage() {
@@ -131,6 +140,13 @@ public class Pages {
     public EditItemPage editItemPage() {return editItemPage;}
     public GeneralPage generalPage() {return  generalPage;}
     public MenuFlows menuFlows() {return menuFlows;}
+    public Panel panel() {return panel;}
+    public ItemOverviewPage itemOverviewPage(){return itemOverviewPage;}
+    public DbProcess dbProcess() {return  dbProcess;}
+    public TableEditorPage tableEditorPage() {return  tableEditorPage;}
+    public ReportPage reportPage() {return reportPage;}
+    public Message message() {return  message;}
+
 }
 
 

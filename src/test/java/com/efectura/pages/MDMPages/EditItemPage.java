@@ -1,7 +1,9 @@
 package com.efectura.pages.MDMPages;
 
 import com.efectura.pages.BasePage;
+import com.efectura.pages.GeneralPage;
 import com.efectura.utilities.BrowserUtils;
+import com.efectura.utilities.Database;
 import com.efectura.utilities.Driver;
 import lombok.Getter;
 import org.junit.Assert;
@@ -10,6 +12,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +25,7 @@ import static com.efectura.utilities.BrowserUtils.isButtonActive;
 @Getter
 public class EditItemPage extends BasePage {
 
-    @FindBy(xpath = "//div[@id='saveChangeButton']")
+    @FindBy(xpath = "//button[@id='saveChangeButton']")
     private WebElement saveButton;
 
     @FindBy(xpath = "//button[contains(@id,'floatingSaveButton')]")
@@ -69,7 +75,9 @@ public class EditItemPage extends BasePage {
     @FindBy(xpath = "//button[@id='floatingSaveButton']")
     private WebElement saveButtonInSaveChanges;
 
-    @FindBy(xpath = "/html/body/div[7]/div/div[1]/div[2]")
+    // /html/body/div[7]/div/div[1]/div[2]
+    //div[@class='notyf__message']
+    @FindBy(xpath = "//div[@class='notyf__message']")
     private WebElement infoMessage;
 
     @FindBy(xpath = "//*[@id='association-table']/tbody/tr/td[4]/div")
@@ -189,11 +197,69 @@ public class EditItemPage extends BasePage {
         executor.executeScript("arguments[0].click();", statusExpandArrow);
         statusSelectInput.sendKeys(status);
         option.click();
+    }
 
+    int itemIdToBeAssociated;
+    public void selectItemAtOrderInAssociationTab(int assocCheckboxOrder) {
+        BrowserUtils.wait(2);
+        associateCheckBoxes.get(assocCheckboxOrder - 1).click();
+        String itemIdToBeAssociatedText = GeneralPage.getColumnData(associationTable,"Item Id").get(1);
+        itemIdToBeAssociated = Integer.parseInt(itemIdToBeAssociatedText);
+    }
 
+    public boolean getAssociations(String itemCode, String associationTypeCode) {
+        int firstItemId = 0;
+        int secondItemId = 0;
+        int assocType = 0;
+        int itemId = getItemIdFromSKU(itemCode);
+        if (itemId == -1) {
+            System.out.println("Item not found for SKU: " + itemCode);
+        }
 
+        String query = "SELECT * FROM TEST_MDM.dbo.Associations a " +
+                "WHERE (FirstItemId = ? AND SecondItemId = ?) " +
+                "   OR (FirstItemId = ? AND SecondItemId = ?)";
 
+        try (Connection connection = Database.getInstance();
+             PreparedStatement ps = connection.prepareStatement(query)) {
 
+            ps.setInt(1, itemIdToBeAssociated);
+            ps.setInt(2, itemId);
+            ps.setInt(3, itemId);
+            ps.setInt(4, itemIdToBeAssociated);
 
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                System.out.println("Association ID: " + rs.getInt("Id"));
+                firstItemId = rs.getInt("FirstItemId");
+                secondItemId = rs.getInt("SecondItemId");
+                assocType = rs.getInt("AssociationTypeId");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("FirstItemId " + firstItemId);
+        System.out.println("SecondItemId " + secondItemId);
+        System.out.println("AssociationTypeId " + assocType);
+        System.out.println(itemIdToBeAssociated);
+        return firstItemId != 0 && secondItemId != 0;
+    }
+
+    public int getItemIdFromSKU(String sku) {
+        String sql = "SELECT Id FROM TEST_MDM.dbo.Items WHERE SKU = '" + sku + "'";
+        try (Connection connection = Database.getInstance();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }
