@@ -66,6 +66,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     @Given("The user get blocked budget")
     public void theUserGetBlockedBudget() {
         pages.modulFlows().getBlockedBudget();
+
     }
 
     @Given("The user go in Task and submit")
