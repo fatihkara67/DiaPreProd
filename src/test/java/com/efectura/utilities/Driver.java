@@ -39,17 +39,18 @@ public class Driver {
             String browser = ConfigurationReader.getProperty("browser").toLowerCase();
             switch (browser) {
                 case "chrome":
+                    io.github.bonigarcia.wdm.WebDriverManager.chromedriver().setup();
+
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--remote-allow-origins=*");
-
-                    //     chromeOptions.setBinary("C:\\Users\\Sema\\Desktop\\PROGRAMLAR\\SELENİUM\\");
                     chromeOptions.addArguments("--start-maximized");
                     chromeOptions.addArguments("--disable-notifications");
                     chromeOptions.addArguments("--disable-popup-blocking");
 
                     Map<String, Object> prefs = new HashMap<>();
-                    prefs.put("profile.default_content_setting_values.notifications", 2); // 2 = block
+                    prefs.put("profile.default_content_setting_values.notifications", 2);
                     chromeOptions.setExperimentalOption("prefs", prefs);
+
                     driverPool.set(new ChromeDriver(chromeOptions));
                     break;
                 case "firefox":
@@ -61,9 +62,12 @@ public class Driver {
                     driverPool.get().manage().window().maximize();
                     break;
                 case "chromeheadless":
+                    io.github.bonigarcia.wdm.WebDriverManager.chromedriver().setup();
+
                     ChromeOptions options = new ChromeOptions();
-                    options.addArguments("--headless"); // Headless modu etkinleştir
-                    options.addArguments("--disable-gpu"); // GPU kullanımını devre dışı bırak
+                    options.addArguments("--headless=new");
+                    options.addArguments("--disable-gpu");
+                    options.addArguments("--window-size=1920,1080");
                     driverPool.set(new ChromeDriver(options));
                     break;
                 default:
