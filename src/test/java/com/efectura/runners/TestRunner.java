@@ -24,7 +24,7 @@ import java.util.List;
                 "rerun:target/rerun.txt"
         },
         // Hangi senaryoların çalıştırılacağını belirten etiket
-        tags ="@flow",
+        tags ="@preprod",
         features ="src/test/resources/features",
         glue  = "com/efectura/stepDefs",
         dryRun = false
