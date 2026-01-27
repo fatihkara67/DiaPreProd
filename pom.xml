@@ -32,7 +32,7 @@
         <!-- Plugin Versions  -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <maven.surefire.plugin.version>3.0.0-M9</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <maven.cucumber.reporting.plugin.version>5.7.4</maven.cucumber.reporting.plugin.version>
     </properties>
 
