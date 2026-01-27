@@ -9,13 +9,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -620,6 +619,94 @@ public class BrowserUtils {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void sendFileToTelegram(String filePath, String chatId) {
+        String boundary = "===" + System.currentTimeMillis() + "===";
+        String LINE_FEED = "\r\n";
+
+        try {
+            String urlString = "https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendDocument";
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setUseCaches(false);
+            connection.setDoOutput(true); // POST yapacağımız için
+            connection.setDoInput(true);
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            connection.setRequestMethod("POST");
+
+            try (OutputStream outputStream = connection.getOutputStream();
+                 PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), true)) {
+
+                // chat_id ekle
+                writer.append("--").append(boundary).append(LINE_FEED);
+                writer.append("Content-Disposition: form-data; name=\"chat_id\"").append(LINE_FEED);
+                writer.append("Content-Type: text/plain; charset=UTF-8").append(LINE_FEED);
+                writer.append(LINE_FEED).append(chatId).append(LINE_FEED);
+                writer.flush();
+
+                // Dosya ekle
+                File uploadFile = new File(filePath);
+                String fileName = uploadFile.getName();
+                writer.append("--").append(boundary).append(LINE_FEED);
+                writer.append("Content-Disposition: form-data; name=\"document\"; filename=\"").append(fileName).append("\"").append(LINE_FEED);
+                writer.append("Content-Type: application/octet-stream").append(LINE_FEED);
+                writer.append(LINE_FEED);
+                writer.flush();
+
+                // Dosyayı byte olarak gönder
+                try (FileInputStream inputStream = new FileInputStream(uploadFile)) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    outputStream.flush();
+                }
+
+                writer.append(LINE_FEED).flush();
+                writer.append("--").append(boundary).append("--").append(LINE_FEED);
+                writer.close();
+            }
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                System.out.println("File sent to Telegram successfully: " + filePath);
+            } else {
+                System.out.println("Failed to send file to Telegram. Status Code: " + responseCode);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Path renameFile(String oldFilePath, String newFileName) {
+        try {
+            File oldFile = new File(oldFilePath);
+
+            if (!oldFile.exists()) {
+                System.out.println("❌ Dosya bulunamadı: " + oldFilePath);
+                return null;
+            }
+
+            File newFile = new File(oldFile.getParent(), newFileName);
+
+            boolean success = oldFile.renameTo(newFile);
+
+            if (success) {
+                System.out.println("✅ Dosya ismi değiştirildi: " + newFile.getAbsolutePath());
+                return newFile.toPath().toAbsolutePath().normalize();
+            } else {
+                System.out.println("⚠️ Dosya adı değiştirilemedi!");
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

@@ -1,5 +1,7 @@
 package com.efectura.runners;
 
+import com.efectura.utilities.BrowserUtils;
+import com.efectura.utilities.ReportPathResolver;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import net.masterthought.cucumber.Configuration;
@@ -9,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,9 +36,36 @@ import java.util.List;
         // Tüm senaryoların çalıştırılmasının ardından yapılacak işlemler
         @AfterClass
         public static void teardown() {
-                File reportOutputDirectory = new File("target/cucumber-reports");
-                generateReport(reportOutputDirectory.getAbsolutePath());
+            File reportOutputDirectory = new File("target/cucumber-reports");
+            generateReport(reportOutputDirectory.getAbsolutePath());
+
+            // 1) Raporun orijinal lokasyonunu bul
+            Path originalReport = ReportPathResolver.resolveCucumberHtml();
+
+            // 2) Yeniden adlandır ve yeni yolu al
+            Path renamedReport = BrowserUtils.renameFile(
+                    originalReport.toString(),
+                    "diapreprod.html"
+            );
+
+            // Eğer rename başarısızsa fallback olarak orijinal raporu dene
+            Path finalReportPath = (renamedReport != null) ? renamedReport : originalReport;
+
+            // 3) Var mı, boş mu kontrol et
+            if (!ReportPathResolver.isReportReady(finalReportPath)) {
+                System.err.println("Cucumber HTML raporu bulunamadı ya da boş: " + finalReportPath);
+                return;
+            }
+
+            // 4) Telegram'a gönder   -4570445477 -1002156506449
+            BrowserUtils.sendFileToTelegram(finalReportPath.toString(), "-1002156506449");
+
+            BrowserUtils.renameFile(
+                    renamedReport.toString(),
+                    "cucumber.html"
+            );
         }
+
         // Cucumber raporlarını üreten metot
         public static void generateReport(String cucumberOutputPath) {
                 Collection<File> jsonFiles = FileUtils.listFiles(new File(cucumberOutputPath), new String[] {"json"}, true);

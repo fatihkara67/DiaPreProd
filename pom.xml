@@ -17,7 +17,7 @@
 
         <selenium.version>4.13.0</selenium.version>
         <junit.version>4.13.2</junit.version>
-        <bonigarcia.webdrivermanager.version>5.5.2</bonigarcia.webdrivermanager.version>
+        <bonigarcia.webdrivermanager.version>5.9.2</bonigarcia.webdrivermanager.version>
 
 
         <cucumber.java.version>7.1.0</cucumber.java.version>
@@ -134,11 +134,6 @@
             <scope>test</scope>      <!-- yalnızca testlerde lazım -->
         </dependency>
 
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>5.9.2</version>
-        </dependency>
 
     </dependencies>
 
