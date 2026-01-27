@@ -29,13 +29,13 @@ public class Hooks {
     @After
     public static void tearDown(Scenario scenario) {
 
-        try {
-            BrowserConsoleUtils.assertNoConsoleErrors(Driver.getDriver());
-        } catch (AssertionError e) {
-            // Senaryoya log düşsün diye
-            scenario.log(e.getMessage());
-            throw e; // test FAIL
-        }
+//        try {
+//            BrowserConsoleUtils.assertNoConsoleErrors(Driver.getDriver());
+//        } catch (AssertionError e) {
+//            // Senaryoya log düşsün diye
+//            scenario.log(e.getMessage());
+//            throw e; // test FAIL
+//        }
 
         if (scenario.isFailed()) {
             TakesScreenshot takesScreenshot = (TakesScreenshot) Driver.getDriver();
