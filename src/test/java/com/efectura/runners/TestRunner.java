@@ -66,8 +66,6 @@ import java.util.List;
             );
         }
 
-
-        
         // Cucumber raporlarını üreten metot
         public static void generateReport(String cucumberOutputPath) {
                 Collection<File> jsonFiles = FileUtils.listFiles(new File(cucumberOutputPath), new String[] {"json"}, true);
