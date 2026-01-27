@@ -66,6 +66,7 @@ import java.util.List;
             );
         }
 
+
         
         // Cucumber raporlarını üreten metot
         public static void generateReport(String cucumberOutputPath) {
