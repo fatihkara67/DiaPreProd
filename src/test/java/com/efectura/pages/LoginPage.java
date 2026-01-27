@@ -124,6 +124,7 @@ public class LoginPage extends BasePage {
 
         usernameField.sendKeys(username);
         passwordField.sendKeys(ConfigurationReader.getProperty("flowsPassword"));
+//        passwordField.sendKeys(ConfigurationReader.getProperty("validPassword"));
         loginButton.click();
     }
 }

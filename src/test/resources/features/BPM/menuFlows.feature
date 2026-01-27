@@ -1,3 +1,4 @@
+@flow @menu-flow @preprod
 Feature: Menu Flows Cases
 
   Scenario: Plain Menu Flow Without Reject or Revise
@@ -27,3 +28,34 @@ Feature: Menu Flows Cases
     Given The user submit the task
     Given The user login with "tedarikçimenü"
     Given The user fill menu vendor invoice form with invoice "1000"
+
+
+  Scenario: Menu Flow With Reject
+    Given The user login with "sahamuduru"
+    Given The user go to "panel" page
+    Given The user go in "Menü Talep Akışı" flow
+    Given The user fill menu start form with musteri code "999999999"
+    Given The user login with "skgmtest"
+    Given The user go in menu Task "DIA: ConfirmationForm"
+    Given The user select vendor as "Menu Vendor"
+    Given The user submit the task
+    Given The user login with "tedarikçimenü"
+    Given The user fill menu vendor form with budget "5000"
+    Given The user login with "skgmtest"
+    Given The user go in menu Task "DIA: ConfirmationForm"
+    Given The user reject the task
+
+  Scenario: Menu Flow With Revise
+    Given The user login with "sahamuduru"
+    Given The user go to "panel" page
+    Given The user go in "Menü Talep Akışı" flow
+    Given The user fill menu start form with musteri code "999999999"
+    Given The user login with "skgmtest"
+    Given The user go in menu Task "DIA: ConfirmationForm"
+    Given The user select vendor as "Menu Vendor"
+    Given The user submit the task
+    Given The user login with "tedarikçimenü"
+    Given The user fill menu vendor form with budget "5000"
+    Given The user login with "skgmtest"
+    Given The user go in menu Task "DIA: ConfirmationForm"
+    Given The user revise the task

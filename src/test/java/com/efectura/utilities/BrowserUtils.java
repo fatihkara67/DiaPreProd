@@ -3,6 +3,7 @@ package com.efectura.utilities;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -10,9 +11,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.util.Date;
-import java.util.NoSuchElementException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 
 import static java.time.Duration.ofSeconds;
 import static org.junit.Assert.assertTrue;
@@ -222,6 +229,75 @@ public class BrowserUtils {
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByIndex(index);
     }
+
+
+    public static void selectDropdownOptionByRandom(WebElement dropdownElement, WebDriver driver) {
+        Select select = new Select(dropdownElement);
+
+        // 1) Seçilebilir (value'su boş olmayan ve enabled) option'ları topla
+        List<WebElement> selectable = select.getOptions()
+                .stream()
+                .filter(WebElement::isEnabled)
+                .filter(o -> {
+                    String v = o.getAttribute("value");
+                    return v != null && !v.trim().isEmpty();
+                }).toList();
+
+        if (selectable.isEmpty()) {
+            System.out.println("No selectable options (non-empty values). Skipping.");
+            return;
+        }
+
+        // 2) Mevcut seçim değerini al
+        String currentValue = null;
+        try {
+            currentValue = select.getFirstSelectedOption().getAttribute("value");
+        } catch (NoSuchElementException ignore) {}
+
+        // 3) Rastgele ama mevcut seçime eşit olmayan bir option seç
+        Random rnd = new Random();
+        WebElement candidate;
+        if (selectable.size() == 1) {
+            candidate = selectable.get(0);
+            // tek seçenek mevcut seçili ise yine de seçmeyi deneyip devam edeceğiz
+        } else {
+            // Mevcut değerle aynıysa başka bir tane seç
+            do {
+                candidate = selectable.get(rnd.nextInt(selectable.size()));
+            } while (currentValue != null && currentValue.equals(candidate.getAttribute("value")));
+        }
+
+        String targetValue = candidate.getAttribute("value");
+
+        // 4) Seçimi yap
+        select.selectByValue(targetValue);
+
+        // 5) Değişikliği doğrula; olmadıysa JS ile change tetikle
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        try {
+            wait.until(d -> {
+                String now = new Select(dropdownElement).getFirstSelectedOption().getAttribute("value");
+                return targetValue.equals(now);
+            });
+        } catch (TimeoutException te) {
+            // Bazı select2 durumlarında native select seçiliyor ama change dinleyicisi çalışmıyor olabilir
+            ((JavascriptExecutor) driver).executeScript(
+                    "const el = arguments[0]; el.value = arguments[1]; " +
+                            "el.dispatchEvent(new Event('change', { bubbles: true }));",
+                    dropdownElement, targetValue
+            );
+            // Bir kez daha doğrula
+            wait.until(d -> {
+                String now = new Select(dropdownElement).getFirstSelectedOption().getAttribute("value");
+                return targetValue.equals(now);
+            });
+        }
+
+        System.out.println("Selected value: " + targetValue);
+    }
+
+
+
     /**
      * Selects an option from a dropdown by value attribute.
      *
@@ -362,7 +438,7 @@ public class BrowserUtils {
         String originalWindow = driver.getWindowHandle();
 
         // Yeni tab açılana kadar bekle (toplam pencere sayısı 2 olmalı)
-        new WebDriverWait(driver, Duration.ofSeconds(10))
+        new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.numberOfWindowsToBe(2));
 
         // Belirtilen title'a sahip yeni tab'e geç
@@ -391,6 +467,14 @@ public class BrowserUtils {
         }
     }
 
+    public static boolean isElementDisplayed(By locator) {
+        try {
+            return Driver.getDriver().findElement(locator).isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
 
     public static boolean isButtonActive(WebElement button) {
         String classAttribute = button.getAttribute("class");
@@ -402,6 +486,143 @@ public class BrowserUtils {
         // Sayfanın toplam genişliği kadar sağa kaydır
         js.executeScript("window.scrollTo(document.body.scrollWidth, 0)");
     }
+
+    public static void waitForAttribute(WebElement element, String attribute) {
+        while (element.getAttribute(attribute) == null) {
+            BrowserUtils.wait(1);
+        }
+    }
+
+    public static WebElement getRandomElementFromList(List<WebElement> elements) {
+        if (elements == null || elements.isEmpty()) {
+            throw new IllegalArgumentException("Liste boş veya null olamaz.");
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(elements.size()); // 0 ile size-1 arası
+        return elements.get(randomIndex);
+    }
+
+    public static boolean isNewExcelDownloaded(String downloadDirPath, long maxAgeSeconds) {
+        File dir = new File(downloadDirPath);
+        File[] xlsxFiles = dir.listFiles((d, name) -> name.toLowerCase().endsWith(".xlsx"));
+
+        if (xlsxFiles == null || xlsxFiles.length == 0) {
+            return false;
+        }
+
+        File latestFile = Arrays.stream(xlsxFiles)
+                .max(Comparator.comparingLong(File::lastModified))
+                .orElse(null);
+
+        if (latestFile == null) return false;
+
+        long currentTime = System.currentTimeMillis();
+        long lastModified = latestFile.lastModified();
+
+        long ageInSeconds = (currentTime - lastModified) / 1000;
+        return ageInSeconds <= maxAgeSeconds;
+    }
+
+    public static String getLatestDownloadedExcelPath() {
+        // 1) Kullanıcının home directory'si
+        String userHome = System.getProperty("user.home");
+
+        // 2) OS'e göre Downloads klasörünü hesapla
+        File downloadsDir = new File(userHome, "Downloads");
+
+        if (!downloadsDir.exists() || !downloadsDir.isDirectory()) {
+            return null; // yoksa bırakalım
+        }
+
+        // 3) Sadece .xlsx dosyalarını listele
+        File[] xlsxFiles = downloadsDir.listFiles((d, name) -> name.toLowerCase().endsWith(".xlsx"));
+
+        if (xlsxFiles == null || xlsxFiles.length == 0) {
+            return null; // Excel yoksa
+        }
+
+        // 4) En son indirilen Excel'i bul
+        File latestFile = Arrays.stream(xlsxFiles)
+                .max(Comparator.comparingLong(File::lastModified))
+                .orElse(null);
+
+        return latestFile != null ? latestFile.getAbsolutePath() : null;
+    }
+
+    public static String getFormattedNow(String zoneId) {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of(zoneId));
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        return now.format(fmt);
+    }
+
+    public static boolean isAfter(String s1, String s2) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.n");
+        LocalDateTime d1 = LocalDateTime.parse(s1.trim(), formatter);
+        LocalDateTime d2 = LocalDateTime.parse(s2.trim(), formatter);
+        return d1.isAfter(d2);
+    }
+
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    /**
+     * İstenen tarihi date input'a set eder
+     */
+    public static void selectDate(WebElement dateInput, LocalDate date) {
+
+        String formattedDate = date.format(FORMATTER);
+
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+        js.executeScript(
+                "arguments[0].value = arguments[1];" +
+                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                        "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                dateInput,
+                formattedDate
+        );
+    }
+
+    /**
+     * Bugünün tarihini seçer
+     */
+    public static void selectToday(WebElement dateInput) {
+        selectDate(dateInput, LocalDate.now());
+    }
+
+    private static final String TELEGRAM_BOT_TOKEN = "6538211561:AAEVRYoo03lBKnqhTUUU3lne9nfvpRGHa08";
+    public static void sendMessageToTelegram(String message, String chatId) {
+        try {
+            // Telegram API URL
+            String urlString = "https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMessage";
+
+            // URL bağlantısı oluştur
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setDoOutput(true);
+
+            // Mesajı JSON formatında gönderme
+            String postData = "chat_id=" + URLEncoder.encode(chatId, "UTF-8") +
+                    "&text=" + URLEncoder.encode(message, "UTF-8");
+
+            try (OutputStream outputStream = connection.getOutputStream()) {
+                outputStream.write(postData.getBytes(StandardCharsets.UTF_8));
+                outputStream.flush();
+            }
+
+            // Yanıtı kontrol et
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                System.out.println("Message sent to Telegram successfully: \n" + message);
+            } else {
+                System.out.println("Failed to send message to Telegram. Status Code: \n" + responseCode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 

@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 public class Offstand extends BasePage {
 
-    @FindBy(xpath = "//button[contains(text(),'OK')]")
+    @FindBy(xpath = "//button[contains(.,'Understood')]")
     private WebElement importPopupApplyButton;
 
     @FindBy(xpath = "//span[@id='select2-ItemType-container']")
@@ -38,7 +38,7 @@ public class Offstand extends BasePage {
     @FindBy(xpath = "//button[@id='cancelUploadFile']/following-sibling::button[1]")
     private WebElement saveChangesButtonInAreYouSureModal;
 
-    @FindBy(xpath = "//span[@id='Import']")
+    @FindBy(xpath = "//button[@id='tableDetailImport-Import']")
     private WebElement importButton;
 
     @FindBy(xpath = "//a[@id='_attributes']")
@@ -50,11 +50,8 @@ public class Offstand extends BasePage {
     @FindBy(xpath = "//a[contains(@class,'s_localizable')]")
     private List<WebElement> attributeGroups;
 
-    public static String getExcelPath(String fileName) {
-        String projectDir = System.getProperty("user.dir");
-        String relativePath = "src/test/resources/testData/" + fileName + ".xlsx";
-        return Paths.get(projectDir, relativePath).toString();
-    }
+    @FindBy(xpath = "/html/body/div[2]/div/div[2]/button/i")
+    private WebElement sideBarButton;
 
 
     public void selectImportType(String importType) {
@@ -70,10 +67,17 @@ public class Offstand extends BasePage {
         }
     }
 
+    public static String getExcelPath(String fileName) {
+        String projectDir = System.getProperty("user.dir");
+        String relativePath = "src/test/resources/testData/" + fileName + ".xlsx";
+        return Paths.get(projectDir, relativePath).toString();
+    }
+
     public void uploadExcelFile(String fileName) {
         BrowserUtils.wait(2);
         addCsvInputElement.sendKeys(getExcelPath(fileName));
         BrowserUtils.wait(2);
+        Driver.getDriver().findElement(By.xpath("//button[@title='İçe aktarım']")).click();
         saveChangesButtonInAreYouSureModal.click();
     }
 
@@ -101,7 +105,7 @@ public class Offstand extends BasePage {
                 ") AS T3\n" +
                 "ON T1.FormNumber = T3.FormNumber AND T1.Version = T3.MaxVersion AND T1.TrackKodu = T3.TrackKodu\n" +
                 "WHERE T1.[Status] != 'REJECTED'\n" +
-                "AND YEAR(T1.CreatedOn) = 2025\n" +
+                "AND YEAR(T1.CreatedOn) = 2026\n" +
                 "group by T1.TrackKodu,/*T1.[Type],*/ T1.[Markaisi], T1.LimitKontrol\n" +
                 ")\n" +
                 "select \n" +
@@ -163,7 +167,7 @@ public class Offstand extends BasePage {
                 ") AS T3\n" +
                 "ON T1.FormNumber = T3.FormNumber AND T1.Version = T3.MaxVersion AND T1.TrackKodu = T3.TrackKodu\n" +
                 "WHERE T1.[Status] != 'REJECTED'\n" +
-                "AND YEAR(T1.CreatedOn) = 2025\n" +
+                "AND YEAR(T1.CreatedOn) = 2026\n" +
                 "group by T1.TrackKodu,/*T1.[Type],*/ T1.[Markaisi], T1.LimitKontrol\n" +
                 ")\n" +
                 "select \n" +
@@ -226,7 +230,7 @@ public class Offstand extends BasePage {
     }
 
     public void clickAttributeGroup(String attrGroup) {
-        BrowserUtils.wait(5);
+        BrowserUtils.wait(7);
         for (WebElement attributeGroup : attributeGroups) {
             if (attributeGroup.getText().contains(attrGroup)) {
                 attributeGroup.click();
@@ -241,4 +245,6 @@ public class Offstand extends BasePage {
         attrInput.sendKeys(Keys.CONTROL + "A");
         attrInput.sendKeys(value);
     }
+
+
 }

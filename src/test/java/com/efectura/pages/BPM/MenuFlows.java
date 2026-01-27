@@ -111,6 +111,7 @@ public class MenuFlows extends BasePage {
         BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),60);
         taskList.getSearchAllFilterInput().sendKeys(formNumber);
         BrowserUtils.wait(4);
+        BrowserUtils.waitForClickability(taskList.getFirstColumn(),30);
         taskList.getFirstColumn().click();
 //        BrowserUtils.switchToTab("DIA: ConfirmationForm");
         BrowserUtils.switchToTabByTitleAndCloseOld(tabTitleName);
@@ -195,7 +196,8 @@ public class MenuFlows extends BasePage {
         BrowserUtils.wait(3);
         BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),60);
         taskList.getSearchAllFilterInput().sendKeys(formNumber);
-        BrowserUtils.wait(7);
+        BrowserUtils.wait(5);
+        BrowserUtils.waitForClickability(taskList.getFirstColumn(),30);
         taskList.getFirstColumn().click();
         BrowserUtils.switchToTabByTitleAndCloseOld("DIA: MenuFlowForm");
         BrowserUtils.wait(3);

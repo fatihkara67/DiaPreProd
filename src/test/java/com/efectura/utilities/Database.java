@@ -8,7 +8,7 @@ public class Database {
 
     private static Database instance = null;
     private Connection connection = null;
-    private final String DB_URL = "jdbc:sqlserver://server12.efectura.com:1433;encrypt=true;trustServerCertificate=true;";
+    private final String DB_URL = "jdbc:sqlserver://server12.efectura.com:1433;databaseName=DIA_PREPROD;encrypt=true;trustServerCertificate=true;";
 //    private final String DB_URL = "jdbc:clickhouse://192.168.129.7:8180/my_database";
     private final String DB_USERNAME = "dev_hero";
     private final String DB_PASSWORD = "6KQlSamV4D2x7T9179STCK";
