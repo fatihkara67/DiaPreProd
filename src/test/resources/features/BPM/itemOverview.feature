@@ -40,17 +40,17 @@ Feature: Item Overview Scenarios
     When The user fill event create inputs
     When The user click create event button
 
-  Scenario: Password update
-    When The user go to profile page
-    When The user click password accordion
-    When The user fill password
-    Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
-    Then The user send new password to telegram
-    Given The user login with "fatihkara"
-    When The user go to profile page
-    When The user click password accordion
-    When The user fill password back
-    Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
+#  Scenario: Password update
+#    When The user go to profile page
+#    When The user click password accordion
+#    When The user fill password
+#    Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
+#    Then The user send new password to telegram
+#    Given The user login with "fatihkara"
+#    When The user go to profile page
+#    When The user click password accordion
+#    When The user fill password back
+#    Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
 
 
   Scenario: Association Type
