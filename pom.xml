@@ -146,7 +146,7 @@
                 <configuration>
                     <!-- Run only test files that match the pattern **/CukesRunner.java -->
                     <includes>
-                        <include>**/com/sema/runners/TestRunner.java</include>
+                        <include>**/com/efectura/runners/TestRunner.java</include>
                     </includes>
 
                     <!-- Continue running tests even if some of them fail -->
