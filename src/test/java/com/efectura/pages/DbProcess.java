@@ -40,6 +40,8 @@ public class DbProcess extends BasePage {
                 "Join Families f On af.Family_Id = f.Id\n" +
                 "WHERE itc.TypeName = '" + itemType + "' AND a.is_required = 1 And f.[" + locale + "] IN " + importItemFamilies;
 
+        System.out.println("required attributes query: \n" + query);
+
         List<String> requiredAttributes = new ArrayList<>();
 
         try (Connection conn = Database.getInstance();
@@ -887,6 +889,35 @@ public class DbProcess extends BasePage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public String getEventType(String anySKU6) {
+        String query = "SELECT tr_TR as option From AttributeOptions\n" +
+                "WHERE Id = (SELECT ValueInt From ItemValues\n" +
+                "WHERE AttributeId = (SELECT Id From Attributes a WHERE a.Code = 'Event_Type')\n" +
+                "AND ItemId = (SELECT Id From Items i WHERE i.SKU = '" + anySKU6 + "'))";
+
+
+        System.out.println("Event_Type query: \n" + query);
+
+        String type = null;
+
+        try (Connection conn = Database.getInstance();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                type = rs.getString("option");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("type: " + type);
+
+        return type;
+
+
 
     }
 }

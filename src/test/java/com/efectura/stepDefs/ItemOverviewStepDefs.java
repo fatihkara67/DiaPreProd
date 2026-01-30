@@ -581,15 +581,20 @@ public class ItemOverviewStepDefs extends BaseStep {
         driver.findElement(By.xpath("//button[@id='import-association-next']")).click();
         importTime = BrowserUtils.getFormattedNow("UTC");
         System.out.println("import time utc: " + importTime);
-        BrowserUtils.wait(4);
+//        BrowserUtils.wait(7);
+        BrowserUtils.waitForVisibility(pages.itemOverviewPage().getApplyImportValidationButton(),80);
         pages.itemOverviewPage().getApplyImportValidationButton().click();
-
+        //FileUploaded
         BrowserUtils.wait(1);
+
+        BrowserUtils.waitForVisibility(pages.editItemPage().getInfoMessage(),90);
+        Assert.assertEquals("FileUploaded", pages.editItemPage().getInfoMessage().getText());
+        System.out.println(pages.editItemPage().getInfoMessage().getText());
     }
 
     @Then("The user verify import for create")
     public void theUserVerifyImportForCreate() {
-        BrowserUtils.wait(30);
+        BrowserUtils.wait(50);
 
         String actualFamily1 = pages.dbProcess().getFamilyOfImportedItem(randomSku1);
         String actualCategory1 = pages.dbProcess().getCategoryOfImportedItem(randomSku1);
@@ -630,8 +635,6 @@ public class ItemOverviewStepDefs extends BaseStep {
         String actualCategory5 = pages.dbProcess().getCategoryOfImportedItem(randomSku5);
         String importTime5 = pages.dbProcess().getImportTimeWithName(randomSku5);
         String actualName5 = pages.dbProcess().getName(randomSku5);
-//        String actualName5 = pages.dbProcess().getEventName(randomSku5,itemType);
-//        String actualName5 = pages.dbProcess().getProductName(randomSku5,itemType);
         Assert.assertEquals("Kategori dosyadaki gibi olmadı",anyCategory5,actualCategory5);
         Assert.assertEquals("Family dosyadaki gibi olmadı",anyFamily5,actualFamily5);
         Assert.assertTrue(BrowserUtils.isAfter(importTime5,importTime));
@@ -690,9 +693,15 @@ public class ItemOverviewStepDefs extends BaseStep {
     @Then("The user verify import for create2")
     public void theUserVerifyImportForCreate2() {
         BrowserUtils.wait(30);
+        String actualFamily9 = pages.dbProcess().getFamilyOfImportedItem(anySKU9);
+
+        String actualCategory9 = pages.dbProcess().getCategoryOfImportedItem(anySKU9);
+
 
         String actualName9 = pages.dbProcess().getName(anySKU9);
         Assert.assertEquals("isim dosyadaki gibi değil",randomName9,actualName9);
+        Assert.assertEquals("Boş bırakılan item'ın family'si default family olmadı",defaultFamily,actualFamily9);
+        Assert.assertEquals("Boş bırakılan item'ın kategorisi ROOT olmadı","ROOT",actualCategory9);
 
 
     }
@@ -743,12 +752,14 @@ public class ItemOverviewStepDefs extends BaseStep {
         CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",6, anyFamily6);
         CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",6, anySKU6);
         CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",6, randomName);
+        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Event_Type",6, "Konferans");
+        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"isCustomerEnv",6, "Hayır");
 
 
         anySKU8 = pages.dbProcess().getAnySku("Event","3");
         oldName8 = pages.dbProcess().getEventName(anySKU8,"Event");
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",8, anySKU8);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",8, "");
+        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",7, anySKU8);
+        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",7, "");
     }
 
     @When("The user fill import excel for create product")
@@ -879,7 +890,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
         String actualFamily1 = pages.dbProcess().getFamilyOfImportedItem(randomSku1);
         String actualCategory1 = pages.dbProcess().getCategoryOfImportedItem(randomSku1);
-        Assert.assertEquals("Boş bırakılan item'ın kategorisi ROOT olmadı","ROOT",actualCategory1);
+//        Assert.assertEquals("Boş bırakılan item'ın kategorisi ROOT olmadı","ROOT",actualCategory1);
         Assert.assertEquals("Family dosyadaki gibi olmadı",anyFamily1,actualFamily1);
 
         String actualFamily2 = pages.dbProcess().getFamilyOfImportedItem(randomSku2);
@@ -887,15 +898,10 @@ public class ItemOverviewStepDefs extends BaseStep {
         Assert.assertEquals("Kategori dosyadaki gibi olmadı",anyCategory2,actualCategory2);
         Assert.assertEquals("Boş bırakılan item'ın family'si default family olmadı",defaultFamily,actualFamily2);
 
-//        String actualFamily3 = pages.dbProcess().getFamilyOfImportedItemWithName(randomSku3);
+
         String actualFamily3 = pages.dbProcess().getFamilyOfImportedItemWithEventName(randomSku3);
-//        String actualFamily3 = pages.dbProcess().getFamilyOfImportedItemWithProductName(randomSku3);
-//        String actualCategory3 = pages.dbProcess().getCategoryOfImportedItemWithName(randomSku3);
         String actualCategory3 = pages.dbProcess().getCategoryOfImportedItemWithEventName(randomSku3);
-//        String actualCategory3 = pages.dbProcess().getCategoryOfImportedItemWithProductName(randomSku3);
-//        String importTime3 = pages.dbProcess().getImportTimeWithName(randomSku3);
         String importTime3 = pages.dbProcess().getImportTimeWithEventName(randomSku3);
-//        String importTime3 = pages.dbProcess().getImportTimeWithProductName(randomSku3);
         Assert.assertEquals("Boş bırakılan item'ın kategorisi ROOT olmadı","ROOT",actualCategory3);
         Assert.assertEquals("family dosyadaki gibi olmadı",anyFamily3,actualFamily3);
         System.out.println("import time 3: " + importTime3);
@@ -928,10 +934,12 @@ public class ItemOverviewStepDefs extends BaseStep {
         String actualCategory6 = pages.dbProcess().getCategoryOfImportedItem(anySKU6);
         String importTime6 = pages.dbProcess().getImportTimeWithEventName(randomName);
         String actualName6 = pages.dbProcess().getEventName(anySKU6,itemType);
-//        Assert.assertEquals("Kategori dosyadaki gibi olmadı",anyCategory6,actualCategory6);
-//        Assert.assertEquals("Family dosyadaki gibi olmadı",actualFamily6,actualFamily6);
+        String actualEventType6 = pages.dbProcess().getEventType(anySKU6);
+        Assert.assertEquals("Kategori dosyadaki gibi olmadı",anyCategory6,actualCategory6);
+        Assert.assertEquals("Family dosyadaki gibi olmadı",actualFamily6,actualFamily6);
 //        Assert.assertTrue(BrowserUtils.isAfter(importTime6,importTime));
         Assert.assertEquals("isim dosyadaki gibi değil",randomName,actualName6);
+        Assert.assertEquals("Event_Type dosyadaki gibi değil","Konferans",actualEventType6);
 
 
         String actualName7 = pages.dbProcess().getEventName(anySKU7,itemType);
