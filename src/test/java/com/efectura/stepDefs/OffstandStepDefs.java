@@ -33,7 +33,7 @@ public class OffstandStepDefs extends BaseStep {
 
     @When("The user import the uploaded file")
     public void theUserImportTheUploadedFile() {
-        BrowserUtils.wait(2);
+        BrowserUtils.wait(3);
         BrowserUtils.waitForVisibility(pages.offstand().getImportButton(),10);
         pages.offstand().getImportButton().click();
         BrowserUtils.wait(4);

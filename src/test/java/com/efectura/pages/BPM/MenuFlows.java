@@ -9,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,10 +90,23 @@ public class MenuFlows extends BasePage {
         BrowserUtils.wait(1);
         todayDate.click();
 
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
         WebElement uploadInfo = null;
         for (int i = 0; i < 3; i++) {
             BrowserUtils.selectDropdownOptionByVisibleText(docTypeSelect,docTypes.get(i));
-            fileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+            fileInput.sendKeys(absoluteFilePath);
             BrowserUtils.wait(2);
             uploadInfo = Driver.getDriver().findElement(By.xpath("//td[contains(text(),'" + docTypes.get(i) + "')]"));
             BrowserUtils.waitForVisibility(uploadInfo,60);
@@ -139,10 +154,23 @@ public class MenuFlows extends BasePage {
         BrowserUtils.wait(1);
         todayDate.click();
 
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
         WebElement uploadInfo = null;
         for (String docType : docTypes) {
             BrowserUtils.selectDropdownOptionByVisibleText(docTypeSelect, docType);
-            fileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+            fileInput.sendKeys(absoluteFilePath);
             BrowserUtils.wait(2);
 
             BrowserUtils.wait(2);
@@ -176,10 +204,21 @@ public class MenuFlows extends BasePage {
         BrowserUtils.wait(1);
         todayDate.click();
 
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
         WebElement uploadInfo = null;
         for (String docType : docTypes) {
             BrowserUtils.selectDropdownOptionByVisibleText(docTypeSelect, docType);
-            fileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+            fileInput.sendKeys(absoluteFilePath);
             BrowserUtils.wait(2);
             uploadInfo = Driver.getDriver().findElement(By.xpath("//td[contains(text(),'" + docType + "')]"));
             BrowserUtils.waitForVisibility(uploadInfo, 60);
@@ -211,10 +250,22 @@ public class MenuFlows extends BasePage {
         invoiceAmountInput.sendKeys(invoiceAmount);
         invoiceNoInput.sendKeys("FK-67");
 
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
         WebElement uploadInfo = null;
         for (String docType : docTypes) {
             BrowserUtils.selectDropdownOptionByVisibleText(docTypeSelect, docType);
-            fileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+            fileInput.sendKeys(absoluteFilePath);
             BrowserUtils.wait(2);
 
             BrowserUtils.wait(2);

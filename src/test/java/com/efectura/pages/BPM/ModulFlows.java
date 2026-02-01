@@ -13,6 +13,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -242,7 +244,19 @@ public class ModulFlows extends BasePage {
             BrowserUtils.selectDropdownOptionByVisibleText(docTypeSelect,docTypes.get(i));
             docDateInput.click();
             todayDate.click();
-            fileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+
+            // 1) Proje kökünü al
+            String projectRoot = System.getProperty("user.dir");
+
+            // 2) Relative path ile birleştir (OS bağımsız)
+            Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+            // 3) Selenium'a vereceğimiz kesin (absolute) string
+            String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+            System.out.println("Uploading file from: " + absoluteFilePath);
+
+            fileInput.sendKeys(absoluteFilePath);
 //            BrowserUtils.wait(2);
 
             WebElement file = driver.findElement(By.xpath("//td[contains(text(),'" + docTypes.get(i) +"')]"));
@@ -342,7 +356,21 @@ public class ModulFlows extends BasePage {
             BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, docType);
             vendorDocDateInput.click();
             vendorTodayDate.click();
-            vendorFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+
+
+            // 1) Proje kökünü al
+            String projectRoot = System.getProperty("user.dir");
+
+            // 2) Relative path ile birleştir (OS bağımsız)
+            Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+            // 3) Selenium'a vereceğimiz kesin (absolute) string
+            String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+            System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+            vendorFileInput.sendKeys(absoluteFilePath);
 //            BrowserUtils.wait(2);
 
             WebElement file = driver.findElement(By.xpath("//td[contains(text(),'" + docType +"')]"));
@@ -378,14 +406,29 @@ public class ModulFlows extends BasePage {
         invoiceNoInput.sendKeys("555");
         vendorDocDateInput.click();
         vendorTodayDate.click();
-        vendorFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+
+        vendorFileInput.sendKeys(absoluteFilePath);
         BrowserUtils.wait(2);
         BrowserUtils.waitForVisibility(vendorInvoiceUploadInfo,60);
 
         BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Montaj Görseli");
         vendorDocDateInput.click();
         vendorTodayDate.click();
-        vendorFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+        vendorFileInput.sendKeys(absoluteFilePath);
         BrowserUtils.wait(2);
 
         BrowserUtils.waitForVisibility(montajImageUploadInfo,60);
@@ -522,7 +565,21 @@ public class ModulFlows extends BasePage {
             modulBudgetDocDateInput.click();
             BrowserUtils.wait(1);
             modulBudgetDocTodayDate.click();
-            modulBudgetFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+
+
+            // 1) Proje kökünü al
+            String projectRoot = System.getProperty("user.dir");
+
+            // 2) Relative path ile birleştir (OS bağımsız)
+            Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+            // 3) Selenium'a vereceğimiz kesin (absolute) string
+            String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+            System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+            modulBudgetFileInput.sendKeys(absoluteFilePath);
 //            BrowserUtils.wait(1);
             WebElement file = driver.findElement(By.xpath("//td[contains(text(),'" + docTypes.get(i) +"')]"));
             BrowserUtils.waitForVisibility(file,30);
@@ -535,6 +592,7 @@ public class ModulFlows extends BasePage {
     }
 
     public void fillInvoiceForm(String invoiceAmount) {
+        BrowserUtils.adjustScreenSize(70,driver);
         customerNameInput.sendKeys("DamlaPlastic");
         bankNameInput.sendKeys("IsBank");
         bankSubeInput.sendKeys("67670");
@@ -557,13 +615,25 @@ public class ModulFlows extends BasePage {
                 invoiceNoInput.sendKeys("6767");
             }
 
-            modulBudgetFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+            // 1) Proje kökünü al
+            String projectRoot = System.getProperty("user.dir");
+
+            // 2) Relative path ile birleştir (OS bağımsız)
+            Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+            // 3) Selenium'a vereceğimiz kesin (absolute) string
+            String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+            System.out.println("Uploading file from: " + absoluteFilePath);
+
+            modulBudgetFileInput.sendKeys(absoluteFilePath);
             BrowserUtils.wait(2);
 
         }
 
         BrowserUtils.waitForVisibility(meyInvoiceUploadInfo,20);
         BrowserUtils.scrollToElement(Driver.getDriver(), modulBudgetFlowSubmitButton);
+        BrowserUtils.wait(1);
         modulBudgetFlowSubmitButton.click();
         BrowserUtils.waitForVisibility(moduleBudgetInvoiceInfoMessage,60);
         Assert.assertEquals("Başarılı", moduleBudgetInvoiceInfoMessage.getText());
@@ -781,7 +851,21 @@ public class ModulFlows extends BasePage {
         BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Teslimat Kanıt Belgeleri");
         vendorDocDateInput.click();
         vendorTodayDate.click();
-        vendorFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+        vendorFileInput.sendKeys(absoluteFilePath);
 //            BrowserUtils.wait(2);
 
         WebElement file = driver.findElement(By.xpath("//td[contains(text(),'" + "Teslimat Kanıt Belgeleri" +"')]"));
@@ -862,7 +946,21 @@ public class ModulFlows extends BasePage {
         BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Tedarikçi Faturası");
         vendorDocDateInput.click();
         vendorTodayDate.click();
-        vendorFileInput.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DiaPreprodTestAutomation\\src\\test\\java\\com\\efectura\\pages\\BPM\\ModulFlows.java");
+
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+        vendorFileInput.sendKeys(absoluteFilePath);
 //            BrowserUtils.wait(2);
 
         WebElement file = driver.findElement(By.xpath("//td[contains(text(),'" + "Tedarikçi Faturası" +"')]"));

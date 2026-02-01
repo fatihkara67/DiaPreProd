@@ -1,4 +1,4 @@
-@flow @preprod
+ @preprod
 Feature: Export Scenarios
 
   Background:

@@ -18,7 +18,8 @@ Feature: Offstand Import Cases
     When The user clicks "Özellikler" tab
     When The user clicks "Genel Bilgi" attribute group
     When The user update 'TOPLAM KALEM TUTARI' attribute with value '60'
-    When The user clicks "EXIF" attribute group
+    When The user clicks "Önizleme" tab
+#    When The user clicks "EXIF" attribute group
     And The user clicks save button in edit item
     And The user enters "update for offstand by automation" in comment area
     And The user clicks save button in edit item save modal
