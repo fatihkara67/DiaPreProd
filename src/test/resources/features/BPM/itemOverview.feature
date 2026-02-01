@@ -1,4 +1,4 @@
-@flow @preprod
+ @preprod
 Feature: Item Overview Scenarios
 
   Background:

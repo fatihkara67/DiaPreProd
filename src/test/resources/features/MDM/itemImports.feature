@@ -1,4 +1,4 @@
-@flow @preprod
+ @preprod
 Feature: Item Imports
 
   Background:
@@ -137,4 +137,16 @@ Feature: Item Imports
     When The user import the file new
 #    Then The user verify import for create
     Then The user verify import for create product
+
+
+  Scenario: Event Import With Association
+    Given The user go to 'Event' overview page
+    Given The user get import info
+      | username | fatihkara |
+      | itemType | Event     |
+    When The user get default family 'Event'
+    When The user create excel file
+    When The user fill import excel for create event
+    When The user import the file new
+    Then The user verify import for create event
 
