@@ -10,13 +10,13 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -581,4 +581,38 @@ public class GeneralStepDefinitions extends BaseStep {
     }
 
 
+    @When("The user click bulk action button")
+    public void theUserClickBulkActionButton() {
+        driver.findElement(By.xpath("//button[@data-original-title='TOPLU EYLEMLER']")).click();
+        BrowserUtils.waitForVisibility(By.xpath("//p[.='TOPLU EYLEMLER']"),60);
+        BrowserUtils.wait(3);
+        BrowserUtils.waitForVisibility(By.id("bulkActionModal"),45);
+        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='bulkActionIframe']")));
+
+    }
+
+    @When("The user select {string} in bulk actions")
+    public void theUserSelectInBulkActions(String bulkOption) {
+        String locate = "//div[.='" + bulkOption + "']";
+//        driver.findElement(By.xpath("//div[.='Kategori Ekle']")).click();
+
+        By kategoriEkle = By.xpath("//*[normalize-space(.)='Kategori Ekle']");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement el = wait.until(ExpectedConditions.elementToBeClickable(kategoriEkle));
+
+        // Bazı UI'larda element görünür ama üstünde başka layer olur -> önce scroll
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", el);
+        el.click();
+
+        driver.findElement(By.xpath("//button[.='İleri']")).click();
+    }
+
+    @When("The user select {string} under {string}")
+    public void theUserSelectUnder(String sub, String main) {
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/label")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/div/div/div[2]/div/div/div[1]/div[2]/div/div[2]/div[1]/div[1]/div[2]/div/span/span[2]")).click();
+        BrowserUtils.wait(3);
+
+    }
 }

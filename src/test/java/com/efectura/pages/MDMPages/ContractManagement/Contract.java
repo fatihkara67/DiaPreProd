@@ -22,7 +22,7 @@ public class Contract extends BasePage {
     @FindBy(xpath = "//a[@href='#tab_tree_433']")
     private WebElement rootCategories;
 
-    @FindBy(xpath = "//a[@title='Yeni Oluştur']")
+    @FindBy(xpath = "//button[@id='createItem']")
     private WebElement createButton;
     @FindBy(xpath = "//div[@class='notifyjs-warning']//div//*[name()='svg']")
     private WebElement emptyFamily;

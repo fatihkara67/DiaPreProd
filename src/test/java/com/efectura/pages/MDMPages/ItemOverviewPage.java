@@ -122,7 +122,7 @@ public class ItemOverviewPage extends BasePage {
     @FindBy(xpath = "//button[@id='createItem']")
     private WebElement createItemButton;
 
-    @FindBy(xpath = "//div[@class='info-family']/span")
+    @FindBy(xpath = "//div/div/div[3]/div[2]/div/div[2]")
     private List<WebElement> createItemFamilies;
 
     @FindBy(xpath = "//button[@id='nextStepItemAttr']")

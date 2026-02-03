@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.efectura.pages.BasePage.getColumnData;
+import static com.efectura.utilities.CommonExcelReader.getExcelPath;
 
 public class ItemOverviewStepDefs extends BaseStep {
 
@@ -209,7 +210,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     Map<String,Integer> indexAndHeaders = new HashMap<>();
     @When("The user create excel file")
     public void theUserCreateExcelFile() throws IOException {
-        String filePath = CommonExcelReader.getExcelPath(itemType);
+        String filePath = getExcelPath(itemType);
         CommonExcelReader.createExcelFile(itemType);
         CommonExcelReader.setColumnHeader(filePath,0,"SKU");
         CommonExcelReader.setColumnHeader(filePath,1,"Category");
@@ -244,25 +245,25 @@ public class ItemOverviewStepDefs extends BaseStep {
             String randomSku = UUID.randomUUID().toString();
             CommonExcelReader.updateCellValue(Offstand.getExcelPath(itemType),"SKU",i + 1, randomSku);
             newSKUs.add(randomSku);
-            CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",i+1,categories.get(new Random().nextInt(categories.size())));
-            CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family", i+1,families.get(new Random().nextInt(families.size())));
+            CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",i+1,categories.get(new Random().nextInt(categories.size())));
+            CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family", i+1,families.get(new Random().nextInt(families.size())));
 
 
             for (int j = 0; j < requiredAttributes.size(); j++) {
                 String attributeCode = requiredAttributes.get(j);
                 String attributeType = pages.dbProcess().getAttributeType(attributeCode);
                 if (attributeType.contains("Text"))
-                    CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),attributeCode,i+1,UUID.randomUUID().toString());
+                    CommonExcelReader.updateCellValue(getExcelPath(itemType),attributeCode,i+1,UUID.randomUUID().toString());
                 else if (attributeType.contains("Number"))
-                    CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),attributeCode,i+1,String.valueOf((long) (Math.random() * 1_000_000_0000L) + 9_000_000_000L));
+                    CommonExcelReader.updateCellValue(getExcelPath(itemType),attributeCode,i+1,String.valueOf((long) (Math.random() * 1_000_000_0000L) + 9_000_000_000L));
                 else if (attributeType.contains("Select")) {
                     List<String> attributeOptions = pages.dbProcess().getAttributeOptions(attributeCode,locale);
-                    CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),attributeCode,i+1,attributeOptions.get(new Random().nextInt(attributeOptions.size())));
+                    CommonExcelReader.updateCellValue(getExcelPath(itemType),attributeCode,i+1,attributeOptions.get(new Random().nextInt(attributeOptions.size())));
                 }
                 else if (attributeType.contains("Bool"))
-                    CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),attributeCode,i+1,boolValue);
+                    CommonExcelReader.updateCellValue(getExcelPath(itemType),attributeCode,i+1,boolValue);
                 else if (attributeType.contains("Date")) {
-                    CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),attributeCode,i + 1,"02.09.2025 12:00");
+                    CommonExcelReader.updateCellValue(getExcelPath(itemType),attributeCode,i + 1,"02.09.2025 12:00");
                 }
             }
 
@@ -273,7 +274,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user import the file")
     public void theUserImportTheFile() {
         pages.itemOverviewPage().getItemImportButton().click();
-        pages.itemOverviewPage().getItemImportInput().sendKeys(CommonExcelReader.getExcelPath(itemType));
+        pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(itemType));
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
         pages.itemOverviewPage().getMatchColumnsButton().click();
         pages.itemOverviewPage().getSaveMatchColumnsButton().click();
@@ -347,7 +348,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user update {string} excel with random {string} in index {int}")
     public void theUserUpdateExcelWithRandomInIndex(String excelFile, String columnName, int index) throws IOException {
         errorColumn = columnName;
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(excelFile), columnName,index,"random");
+        CommonExcelReader.updateCellValue(getExcelPath(excelFile), columnName,index,"random");
     }
 
     @When("The user click edit button")
@@ -365,7 +366,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user upload the file")
     public void theUserUploadTheFile() {
-        pages.itemOverviewPage().getItemImportInput().sendKeys(CommonExcelReader.getExcelPath(itemType));
+        pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(itemType));
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
     }
 
@@ -406,7 +407,7 @@ public class ItemOverviewStepDefs extends BaseStep {
         Random random = new Random();
         int sayi = random.nextInt(requiredAttributes.size());
 
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),requiredAttributes.get(sayi),1,"");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),requiredAttributes.get(sayi),1,"");
         blankAttributeCode = requiredAttributes.get(sayi);
 
 
@@ -470,7 +471,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user complete right import process")
     public void theUserCompleteRightImportProcess() {
         pages.itemOverviewPage().getItemImportButton().click();
-        pages.itemOverviewPage().getItemImportInput().sendKeys(CommonExcelReader.getExcelPath(itemType));
+        pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(itemType));
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
     }
 
@@ -510,56 +511,56 @@ public class ItemOverviewStepDefs extends BaseStep {
     String oldName8;
     @When("The user fill import excel for create")
     public void theUserFillImportExcelForCreate() throws IOException {
-        String filePath = CommonExcelReader.getExcelPath(itemType);
+        String filePath = getExcelPath(itemType);
         CommonExcelReader.setColumnHeader(filePath,indexAndHeaders.get("DIA_FirstName"),"İsim");
         categoriesCodeAndLabels = pages.dbProcess().getCategories(itemType);
         familiesCodeAndLabels = pages.dbProcess().getFamilies(itemType);
 
         randomSku1 = UUID.randomUUID().toString();
         anyFamily1 = familiesCodeAndLabels.values().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",1,randomSku1);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",1, anyFamily1);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",1,randomSku1);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",1, anyFamily1);
 
         randomSku2 = UUID.randomUUID().toString();
         anyCategory2 = categoriesCodeAndLabels.keySet().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",2,randomSku2);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",2, anyCategory2);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",2,randomSku2);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",2, anyCategory2);
 
         anyFamily3 = familiesCodeAndLabels.values().iterator().next();
         randomSku3 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",3, anyFamily3);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"İsim",3, randomSku3);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",3, anyFamily3);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",3, randomSku3);
 
 
         anyCategory4 = categoriesCodeAndLabels.values().iterator().next();
         randomSku4 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",4, anyCategory4);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"İsim",4, randomSku4);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",4, anyCategory4);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",4, randomSku4);
 
 
         anyCategory5 = categoriesCodeAndLabels.values().iterator().next();
         anyFamily5 = familiesCodeAndLabels.values().iterator().next();
         randomSku5 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",5, anyCategory5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",5, anyFamily5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",5, randomSku5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"İsim",5, randomSku5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",5, anyCategory5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",5, anyFamily5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",5, randomSku5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",5, randomSku5);
         System.out.println("random5 : " + randomSku5);
 
         anySKU6 = pages.dbProcess().getAnySku("Contact","1");
         randomName = UUID.randomUUID().toString();
         anyCategory6 = categoriesCodeAndLabels.values().iterator().next();
         anyFamily6 = familiesCodeAndLabels.values().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",6, anyCategory6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",6, anyFamily6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",6, anySKU6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"İsim",6, randomName);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",6, anyCategory6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",6, anyFamily6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",6, anySKU6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",6, randomName);
 
 
         anySKU8 = pages.dbProcess().getAnySku("Contact","3");
         oldName8 = pages.dbProcess().getName(anySKU8);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",8, anySKU8);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"İsim",8, "");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",8, anySKU8);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",8, "");
 
 
 
@@ -571,7 +572,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user import the file new")
     public void theUserImportTheFileNew() {
         pages.itemOverviewPage().getItemImportButton().click();
-        pages.itemOverviewPage().getItemImportInput().sendKeys(CommonExcelReader.getExcelPath(itemType));
+        pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(itemType));
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
         BrowserUtils.wait(2);
         pages.itemOverviewPage().getItemImportStep3NextButton().click();
@@ -665,7 +666,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user create excel file2")
     public void theUserCreateExcelFile2() throws IOException {
-        String filePath = CommonExcelReader.getExcelPath(itemType);
+        String filePath = getExcelPath(itemType);
         CommonExcelReader.createExcelFile(itemType);
         CommonExcelReader.setColumnHeader(filePath,0,"SKU");
         indexAndHeaders.put("SKU",0);
@@ -680,13 +681,13 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user fill import excel for create2")
     public void theUserFillImportExcelForCreate2() throws IOException {
 
-        String filePath = CommonExcelReader.getExcelPath(itemType);
+        String filePath = getExcelPath(itemType);
         CommonExcelReader.setColumnHeader(filePath,indexAndHeaders.get("DIA_FirstName"),"İsim");
 
         anySKU9 = pages.dbProcess().getAnySku("Contact","4");
         randomName9 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",1, anySKU9);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"İsim",1, randomName9);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",1, anySKU9);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",1, randomName9);
 
     }
 
@@ -708,112 +709,112 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user fill import excel for create event")
     public void theUserFillImportExcelForCreateEvent() throws IOException {
-        String filePath = CommonExcelReader.getExcelPath(itemType);
+        String filePath = getExcelPath(itemType);
         CommonExcelReader.setColumnHeader(filePath,indexAndHeaders.get("DIA_Event_Name"),"Etkinlik Adı");
         categoriesCodeAndLabels = pages.dbProcess().getCategories(itemType);
         familiesCodeAndLabels = pages.dbProcess().getFamilies(itemType);
 
         randomSku1 = UUID.randomUUID().toString();
         anyFamily1 = familiesCodeAndLabels.values().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",1,randomSku1);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",1, anyFamily1);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",1,randomSku1);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",1, anyFamily1);
 
         randomSku2 = UUID.randomUUID().toString();
         anyCategory2 = categoriesCodeAndLabels.keySet().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",2,randomSku2);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",2, anyCategory2);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",2,randomSku2);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",2, anyCategory2);
 
         anyFamily3 = familiesCodeAndLabels.values().iterator().next();
         randomSku3 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",3, anyFamily3);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",3, randomSku3);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",3, anyFamily3);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",3, randomSku3);
 
 
         anyCategory4 = categoriesCodeAndLabels.values().iterator().next();
         randomSku4 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",4, anyCategory4);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",4, randomSku4);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",4, anyCategory4);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",4, randomSku4);
 
 
         anyCategory5 = categoriesCodeAndLabels.values().iterator().next();
         anyFamily5 = familiesCodeAndLabels.values().iterator().next();
         randomSku5 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",5, anyCategory5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",5, anyFamily5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",5, randomSku5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",5, randomSku5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",5, anyCategory5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",5, anyFamily5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",5, randomSku5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",5, randomSku5);
         System.out.println("random5 : " + randomSku5);
 
         anySKU6 = pages.dbProcess().getAnySku("Event","1");
         randomName = UUID.randomUUID().toString();
         anyCategory6 = categoriesCodeAndLabels.values().iterator().next();
         anyFamily6 = familiesCodeAndLabels.values().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",6, anyCategory6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",6, anyFamily6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",6, anySKU6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",6, randomName);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Event_Type",6, "Konferans");
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"isCustomerEnv",6, "Hayır");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",6, anyCategory6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",6, anyFamily6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",6, anySKU6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",6, randomName);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Event_Type",6, "Konferans");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"isCustomerEnv",6, "Hayır");
 
 
         anySKU8 = pages.dbProcess().getAnySku("Event","3");
         oldName8 = pages.dbProcess().getEventName(anySKU8,"Event");
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",7, anySKU8);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Etkinlik Adı",7, "");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",7, anySKU8);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",7, "");
     }
 
     @When("The user fill import excel for create product")
     public void theUserFillImportExcelForCreateProduct() throws IOException {
-        String filePath = CommonExcelReader.getExcelPath(itemType);
+        String filePath = getExcelPath(itemType);
         CommonExcelReader.setColumnHeader(filePath,indexAndHeaders.get("DIA_URUNGRUPKOD"),"Ürün Grup Kodu");
         categoriesCodeAndLabels = pages.dbProcess().getCategories(itemType);
         familiesCodeAndLabels = pages.dbProcess().getFamilies(itemType);
 
         randomSku1 = UUID.randomUUID().toString();
         anyFamily1 = familiesCodeAndLabels.values().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",1,randomSku1);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",1, anyFamily1);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",1,randomSku1);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",1, anyFamily1);
 
         randomSku2 = UUID.randomUUID().toString();
         anyCategory2 = categoriesCodeAndLabels.keySet().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",2,randomSku2);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",2, anyCategory2);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",2,randomSku2);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",2, anyCategory2);
 
         anyFamily3 = familiesCodeAndLabels.values().iterator().next();
         randomSku3 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",3, anyFamily3);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Ürün Grup Kodu",3, randomSku3);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",3, anyFamily3);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Ürün Grup Kodu",3, randomSku3);
 
 
         anyCategory4 = categoriesCodeAndLabels.values().iterator().next();
         randomSku4 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",4, anyCategory4);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Ürün Grup Kodu",4, randomSku4);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",4, anyCategory4);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Ürün Grup Kodu",4, randomSku4);
 
 
         anyCategory5 = categoriesCodeAndLabels.values().iterator().next();
         anyFamily5 = familiesCodeAndLabels.values().iterator().next();
         randomSku5 = UUID.randomUUID().toString();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",5, anyCategory5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",5, anyFamily5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",5, randomSku5);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Ürün Grup Kodu",5, randomSku5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",5, anyCategory5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",5, anyFamily5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",5, randomSku5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Ürün Grup Kodu",5, randomSku5);
         System.out.println("random5 : " + randomSku5);
 
         anySKU6 = pages.dbProcess().getAnySku("Product","1");
         randomName = UUID.randomUUID().toString();
         anyCategory6 = categoriesCodeAndLabels.values().iterator().next();
         anyFamily6 = familiesCodeAndLabels.values().iterator().next();
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Category",6, anyCategory6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Family",6, anyFamily6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",6, anySKU6);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Ürün Grup Kodu",6, randomName);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",6, anyCategory6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",6, anyFamily6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",6, anySKU6);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Ürün Grup Kodu",6, randomName);
 
 
         anySKU8 = pages.dbProcess().getAnySku("Event","3");
         oldName8 = pages.dbProcess().getEventName(anySKU8,"Product");
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"SKU",8, anySKU8);
-        CommonExcelReader.updateCellValue(CommonExcelReader.getExcelPath(itemType),"Ürün Grup Kodu",8, "");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",8, anySKU8);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Ürün Grup Kodu",8, "");
     }
 
     @Then("The user verify import for create product")
@@ -1264,6 +1265,134 @@ public class ItemOverviewStepDefs extends BaseStep {
     public void theUserGoToRelatedTargetItem() {
         driver.get("https://dia-preprod-ui.efectura.com/Enrich/EditItem/3496234");
     }
+
+    String selectedId1;
+    String selectedId2;
+    @When("The user get category of first two items")
+    public void theUserGetCategoryOfFirstTwoItems() {
+        BrowserUtils.adjustScreenSize(60,driver);
+        WebElement table = Driver.getDriver().findElement(By.id("items"));
+        List<String> data = getColumnData(table,"Fletum Kimlik");
+        selectedId1 = data.get(0);
+        selectedId2 = data.get(1);
+        System.out.println("selectedId1: " + selectedId1);
+        System.out.println("selectedId2: " + selectedId2);
+    }
+
+    @When("The user select first two items")
+    public void theUserSelectFirstTwoItems() {
+        BrowserUtils.adjustScreenSize(30,driver);
+        List<WebElement> checkboxes = driver.findElements(By.xpath("//td[1]/div/div/input/following-sibling::label"));
+        checkboxes.get(0).click();
+        checkboxes.get(1).click();
+    }
+
+    @When("The user select create item family {string}")
+    public void theUserSelectCreateItemFamily(String family) {
+        BrowserUtils.wait(12);
+        pages.itemOverviewPage()
+                .getCreateItemFamilies()
+                .stream()
+                .filter(el -> el.getText().trim().equalsIgnoreCase(family))
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("Family not found: " + family))
+                .click();
+
+        driver.findElement(By.xpath("//button[@id='nextStepItemAttr']")).click();
+
+    }
+
+    String optionText;
+    @When("The user fill event create attributes")
+    public void theUserFillEventCreateAttributes() {
+        BrowserUtils.wait(30);
+
+        optionText = "Redign 1";
+        driver.findElement(By.xpath("//*[@id=\"required-attributes\"]/div[1]/div/span/span[1]/span")).click();
+        BrowserUtils.wait(12);
+        driver.findElement(By.xpath("//li[.='Test Ajansı']")).click();
+//        driver.findElement(By.xpath("/html/body/div[2]/div/div[15]/div/div/div[3]/div[2]/div/div[1]/div/div[2]/div/div[1]/div/span/span[1]/span/ul/li[2]/input")).
+//                sendKeys(optionText + Keys.ENTER);
+
+//        optionText = select.getOptions().get(1).getText();
+
+
+
+//        driver.findElement(By.xpath("//input[@id='3832 Localizable']")).sendKeys(UUID.randomUUID().toString());
+//
+//        driver.findElement(By.xpath("//*[@id=\"required-attributes\"]/div[3]/div/span")).click();
+//        driver.findElement(By.xpath("//span/span/span[1]/input")).sendKeys("Birebir");
+//        driver.findElement(By.xpath("//li[.='Birebir']")).click();
+//        driver.findElement(By.xpath("//*[@id=\"required-attributes\"]/div[3]/div/span")).click();
+////        WebElement temasTipSelect = driver.findElement(By.xpath("//select[@id='attribute-4953']"));
+////        BrowserUtils.selectDropdownOptionByIndex(temasTipSelect,1);
+//
+//        BrowserUtils.wait(2);
+//        driver.findElement(By.xpath("//*[@id=\"required-attributes\"]/div[4]/div/span/span[1]/span")).click();
+//        driver.findElement(By.xpath("//li[.='Mentoring']")).click();
+//        driver.findElement(By.xpath("//*[@id=\"required-attributes\"]/div[4]/div/span/span[1]/span")).click();
+////        WebElement stillSelect = driver.findElement(By.xpath("//select[@id='attribute-3822']"));
+////        BrowserUtils.selectDropdownOptionByIndex(stillSelect,1);
+//
+//        driver.findElement(By.xpath("//div[@id='3809 Localizable']//p")).sendKeys("açıklama" + UUID.randomUUID().toString());
+//
+//        driver.findElement(By.xpath("//input[@id='DIA_Start_Date_E']")).click();
+//        BrowserUtils.wait(1);
+//        driver.findElement(By.xpath("//div[14]/div[2]/div/div[2]/div/span[contains(@class,'flatpickr-day today')]")).click();
+//
+//        driver.findElement(By.xpath("//input[@id='DIA_Finish_Date_E']")).click();
+//        driver.findElement(By.xpath("/html/body/div[15]/div[2]/div/div[2]/div/span[contains(@class,'flatpickr-day today')]/following-sibling::span[1]")).click();
+//
+//        driver.findElement(By.xpath("//*[@id=\"required-attributes\"]/div[16]/div/span/span[1]/span")).click();
+//        driver.findElement(By.xpath("//li[.='Ankara']")).click();
+////        WebElement citySelect = driver.findElement(By.xpath("//select[@id='attribute-4922']"));
+////        BrowserUtils.selectDropdownOptionByIndex(citySelect,1);
+//
+//        driver.findElement(By.xpath("//*[@id=\"required-attributes\"]/div[19]/div/span")).click();
+//        driver.findElement(By.xpath("//li[.='Hayır']")).click();
+////        WebElement isCustomer = driver.findElement(By.xpath("//select[@id='attribute-4925']"));
+////        BrowserUtils.selectDropdownOptionByVisibleText(isCustomer,"Hayır");
+//
+//        driver.findElement(By.xpath("//input[@id='4923 Localizable']")).sendKeys("mekan -" + UUID.randomUUID().toString());
+
+        WebElement fileInputCreate = driver.findElement(By.xpath("//input[@id='inputImageOnCreate']"));
+//        fileInputCreate.sendKeys("C:\\Users\\fkara\\Desktop\\workspace\\DIAGEO-PROD\\src\\test\\java\\com\\sema\\pages\\BPM\\ModulFlows.java");
+        fileInputCreate.sendKeys(getExcelPath("Attribute"));
+        BrowserUtils.wait(5);
+
+        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
+
+
+
+    }
+
+    @When("The user select category for create")
+    public void theUserSelectCategoryForCreate() {
+        //driver.findElement(By.xpath("//a[@id='_fast-categories']")).click();
+        BrowserUtils.adjustScreenSize(70,driver);
+        BrowserUtils.wait(3);
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//div[contains(text(),'Anason Akademisi')]/preceding-sibling::div[1]")));
+        driver.findElement(By.xpath("//div[contains(text(),'Anason Akademisi')]/preceding-sibling::div[1]")).click();
+        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
+    }
+
+    @When("The user complete create")
+    public void theUserCompleteCreate() {
+        driver.findElement(By.xpath("//button[@id='next-step-segment-build']")).click();
+        BrowserUtils.wait(2);
+//        driver.findElement(By.xpath("//button[@id='last-step-preview']")).click();
+        driver.findElement(By.xpath("//button[@id='last-step-preview']")).click();
+        driver.findElement(By.xpath("//button[@id='create-segment']")).click();
+    }
+
+    @When("The user verify created event edit page is open")
+    public void theUserVerifyCreatedEventEditPageIsOpen() {
+        BrowserUtils.wait(10);
+        String url = Driver.getDriver().getCurrentUrl();
+        Assert.assertTrue(url.contains("https://diageo.efectura.com/Enrich/EditItem/"));
+    }
+
 
 //    @Then("The user verify the email with db {string}")
 //    public void theUserVerifyTheEmailWithDb(String dbName) {

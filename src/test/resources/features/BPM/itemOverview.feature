@@ -112,10 +112,29 @@ Feature: Item Overview Scenarios
     When The user click save permission button
     Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
 
-
   Scenario: Global Search
     When The user go to user manage page
     And The user enters "burcu.bulut" into "UserName" filter text input box
     When The user impersonate 'burcu.bulut'
     When The user search in global search 'Hare Meyveli'
     Then The user verify no result
+
+
+  Scenario: Bulk Action Category Change
+    Given The user go to 'Contact' overview page
+    And The user select "All in" in "Category" select filter
+    When The user get category of first two items
+    When The user select first two items
+    When The user click bulk action button
+    When The user select 'Kategori Değiştir' in bulk actions
+    When The user select 'Genel' under 'IWSA'
+
+
+  Scenario: Event - File Assoc
+    Given The user go to 'Event' overview page
+    When The User clicks on the createButton element
+    When The user select create item family 'WALKERS'
+    When The user fill event create attributes
+    When The user select category for create
+    When The user complete create
+    When The user verify created event edit page is open
