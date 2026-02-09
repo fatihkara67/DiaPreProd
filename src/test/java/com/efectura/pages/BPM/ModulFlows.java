@@ -219,6 +219,12 @@ public class ModulFlows extends BasePage {
     @FindBy(xpath = "//input[@id='isDistrubutor']")
     private WebElement distributorCheckbox;
 
+    @FindBy(xpath = "//*[@id='impersonate']")
+    public WebElement impersonateHoverBtn;
+
+    @FindBy(xpath = "//a[@id='impersonate-fletum']")
+    public WebElement impersonateButton;
+
 
     String formNumber = "";
     public String fillModuleFlowForm(String lastCustomerCode) {

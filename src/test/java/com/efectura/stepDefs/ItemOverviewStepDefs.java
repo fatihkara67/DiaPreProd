@@ -1199,9 +1199,9 @@ public class ItemOverviewStepDefs extends BaseStep {
         emailBody = UUID.randomUUID().toString();
         driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='email-iframe']")));
         driver.findElement(By.xpath("/html/body/div/div[3]/div[1]/button[1]")).click();
-        driver.findElement(By.xpath("//a[.='Welcome email']")).click();
-        driver.findElement(By.xpath("//div[contains(text(),'Hi Anna')]")).click();
-        driver.findElement(By.xpath("//textarea[contains(.,'Hi Anna')]")).sendKeys(emailBody);
+        driver.findElement(By.xpath("//a[@href='#sample/welcome']")).click();
+        driver.findElement(By.xpath("//div[contains(text(),'Merhaba Anna')]")).click();
+        driver.findElement(By.xpath("//textarea[contains(.,'Merhaba Anna')]")).sendKeys(emailBody);
         driver.switchTo().defaultContent();
 
     }

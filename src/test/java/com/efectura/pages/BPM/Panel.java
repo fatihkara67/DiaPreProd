@@ -20,7 +20,7 @@ public class Panel extends BasePage {
     @FindBy(xpath = "//select[contains(@id,'formType')]")
     private WebElement formTypeSelect;
 
-    @FindBy(xpath = "//a[@data-original-title='Devam Etmekte']")
+    @FindBy(xpath = "//a[contains(@data-original-title,'Devam Etmekte')]")
     private List<WebElement> ongoingNavigateButton;
 
     @FindBy(xpath = "//div[contains(@class,'table-action')]/button[contains(@class, 't-preview')][1]")

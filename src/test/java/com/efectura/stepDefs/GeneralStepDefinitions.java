@@ -209,6 +209,7 @@ public class GeneralStepDefinitions extends BaseStep {
     @Then("The user verify warning message {string}")
     public void theUserVerifyWarningMessage(String expectedMessageText) {
         BrowserUtils.wait(1);
+        BrowserUtils.waitForVisibility(pages.generalPage().getInfoMessage(),18);
         Assert.assertEquals(expectedMessageText, pages.generalPage().getInfoMessage().getText());
     }
 
@@ -614,5 +615,13 @@ public class GeneralStepDefinitions extends BaseStep {
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/div/div/div[2]/div/div/div[1]/div[2]/div/div[2]/div[1]/div[1]/div[2]/div/span/span[2]")).click();
         BrowserUtils.wait(3);
 
+    }
+
+    @When("The user close item card")
+    public void theUserCloseItemCard() {
+        if (!pages.membershipAccountRulePage().getAccordionButton().getAttribute("class").contains("active")) {
+            pages.membershipAccountRulePage().getAccordionButton().click();
+        }
+        BrowserUtils.wait(1);
     }
 }

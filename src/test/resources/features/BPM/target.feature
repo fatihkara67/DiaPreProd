@@ -14,6 +14,7 @@ Feature: Target Cases
 
   Scenario: İç Hedef Onay Akışı
     Given The user login with "fatihkara"
+    When The user impersonate to selected user
     When The user go to related target item
     When The user click edit item side bar button
     When The user click flow button
