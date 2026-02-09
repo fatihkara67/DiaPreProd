@@ -63,6 +63,7 @@ public class Pages {
     private TableEditorPage tableEditorPage;
     private ReportPage reportPage;
     private Message message;
+    private Membership_AccountRulePage membershipAccountRulePage;
 
     public Pages() {
             this.homePage =new HomePage();
@@ -103,6 +104,7 @@ public class Pages {
         this.tableEditorPage = new TableEditorPage();
         this.reportPage = new ReportPage();
         this.message = new Message();
+        this.membershipAccountRulePage = new Membership_AccountRulePage();
     }
     // Getter metotları
     public HomePage homePage() {
@@ -146,6 +148,8 @@ public class Pages {
     public TableEditorPage tableEditorPage() {return  tableEditorPage;}
     public ReportPage reportPage() {return reportPage;}
     public Message message() {return  message;}
+    public Membership_AccountRulePage membershipAccountRulePage(){return membershipAccountRulePage;}
+
 
 }
 

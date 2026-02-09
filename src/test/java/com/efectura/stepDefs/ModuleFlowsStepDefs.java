@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -186,6 +187,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     @Then("The user verify {string} text filter with value {string} in {string} flow")
     public void theUserVerifyTextFilterWithValueIn(String columnName, String expectedValue, String table) {
         expectedValue = formNumber;
+        BrowserUtils.adjustScreenSize(65,Driver.getDriver());
         BrowserUtils.wait(2);
         WebElement tableElement = Driver.getDriver().findElement(By.id(ConfigurationReader.getProperty(table)));
         List<String> values =  getColumnData(tableElement,columnName);
@@ -368,13 +370,24 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @When("The user go in sales approval form")
     public void theUserGoInSalesApprovalForm() {
-        Driver.getDriver().findElement(By.xpath("(//td[.='Fatih Kara'])[1]")).click();
+        Driver.getDriver().findElement(By.xpath("(//td[.='BMUSERAD BM'])[1]")).click();
     }
 
     @When("The user click bm target apply button")
     public void theUserClickBmTargetApplyButton() {
         BrowserUtils.adjustScreenSize(55,Driver.getDriver());
+        BrowserUtils.wait(2);
         Driver.getDriver().findElement(By.xpath("//button[@id='onaylaF3']")).click();
         Driver.getDriver().findElement(By.xpath("//button[@id='confirmModalConfirmBtnF4']")).click();
+    }
+
+    @When("The user impersonate to selected user")
+    public void theUserImpersonateToSelectedUser() {
+        Driver.getDriver().get("https://dia-preprod-ui.efectura.com/UserManage/Edit/65865f45-4772-4eea-b844-ca19f06e1a70");
+
+        BrowserUtils.waitForVisibility(pages.modulFlows().impersonateHoverBtn, 30);
+        BrowserUtils.hoverOver(pages.modulFlows().impersonateHoverBtn);
+        pages.modulFlows().impersonateButton.click();
+        BrowserUtils.wait(3);
     }
 }

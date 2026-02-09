@@ -29,16 +29,19 @@ Feature: Message Sending Cases
 
   @core
   Scenario: Push case
-    When The user select 'PUSH' for family
-    When The user click next button
+#    When The user select 'PUSH' for family
+#    When The user click next button
+    When The user select 'PUSH' for NotificationType
+    When The user set notification name
     When The user set unique code value
     When The user select 'Default' as provider
-    When The user set deeplink
+#    When The user set deeplink
     When The user select category
     When The user click second next button
-    When The user select 'Mobile Phone Number' as attribute
-    When The user set '598565791' as attribute value
-    When The user click rule next button
+    When The user click createWithRule button
+    When The user select 'İK Personel Email' as attribute
+    When The user set 'fatih.kara@efectura.com' as attribute value
+    When The user click second next button
     When The user set push title
     When The user set push body
     When The user click body next button

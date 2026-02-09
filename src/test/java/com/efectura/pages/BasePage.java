@@ -3,6 +3,7 @@ import com.efectura.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -11,6 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BasePage {
+
+    @FindBy(id = "items")
+    public WebElement itemOverviewTable;
+
+    @FindBy(xpath = "//*[@id='renderBodyWrap']/div[6]/div[1]")
+    protected WebElement accordionButton;
+
+    @FindBy(xpath = "//button[@id='configure-columns']")
+    private WebElement columnsBtn;
+
     protected WebDriver driver = Driver.getDriver();
     protected WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     public BasePage() {
