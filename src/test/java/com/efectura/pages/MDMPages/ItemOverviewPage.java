@@ -101,7 +101,10 @@ public class ItemOverviewPage extends BasePage {
     @FindBy(xpath = "//input[@id='file-import']")
     private WebElement itemImportInput;
 
-    @FindBy(xpath = "//button[@id='import-step-two']")
+    @FindBy(xpath = "//input[@id='dynamic-import-file-input']")
+    private WebElement importInput;
+
+    @FindBy(xpath = "//button[contains(@id,'import-step-two')]")
     private WebElement itemImportStep2NextButton;
 
     @FindBy(xpath = "//button[@id='import-step-three']")

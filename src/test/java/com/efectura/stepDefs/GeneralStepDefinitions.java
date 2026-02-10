@@ -401,17 +401,17 @@ public class GeneralStepDefinitions extends BaseStep {
     public void theUserUploadTheFile(String fileName) {
         Driver.getDriver().findElement(By.xpath("//button[contains(@id,'Import')]")).click();
         BrowserUtils.wait(2);
-        pages.itemOverviewPage().getItemImportInput().sendKeys(CommonExcelReader.getExcelPath(fileName));
+        pages.itemOverviewPage().getImportInput().sendKeys(CommonExcelReader.getExcelPath(fileName));
         BrowserUtils.wait(2);
     }
 
     @When("The user import attribute file")
     public void theUserImportAttributeFile() {
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
-        BrowserUtils.wait(2);
-        Driver.getDriver().findElement(By.xpath("//button[@id='import-step-edit']")).click();
+        BrowserUtils.wait(5);
+        Driver.getDriver().findElement(By.xpath("//button[contains(@id,'import-step-edit')]")).click();
         BrowserUtils.wait(1);
-        pages.itemOverviewPage().getApplyImportValidationButton().click();
+        Driver.getDriver().findElement(By.xpath("//button[contains(@id,'import-apply-button')]")).click();
         BrowserUtils.wait(10);
     }
 
