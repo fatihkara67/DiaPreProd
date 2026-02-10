@@ -22,6 +22,7 @@ public class OffstandStepDefs extends BaseStep {
 
     @And("The user accepts import popup")
     public void theUserAcceptsImportPopup() {
+        BrowserUtils.wait(1);
         pages.offstand().getImportPopupApplyButton().click();
     }
 

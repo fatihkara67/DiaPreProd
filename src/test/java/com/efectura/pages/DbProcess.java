@@ -282,7 +282,7 @@ public class DbProcess extends BasePage {
 
     public String getCategoryOfImportedItem(String randomSku) {
         String query = """
-                        SELECT [Code]
+                        SELECT code as CategoryCode
                         FROM DIA_PREPROD.dbo.Categories
                         WHERE Id = (
                             SELECT TOP 1 Category_Id
@@ -326,7 +326,7 @@ public class DbProcess extends BasePage {
 //            }
 
             while (rs.next()) {
-                category = rs.getString("Code");
+                category = rs.getString("CategoryCode");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -893,7 +893,7 @@ public class DbProcess extends BasePage {
     }
 
     public String getEventType(String anySKU6) {
-        String query = "SELECT tr_TR as option From AttributeOptions\n" +
+        String query = "SELECT tr_TR as optionx From AttributeOptions\n" +
                 "WHERE Id = (SELECT ValueInt From ItemValues\n" +
                 "WHERE AttributeId = (SELECT Id From Attributes a WHERE a.Code = 'Event_Type')\n" +
                 "AND ItemId = (SELECT Id From Items i WHERE i.SKU = '" + anySKU6 + "'))";
@@ -908,7 +908,7 @@ public class DbProcess extends BasePage {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                type = rs.getString("option");
+                type = rs.getString("optionx");
             }
         } catch (SQLException e) {
             e.printStackTrace();
