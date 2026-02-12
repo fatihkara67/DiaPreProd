@@ -150,7 +150,6 @@ Feature: Item Imports
     When The user import the file new
     Then The user verify import for create event
 
-
   Scenario: Contact Over Limit Import
     Given The user go to 'Contact' overview page
     When The user click item import button
