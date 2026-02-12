@@ -138,3 +138,25 @@ Feature: Item Overview Scenarios
     When The user select category for create
     When The user complete create
     When The user verify created event edit page is open
+
+  Scenario: Add List
+    Given The user go to 'Event' overview page
+    When The user select first two checkbox in overview
+    When The user click add list button
+    When The user click create new list button
+    When The user fill new list name
+    When The user click save list button
+    Then The user verifies info "USER_LIST_ADDED" appears
+    When The user wait 3 second
+#    Then The user verify new list is created
+
+  Scenario: Agency Budget
+    Given The user go to 'Event' overview page
+    Given The user go to 'Event' overview page
+    When The User clicks on the createButton element
+    When The user select create item family 'WALKERS'
+    When The user fill event create attributes
+#    When The user select category for create
+    When The user select category for create 'On-Trade'
+    When The user complete create for agency budget
+    When The user verify created event edit page is open

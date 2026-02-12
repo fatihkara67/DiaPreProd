@@ -1407,7 +1407,8 @@ public class ItemOverviewStepDefs extends BaseStep {
     public void theUserVerifyCreatedEventEditPageIsOpen() {
         BrowserUtils.wait(10);
         String url = Driver.getDriver().getCurrentUrl();
-        Assert.assertTrue(url.contains("https://diageo.efectura.com/Enrich/EditItem/"));
+        System.out.println("Url: " + url);
+        Assert.assertTrue("Url: " + url, url.contains("https://dia-preprod-ui.efectura.com/Enrich/EditItem/"));
     }
 
     @When("The user upload the file {string}")
@@ -1422,6 +1423,63 @@ public class ItemOverviewStepDefs extends BaseStep {
         BrowserUtils.waitForVisibility(locate,30);
         Assert.assertEquals("Limitten fazla mesajı gelmedi","Dosyada Limitten Fazla Item Mevcut",
                 driver.findElement(locate).getText());
+    }
+
+    @When("The user select first two checkbox in overview")
+    public void theUserSelectFirstTwoCheckboxInOverview() {
+        Driver.getDriver().findElements(By.xpath("//div/div[1]/div/table/tbody/tr/td/div/div/input/following-sibling::label")).get(0).click();
+        Driver.getDriver().findElements(By.xpath("//div/div[1]/div/table/tbody/tr/td/div/div/input/following-sibling::label")).get(1).click();
+    }
+
+    @When("The user click add list button")
+    public void theUserClickAddListButton() {
+        Driver.getDriver().findElement(By.xpath("//button[@id='addToListButton']")).click();
+    }
+
+    @When("The user click create new list button")
+    public void theUserClickCreateNewListButton() {
+        Driver.getDriver().findElement(By.xpath("//a[@id='createListBulk']")).click();
+    }
+
+    @When("The user fill new list name")
+    public void theUserFillNewListName() {
+        String listName = UUID.randomUUID().toString();
+        Driver.getDriver().findElement(By.xpath("//input[@id='input-list']")).sendKeys(listName.substring(0, 6));
+    }
+
+    @When("The user click save list button")
+    public void theUserClickSaveListButton() {
+        Driver.getDriver().findElement(By.xpath("//button[@id='create-list']")).click();
+    }
+
+    @When("The user select category for create {string}")
+    public void theUserSelectCategoryForCreateOnTrade(String category) {
+        //driver.findElement(By.xpath("//a[@id='_fast-categories']")).click();
+        BrowserUtils.adjustScreenSize(70,driver);
+        BrowserUtils.wait(3);
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]")));
+        driver.findElement(By.xpath("//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]")).click();
+        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
+    }
+
+    @When("The user complete create for agency budget")
+    public void theUserCompleteCreateForAgencyBudget() {
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("//button[@id='next-step-segment-build']")).click();
+        BrowserUtils.wait(3);
+        driver.findElement(By.xpath("//input[@data-attribute-code='Ajans_Etkinlik_Butcesi']")).sendKeys("10");
+
+        driver.findElement(By.xpath("//input[@id='ib-99999']")).sendKeys(getExcelPath("Attribute"));
+        driver.findElement(By.xpath("//input[@id='ib-99998']")).sendKeys(getExcelPath("Attribute"));
+
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[@id='next-step-segment-budget']")));
+        driver.findElement(By.xpath("//button[@id='next-step-segment-budget']")).click();
+        BrowserUtils.wait(4);
+
+        driver.findElement(By.xpath("//button[@id='last-step-preview']")).click();
+        BrowserUtils.wait(2);
+        driver.findElement(By.xpath("//button[@id='create-segment']")).click();
+
     }
 
 
