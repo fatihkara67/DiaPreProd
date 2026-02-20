@@ -273,7 +273,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserImportTargetFile() {
         BrowserUtils.wait(2);
 
-        Driver.getDriver().findElement(By.id("target-import-step-two")).click();
+//        Driver.getDriver().findElement(By.id("target-import-step-two")).click();
         BrowserUtils.wait(6);
         Driver.getDriver().findElement(By.id("target-import-step-three")).click();
         BrowserUtils.wait(6);
@@ -350,8 +350,10 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @When("The user upload file {string}")
     public void theUserUploadFilePlanningTarget(String fileName) {
-        Driver.getDriver().findElement(By.xpath("//input[contains(@id,'target-file-import')]")).sendKeys(getExcelPath(fileName));
-
+//        Driver.getDriver().findElement(By.xpath("//input[contains(@id,'file-import')]")).sendKeys(getExcelPath(fileName));
+        pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(fileName));
+        pages.itemOverviewPage().getItemImportStep2NextButton().click();
+        BrowserUtils.wait(2);
     }
 
     @When("The user click start import button")

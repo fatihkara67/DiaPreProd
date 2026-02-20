@@ -21,6 +21,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.efectura.pages.BasePage.getColumnData;
+import static com.efectura.utilities.BrowserUtils.getFormattedDate;
+import static com.efectura.utilities.BrowserUtils.getFormattedDateWithoutHour;
 import static com.efectura.utilities.CommonExcelReader.getExcelPath;
 
 public class ItemOverviewStepDefs extends BaseStep {
@@ -215,12 +217,20 @@ public class ItemOverviewStepDefs extends BaseStep {
         CommonExcelReader.setColumnHeader(filePath,0,"SKU");
         CommonExcelReader.setColumnHeader(filePath,1,"Category");
         CommonExcelReader.setColumnHeader(filePath,2,"Family");
+        CommonExcelReader.setColumnHeader(filePath,3,"isTestEvent");
+
+        CommonExcelReader.setColumnHeader(filePath,4,"NewBoolean");
+        CommonExcelReader.setColumnHeader(filePath,5,"NewText");
+        CommonExcelReader.setColumnHeader(filePath,6,"NewSelect");
+        CommonExcelReader.setColumnHeader(filePath,7,"NewDate");
+        
         indexAndHeaders.put("SKU",0);
         indexAndHeaders.put("Category",1);
         indexAndHeaders.put("Family",2);
-        for (int i = 3; i < requiredAttributes.size() + 3; i++) {
-            CommonExcelReader.setColumnHeader(filePath,i,requiredAttributes.get(i-3));
-            indexAndHeaders.put(requiredAttributes.get(i-3),i);
+        indexAndHeaders.put("isTestEvent",3);
+        for (int i = 8; i < requiredAttributes.size() + 8; i++) {
+            CommonExcelReader.setColumnHeader(filePath,i,requiredAttributes.get(i-8));
+            indexAndHeaders.put(requiredAttributes.get(i-8),i);
         }
     }
 
@@ -571,6 +581,11 @@ public class ItemOverviewStepDefs extends BaseStep {
 
 
 
+        newItemSkus.add(randomSku1);
+        newItemSkus.add(randomSku2);
+        newItemSkus.add(randomSku3);
+        newItemSkus.add(randomSku4);
+        newItemSkus.add(randomSku5);
 
 
     }
@@ -578,11 +593,8 @@ public class ItemOverviewStepDefs extends BaseStep {
     String importTime;
     @When("The user import the file new")
     public void theUserImportTheFileNew() {
-        pages.itemOverviewPage().getItemImportButton().click();
-        pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(itemType));
-        pages.itemOverviewPage().getItemImportStep2NextButton().click();
-        BrowserUtils.wait(2);
-        pages.itemOverviewPage().getItemImportStep3NextButton().click();
+
+        driver.findElement(By.xpath("//input[@id='unmatched-status']")).click();
         BrowserUtils.wait(1);
         pages.itemOverviewPage().getSaveMatchColumnsButton().click();
         BrowserUtils.wait(10);
@@ -701,6 +713,8 @@ public class ItemOverviewStepDefs extends BaseStep {
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",1, anySKU9);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",1, randomName9);
 
+
+
     }
 
     @Then("The user verify import for create2")
@@ -719,6 +733,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     }
 
+    List<String> newItemSkus = new ArrayList<>();
     @When("The user fill import excel for create event")
     public void theUserFillImportExcelForCreateEvent() throws IOException {
         String filePath = getExcelPath(itemType);
@@ -730,11 +745,17 @@ public class ItemOverviewStepDefs extends BaseStep {
         anyFamily1 = familiesCodeAndLabels.values().iterator().next();
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",1,randomSku1);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",1, anyFamily1);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"NewText",1, "TestAutomation");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"NewSelect",1, "Option1");
 
         randomSku2 = UUID.randomUUID().toString();
         anyCategory2 = categoriesCodeAndLabels.keySet().iterator().next();
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",2,randomSku2);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",2, anyCategory2);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"NewDate",2, getFormattedDateWithoutHour(1));
+        BrowserUtils.forceCustomDateFormat(getExcelPath(itemType),"NewDate");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"NewBoolean",2, "Doğru");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"NewSelect",2, "Option2");
 
         anyFamily3 = familiesCodeAndLabels.values().iterator().next();
         randomSku3 = UUID.randomUUID().toString();
@@ -746,6 +767,8 @@ public class ItemOverviewStepDefs extends BaseStep {
         randomSku4 = UUID.randomUUID().toString();
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Category",4, anyCategory4);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",4, randomSku4);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"NewBoolean",4, "Yanlış");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"NewSelect",4, "Option3");
 
 
         anyCategory5 = categoriesCodeAndLabels.keySet().iterator().next();
@@ -757,6 +780,8 @@ public class ItemOverviewStepDefs extends BaseStep {
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",5, anyFamily5);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",5, randomSku5);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",5, randomSku5);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"isTestEvent",5, "Yanlış");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Event_Type",5, "Konferans");
         System.out.println("random5 : " + randomSku5);
 
         anySKU6 = pages.dbProcess().getAnySku("Event","1");
@@ -770,14 +795,23 @@ public class ItemOverviewStepDefs extends BaseStep {
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Family",6, anyFamily6);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",6, anySKU6);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",6, randomName);
-        CommonExcelReader.updateCellValue(getExcelPath(itemType),"Event_Type",6, "Konferans");
-        CommonExcelReader.updateCellValue(getExcelPath(itemType),"isCustomerEnv",6, "Hayır");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"DIA_Finish_Date_E",6,getFormattedDateWithoutHour(1));
+        BrowserUtils.forceCustomDateFormat(getExcelPath(itemType),"DIA_Finish_Date_E");
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"DIA_Start_Date_E",6,getFormattedDateWithoutHour(-1));
+        BrowserUtils.forceCustomDateFormat(getExcelPath(itemType),"DIA_Start_Date_E");
 
 
         anySKU8 = pages.dbProcess().getAnySku("Event","3");
         oldName8 = pages.dbProcess().getEventName(anySKU8,"Event");
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",7, anySKU8);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Etkinlik Adı",7, "");
+
+        newItemSkus.add(randomSku1);
+        newItemSkus.add(randomSku2);
+        newItemSkus.add(randomSku3);
+        newItemSkus.add(randomSku4);
+        newItemSkus.add(randomSku5);
+
     }
 
     @When("The user fill import excel for create product")
@@ -832,6 +866,13 @@ public class ItemOverviewStepDefs extends BaseStep {
         oldName8 = pages.dbProcess().getEventName(anySKU8,"Product");
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",8, anySKU8);
         CommonExcelReader.updateCellValue(getExcelPath(itemType),"Ürün Grup Kodu",8, "");
+
+        newItemSkus.add(randomSku1);
+        newItemSkus.add(randomSku2);
+        newItemSkus.add(randomSku3);
+        newItemSkus.add(randomSku4);
+        newItemSkus.add(randomSku5);
+
     }
 
     @Then("The user verify import for create product")
@@ -941,23 +982,30 @@ public class ItemOverviewStepDefs extends BaseStep {
         String importTime5 = pages.dbProcess().getImportTimeWithEventName(randomSku5);
 //        String actualName5 = pages.dbProcess().getName(randomSku5);
         String actualName5 = pages.dbProcess().getEventName(randomSku5,itemType);
+        String actualIsTestEvent5 = pages.dbProcess().getIsTestEvent(randomSku5,itemType);
+        String actualEventType5 = pages.dbProcess().getEventType(randomSku5);
 //        String actualName5 = pages.dbProcess().getProductName(randomSku5,itemType);
 //        Assert.assertEquals("Kategori dosyadaki gibi olmadı",anyCategory5,actualCategory5);
         Assert.assertEquals("Family dosyadaki gibi olmadı",anyFamily5,actualFamily5);
         Assert.assertTrue(BrowserUtils.isAfter(importTime5,importTime));
         Assert.assertEquals("isim dosyadaki gibi değil",randomSku5,actualName5);
+        Assert.assertEquals("IsTestEvent dosyadaki gibi değil","false",actualIsTestEvent5);
+        Assert.assertEquals("Event_Type dosyadaki gibi değil","Konferans",actualEventType5);
 
 
         String actualFamily6 = pages.dbProcess().getFamilyOfImportedItem(anySKU6);
         String actualCategory6 = pages.dbProcess().getCategoryOfImportedItem(anySKU6);
         String importTime6 = pages.dbProcess().getImportTimeWithEventName(randomName);
         String actualName6 = pages.dbProcess().getEventName(anySKU6,itemType);
-        String actualEventType6 = pages.dbProcess().getEventType(anySKU6);
+
+        String actualFinisDate6 = pages.dbProcess().getEventDate(anySKU6,"DIA_Finish_Date_E");
+        actualFinisDate6 = BrowserUtils.formatDateDayMonthYear(actualFinisDate6);
+
         Assert.assertEquals("Kategori dosyadaki gibi olmadı",anyCategory6,actualCategory6);
         Assert.assertEquals("Family dosyadaki gibi olmadı",actualFamily6,actualFamily6);
 //        Assert.assertTrue(BrowserUtils.isAfter(importTime6,importTime));
         Assert.assertEquals("isim dosyadaki gibi değil",randomName,actualName6);
-        Assert.assertEquals("Event_Type dosyadaki gibi değil","Konferans",actualEventType6);
+        Assert.assertEquals("Finish date dosyadaki gibi değil",getFormattedDateWithoutHour(1),actualFinisDate6);
 
 
         String actualName7 = pages.dbProcess().getEventName(anySKU7,itemType);
@@ -1217,6 +1265,7 @@ public class ItemOverviewStepDefs extends BaseStep {
         driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='email-iframe']")));
         driver.findElement(By.xpath("/html/body/div/div[3]/div[1]/button[1]")).click();
         driver.findElement(By.xpath("//a[@href='#sample/welcome']")).click();
+        BrowserUtils.wait(2);
         driver.findElement(By.xpath("//div[contains(text(),'Merhaba Anna')]")).click();
         driver.findElement(By.xpath("//textarea[contains(.,'Merhaba Anna')]")).sendKeys(emailBody);
         driver.switchTo().defaultContent();
@@ -1225,7 +1274,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @Then("The user verify the email")
     public void theUserVerifyTheEmail() {
-        BrowserUtils.wait(5);
+        BrowserUtils.wait(10);
         pages.dbProcess().verifyEmailIsSent(emailBody);
     }
 
@@ -1399,7 +1448,11 @@ public class ItemOverviewStepDefs extends BaseStep {
         driver.findElement(By.xpath("//button[@id='next-step-segment-build']")).click();
         BrowserUtils.wait(2);
 //        driver.findElement(By.xpath("//button[@id='last-step-preview']")).click();
-        driver.findElement(By.xpath("//button[@id='last-step-preview']")).click();
+
+        if (BrowserUtils.isElementDisplayed(By.xpath("//button[@id='last-step-preview']"))) {
+            driver.findElement(By.xpath("//button[@id='last-step-preview']")).click();
+        }
+
         driver.findElement(By.xpath("//button[@id='create-segment']")).click();
     }
 
@@ -1457,8 +1510,11 @@ public class ItemOverviewStepDefs extends BaseStep {
         //driver.findElement(By.xpath("//a[@id='_fast-categories']")).click();
         BrowserUtils.adjustScreenSize(70,driver);
         BrowserUtils.wait(3);
-        BrowserUtils.moveToElement(driver.findElement(By.xpath("//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]")));
-        driver.findElement(By.xpath("//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]")).click();
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//div[@class='category-tree']//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]")));
+
+        System.out.println("//div[@class='category-tree']//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]");
+        driver.findElement(By.xpath("//div[@class='category-tree']//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]")).click();
+
         driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
     }
 
@@ -1480,6 +1536,177 @@ public class ItemOverviewStepDefs extends BaseStep {
         BrowserUtils.wait(2);
         driver.findElement(By.xpath("//button[@id='create-segment']")).click();
 
+    }
+
+    @When("The user set new attributes")
+    public void theUserSetNewAttributes() {
+        List<String> newAttributes = new ArrayList<>(Arrays.asList(
+                "NewText",
+                "NewDate",
+                "NewSelect",
+                "NewBoolean"
+        ));
+
+        for (String attribute : newAttributes) {
+            driver.findElement(By.xpath("//button[@data-column='" + attribute + "']")).click();
+            BrowserUtils.wait(1);
+            driver.findElement(By.xpath("//input[@id='attr-create-code']")).sendKeys(attribute);
+
+            WebElement select = driver.findElement(By.xpath("//select[@id='attr-create-type']"));
+            String attributeType = "Metin";
+            if (attribute.equals("NewText"))
+                attributeType = "Metin";
+            if (attribute.equals("NewDate"))
+                attributeType = "Tarih";
+            if (attribute.equals("NewSelect"))
+                attributeType = "Tekli Seçim";
+            if (attribute.equals("NewBoolean"))
+                attributeType = "Bool";
+
+
+            BrowserUtils.selectDropdownOptionByVisibleText(select,attributeType);
+
+            if (attribute.equals("NewSelect")) {
+                WebElement selectNewSelect = driver.findElement(By.xpath("//select[@id='attr-options-code-column']"));
+                BrowserUtils.selectDropdownOptionByVisibleText(selectNewSelect,attribute);
+
+                WebElement selectNewSelect2 = driver.findElement(By.xpath("//select[@id='attr-options-label-column']"));
+                BrowserUtils.selectDropdownOptionByVisibleText(selectNewSelect2,attribute);
+            }
+
+
+            driver.findElement(By.xpath("//button[@id='attr-create-save-btn']")).click();
+            BrowserUtils.wait(5);
+        }
+
+
+    }
+
+    @When("The user click second import next button")
+    public void theUserClickSecondImportNextButton() {
+        pages.itemOverviewPage().getItemImportStep3NextButton().click();
+        BrowserUtils.wait(1);
+    }
+
+    @Then("The user tear down new attributes")
+    public void theUserTearDownNewAttributes() {
+        int deletenAttributeCount = pages.dbProcess().deleteTestAttributesInItemImport();
+        Assert.assertEquals("Yeni oluşturulan attribute'lar silinemedi",4,deletenAttributeCount);
+    }
+
+    @Then("The user delete new items")
+    public void theUserDeleteNewItems() {
+
+        int itemId;
+        System.out.println("newItemSkus: " + newItemSkus);
+        System.out.println("randomSku1: " + randomSku1);
+        for (String sku : newItemSkus) {
+            itemId = pages.dbProcess().getItemIdByCode(sku);
+            pages.dbProcess().deleteCreatedItem(itemId + "");
+        }
+
+    }
+
+    @Then("The user delete attribute options")
+    public void theUserDeleteAttributeOptions() {
+        pages.dbProcess().deleteAttributeOptions();
+    }
+
+    @When("The user select list {string}")
+    public void theUserSelectList(String listName) {
+//        BrowserUtils.adjustScreenSize(70,driver);
+        BrowserUtils.scrollToElement(driver,driver.findElement(By.xpath("//div[@id='addFromList']")));
+        BrowserUtils.wait(1);
+        BrowserUtils.hoverOver(driver.findElement(By.xpath("//div[@id='addFromList']")));
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("//ul[@class='dropdown-menu dropdown-menu-in']/li/a[text()='" + listName + "']")).click();
+    }
+
+    @When("The user click advanced filter button")
+    public void theUserClickAdvancedFilterButton() {
+        driver.findElement(By.xpath("//button[contains(.,'Gelişmiş Filtreler')]")).click();
+    }
+
+    @When("The user select {string} in first filter select")
+    public void theUserSelectInFirstFilterSelect(String firstFilter) {
+        WebElement select1 = driver.findElement(By.xpath("/html/body/div[2]/div/section/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/select[1]"));
+        BrowserUtils.selectDropdownOptionByVisibleText(select1,firstFilter);
+        BrowserUtils.wait(5);
+    }
+
+    @When("The user select {string} in first filter value select")
+    public void theUserSelectInFirstFilterValueSelect(String selectValue) {
+        WebElement selectValue1 = driver.findElement(By.xpath("/html/body/div[2]/div/section/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div/span/span[1]/span/span[1]/span"));
+        selectValue1.click();
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(selectValue);
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+        BrowserUtils.wait(1);
+    }
+
+    @When("The user click add filter button")
+    public void theUserClickAddFilterButton() {
+        driver.findElement(By.xpath("//button[contains(.,'Daha Fazla Filtre')]")).click();
+        BrowserUtils.wait(2);
+    }
+
+    @When("The user select {string} in second filter value select")
+    public void theUserSelectInSecondFilterValueSelect(String filter2) {
+        WebElement select2 = driver.findElement(By.xpath("/html/body/div[2]/div/section/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[2]/select[1]"));
+        BrowserUtils.selectDropdownOptionByVisibleText(select2,filter2);
+        BrowserUtils.wait(2);
+    }
+
+    @When("The user fill second filter input with {string}")
+    public void theUserFillSecondFilterInputWith(String filterInputValue2) {
+        WebElement filterInput2 = driver.findElement(By.xpath("/html/body/div[2]/div/section/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[2]/div[2]/input"));
+        filterInput2.sendKeys(filterInputValue2);
+    }
+
+    @When("The user click apply filter button")
+    public void theUserClickApplyFilterButton() {
+        driver.findElement(By.xpath("//button[.='Güncelle']")).click();
+        BrowserUtils.wait(2);
+    }
+
+    @When("The user select {string} in second filter operator select")
+    public void theUserSelectInSecondFilterOperatorSelect(String operator2) {
+        WebElement selectOperator2 = driver.findElement(By.xpath("/html/body/div[2]/div/section/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[2]/select[2]"));
+        BrowserUtils.selectDropdownOptionByVisibleText(selectOperator2,operator2);
+        BrowserUtils.wait(1);
+    }
+
+    String newProductSku;
+    @When("The user fill product create attributes")
+    public void theUserFillProductCreateAttributes() {
+        newProductSku = UUID.randomUUID().toString();
+        driver.findElement(By.xpath("//input[@id='inputCode']")).sendKeys(newProductSku);
+
+
+        driver.findElement(By.xpath("//div[3]/div/div[1]/div/span/span[1]/span/span[1]")).click();
+        driver.findElement(By.xpath("//span[1]/span/span[1]/input")).sendKeys("Viski" + Keys.ARROW_DOWN + Keys.ENTER);
+
+        BrowserUtils.wait(3);
+        driver.findElement(By.xpath("//div/div/div/div[3]/div/div[1]/div/div[3]/div/div[2]/div/input")).sendKeys(newProductSku);
+
+        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
+
+    }
+
+    @When("The user click clone button")
+    public void theUserClickCloneButton() {
+        driver.findElement(By.xpath("//button[@id='clonebtn']")).click();
+    }
+
+    String cloneItemSku;
+    @When("The user fill product clone item info")
+    public void theUserFillProductCloneItemInfo() {
+        cloneItemSku = UUID.randomUUID().toString();
+        driver.findElement(By.xpath("//input[@id='skuinputvalue']")).sendKeys(cloneItemSku);
+        driver.findElement(By.xpath("//h5[.=' Ürün Grup Kodu']/following-sibling::input")).click();
+        BrowserUtils.wait(2);
+        driver.findElement(By.xpath("//button[@id='clone-create']")).click();
     }
 
 
