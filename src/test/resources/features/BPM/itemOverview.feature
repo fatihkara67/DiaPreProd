@@ -152,7 +152,6 @@ Feature: Item Overview Scenarios
 
   Scenario: Agency Budget
     Given The user go to 'Event' overview page
-    Given The user go to 'Event' overview page
     When The User clicks on the createButton element
     When The user select create item family 'WALKERS'
     When The user fill event create attributes
@@ -160,3 +159,32 @@ Feature: Item Overview Scenarios
     When The user select category for create 'On-Trade'
     When The user complete create for agency budget
     When The user verify created event edit page is open
+
+  Scenario: Event Overview Advanced Filter Check
+    Given The user go to 'Event' overview page
+    When The user click advanced filter button
+    When The user select 'Etkinlik Türü' in first filter select
+    When The user select 'Konferans' in first filter value select
+    When The user click add filter button
+    When The user select 'Fletum Kod' in second filter value select
+    When The user select 'İçeren' in second filter operator select
+    When The user fill second filter input with 'test'
+    When The user click apply filter button
+    Then The user verify "Etkinlik Türü" select filter with value "Konferans" in "overviewTable"
+    Then The user verify "Fletum Kod" text filter with value "test" in "overviewTable"
+
+
+  Scenario: Product Item Clone
+#    Given The user go to 'Product' overview page
+#    When The User clicks on the createButton element
+#    When The user select create item family 'Auto_Product'
+#    When The user fill product create attributes
+#    When The user select category for create 'Ürün'
+#    When The user complete create
+    When The user go to edit item '3499092'
+    When The user verify created event edit page is open
+    When The user click edit item side bar button
+    When The user click clone button
+    When The user fill product clone item info
+    Then The user verifies info "Item was cloned successfully." appears
+

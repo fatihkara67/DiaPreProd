@@ -828,7 +828,9 @@ public class DbProcess extends BasePage {
     }
 
     public void verifyEmailIsSent(String emailBody) {
-        String query = "SELECT * FROM NotificationLogs WHERE Body LIKE '%emailBody%'";
+        String query = "SELECT * FROM NotificationLogs WHERE Body LIKE '%" + emailBody + "%'";
+
+        System.out.println("query: \n" + query);
 
         List<String> emailBodies = new ArrayList<>();
 
@@ -917,6 +919,185 @@ public class DbProcess extends BasePage {
 
         return type;
 
+
+
+    }
+
+
+    public String getEventDate(String anySKU6, String dateType) {
+        String query = "SELECT ValueDateTime\n" +
+                "FROM ItemValues\n" +
+                "WHERE AttributeId = (\n" +
+                "    SELECT Id\n" +
+                "    FROM Attributes\n" +
+                "    WHERE Code = '" + dateType + "'\n" +
+                ")\n" +
+                "AND ItemId = (\n" +
+                "    SELECT Id\n" +
+                "    FROM Items\n" +
+                "    WHERE SKU = '" + anySKU6 + "'\n" +
+                "      AND Type = (\n" +
+                "          SELECT Type\n" +
+                "          FROM ItemTypeColumns\n" +
+                "          WHERE TypeName = 'Event'\n" +
+                "      )\n" +
+                ");";
+
+        System.out.println(dateType + " query: \n" + query);
+
+        String date = null;
+
+        try (Connection conn = Database.getInstance();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                date = rs.getDate("ValueDateTime").toString();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(dateType + ": " + date);
+        return date;
+
+    }
+
+    public String getIsTestEvent(String randomSku5, String itemType) {
+        String query = "SELECT ValueBool\n" +
+                "FROM ItemValues\n" +
+                "WHERE AttributeId = (\n" +
+                "    SELECT Id\n" +
+                "    FROM Attributes\n" +
+                "    WHERE Code = 'isTestEvent'\n" +
+                "    AND ItemType = 70\n" +
+                ")\n" +
+                "AND ItemId = (\n" +
+                "    SELECT Id\n" +
+                "    FROM Items\n" +
+                "    WHERE SKU = '" + randomSku5 + "'\n" +
+                "      AND Type = (\n" +
+                "          SELECT Type\n" +
+                "          FROM ItemTypeColumns\n" +
+                "          WHERE TypeName = '" + itemType + "'\n" +
+                "      )\n" +
+                ");";
+
+        System.out.println("isTestEvent query: \n" + query);
+        String isTestEvent = null;
+
+        try (Connection conn = Database.getInstance();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                isTestEvent = rs.getBoolean("ValueBool") ? "true" : "false";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isTestEvent;
+    }
+
+    public int deleteTestAttributesInItemImport() {
+        String query = "DELETE FROM Attributes WHERE Code In ('NewText','NewDate','NewSelect','NewBoolean')";
+
+        int affectedRows = 0;
+        try (Connection conn = Database.getInstance();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+//            ps.setString(1, "%Test Automation%");
+
+            affectedRows = ps.executeUpdate();
+            System.out.println("Silinen kayıt sayısı: " + affectedRows);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return affectedRows;
+    }
+
+
+    public void deleteCreatedItem(String itemId) {
+
+        String query1 = "DELETE FROM Associations WHERE FirstItemId = ?";
+        String query2 = "DELETE FROM ItemValues WHERE ItemId = ?";
+        String query3 = "DELETE FROM Items WHERE Id = ?";
+
+        try (Connection conn = Database.getInstance()) {
+
+            conn.setAutoCommit(false); // transaction başlat
+
+            try (
+                    PreparedStatement ps1 = conn.prepareStatement(query1);
+                    PreparedStatement ps2 = conn.prepareStatement(query2);
+                    PreparedStatement ps3 = conn.prepareStatement(query3)
+            ) {
+                // 1️⃣ Associations sil
+                ps1.setString(1, itemId);
+                int affected1 = ps1.executeUpdate();
+                System.out.println("Associations silinen: " + affected1);
+
+                // 2️⃣ ItemValues sil
+                ps2.setString(1, itemId);
+                int affected2 = ps2.executeUpdate();
+                System.out.println("ItemValues silinen: " + affected2);
+
+                // 3️⃣ Items sil (en son parent)
+                ps3.setString(1, itemId);
+                int affected3 = ps3.executeUpdate();
+                System.out.println("Items silinen: " + affected3);
+
+                conn.commit(); // hepsi başarılıysa kaydet
+
+            } catch (SQLException e) {
+                conn.rollback(); // biri fail olursa geri al
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public int getItemIdByCode(String sku) {
+        String query = "SELECT Id From Items WHERE SKU = '" + sku + "'";
+
+        int itemId = -1;
+
+        try (Connection conn = DatabaseManager.getConnection(DbConfigs.DB_URL, DbConfigs.DB_USERNAME, DbConfigs.DB_PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                itemId = rs.getInt("Id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("itemId: " + itemId);
+
+        return itemId;
+
+    }
+
+    public void deleteAttributeOptions() {
+        String query = "DELETE FROM AttributeOptions\n" +
+                "WHERE AttributeId = (SELECT Id FROM Attributes WHERE Code = 'NewSelect')";
+
+
+        int affectedRows = 0;
+        try (Connection conn = Database.getInstance();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+//            ps.setString(1, "%Test Automation%");
+
+            affectedRows = ps.executeUpdate();
+            System.out.println("Silinen kayıt sayısı: " + affectedRows);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
     }

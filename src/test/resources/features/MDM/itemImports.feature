@@ -97,6 +97,9 @@ Feature: Item Imports
     When The user get default family 'Contact'
     When The user create excel file
     When The user fill import excel for create
+    When The user click item import button
+    When The user upload file 'Contact'
+    When The user click second import next button
     When The user import the file new
     Then The user verify import for create
 #    When The user fill item import excel with 2 value
@@ -110,6 +113,9 @@ Feature: Item Imports
     When The user get default family 'Contact'
     When The user create excel file2
     When The user fill import excel for create2
+    When The user click item import button
+    When The user upload file 'Contact'
+    When The user click second import next button
     When The user import the file new
     Then The user verify import for create2
 
@@ -121,6 +127,9 @@ Feature: Item Imports
     When The user get default family 'Event'
     When The user create excel file
     When The user fill import excel for create event
+    When The user click item import button
+    When The user upload file 'Event'
+    When The user click second import next button
     When The user import the file new
 #    Then The user verify import for create
     Then The user verify import for create event
@@ -134,6 +143,9 @@ Feature: Item Imports
     When The user get default family 'Product'
     When The user create excel file
     When The user fill import excel for create product
+    When The user click item import button
+    When The user upload file 'Product'
+    When The user click second import next button
     When The user import the file new
 #    Then The user verify import for create
     Then The user verify import for create product
@@ -155,6 +167,24 @@ Feature: Item Imports
     When The user click item import button
     When The user upload the file 'ContactLimitTest'
     Then The user verify over limit error message
+
+  Scenario: Event Import - Create Attribute
+    Given The user go to 'Event' overview page
+    Given The user get import info
+      | username | fatihkara |
+      | itemType | Event     |
+    When The user get default family 'Event'
+    When The user create excel file
+    When The user fill import excel for create event
+    When The user click item import button
+    When The user upload file 'Event'
+    When The user click second import next button
+    When The user set new attributes
+    When The user import the file new
+#    Then The user verify import for create event with new attribute
+    Then The user delete new items
+    Then The user delete attribute options
+   Then The user tear down new attributes
 
 
 

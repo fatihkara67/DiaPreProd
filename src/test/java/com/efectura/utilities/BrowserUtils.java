@@ -23,6 +23,12 @@ import java.util.*;
 import static java.time.Duration.ofSeconds;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 
 /**
  * A utility class containing helper methods for common browser related operations.
@@ -709,6 +715,167 @@ public class BrowserUtils {
             return null;
         }
     }
+
+    public static String getFormattedDate(int dayOffset) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy  HH:mm:ss");
+        LocalDateTime date = LocalDateTime.now().plusDays(dayOffset);
+        return date.format(formatter);
+    }
+
+    public static String getFormattedDateWithoutHour(int dayOffset) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate date = LocalDate.now().plusDays(dayOffset);
+        return date.format(formatter);
+    }
+
+    public static void formatDateColumn(String filePath, String columnName) {
+        try (FileInputStream fis = new FileInputStream(filePath);
+             Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Row headerRow = sheet.getRow(0);
+
+            if (headerRow == null) {
+                System.out.println("Header satırı bulunamadı.");
+                return;
+            }
+
+            // Kolon index'ini bul
+            int targetColIndex = -1;
+            for (Cell cell : headerRow) {
+                if (cell.getStringCellValue().trim().equalsIgnoreCase(columnName)) {
+                    targetColIndex = cell.getColumnIndex();
+                    break;
+                }
+            }
+
+            if (targetColIndex == -1) {
+                System.out.println("Kolon bulunamadı: " + columnName);
+                return;
+            }
+
+            // Tarih formatı oluştur
+            CreationHelper helper = workbook.getCreationHelper();
+            CellStyle dateStyle = workbook.createCellStyle();
+            dateStyle.setDataFormat(helper.createDataFormat().getFormat("dd.MM.yyyy"));
+
+            // Header'dan sonraki tüm satırları gez
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                Cell cell = row.getCell(targetColIndex);
+                if (cell == null) continue;
+
+                // Hücre gerçekten tarihse format uygula
+                if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+                    cell.setCellStyle(dateStyle);
+                }
+            }
+
+            // Dosyayı geri yaz
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                workbook.write(fos);
+            }
+
+            System.out.println(columnName + " kolonu dd.MM.yyyy olarak formatlandı.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void forceCustomDateFormat(String filePath, String columnName) {
+        try (FileInputStream fis = new FileInputStream(filePath);
+             Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Row headerRow = sheet.getRow(0);
+
+            int colIndex = -1;
+            for (Cell cell : headerRow) {
+                if (cell.getStringCellValue().trim().equalsIgnoreCase(columnName)) {
+                    colIndex = cell.getColumnIndex();
+                    break;
+                }
+            }
+
+            if (colIndex == -1) {
+                System.out.println("Kolon bulunamadı");
+                return;
+            }
+
+            // Custom date style (İsteğe Uyarlanmış)
+            CreationHelper helper = workbook.getCreationHelper();
+            CellStyle customDateStyle = workbook.createCellStyle();
+            customDateStyle.setDataFormat(
+                    helper.createDataFormat().getFormat("dd.MM.yyyy")
+            );
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                Cell cell = row.getCell(colIndex);
+                if (cell == null) continue;
+
+                if (cell.getCellType() == CellType.STRING) {
+                    String text = cell.getStringCellValue().trim();
+
+                    if (!text.isEmpty()) {
+                        LocalDate date = LocalDate.parse(text, formatter);
+
+                        // TEXT'i gerçek date'e çevir
+                        cell.setCellValue(java.sql.Date.valueOf(date));
+
+                        // Custom format uygula
+                        cell.setCellStyle(customDateStyle);
+                    }
+                }
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                workbook.write(fos);
+            }
+
+            System.out.println("Kolon Custom Date formatına çevrildi.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static String formatDateDayMonthYear(String inputDate) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        LocalDate date = LocalDate.parse(inputDate, inputFormatter);
+        return date.format(outputFormatter);
+    }
+
+    /* içine string list olarak parametre alıp verilen listteki değerlerle csv file üretip dosyanın path'ini  proje içindeki
+    src/test/resources/testData olacak şekilde yapıp path'i dönen metod yaz
+     */
+        public static String createCSVFile(List<String> data, String fileName) {
+            String filePath = System.getProperty("user.dir") + "/src/test/resources/testData/" + fileName + ".csv";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                for (String line : data) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+                System.out.println("CSV file created at: " + filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return filePath;
+        }
+
+
+
+
+
+
 
 
 

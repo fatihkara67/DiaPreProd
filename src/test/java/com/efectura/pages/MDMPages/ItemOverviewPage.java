@@ -98,7 +98,7 @@ public class ItemOverviewPage extends BasePage {
     @FindBy(xpath = "//button[@id='importUser']")
     private WebElement itemImportButton;
 
-    @FindBy(xpath = "//input[@id='file-import']")
+    @FindBy(xpath = "//input[contains(@id,'file-import')]")
     private WebElement itemImportInput;
 
     @FindBy(xpath = "//input[@id='dynamic-import-file-input']")
