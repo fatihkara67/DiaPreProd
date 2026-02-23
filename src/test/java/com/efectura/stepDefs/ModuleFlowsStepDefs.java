@@ -352,6 +352,9 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserUploadFilePlanningTarget(String fileName) {
 //        Driver.getDriver().findElement(By.xpath("//input[contains(@id,'file-import')]")).sendKeys(getExcelPath(fileName));
         pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(fileName));
+        BrowserUtils.adjustScreenSize(70,Driver.getDriver());
+        BrowserUtils.moveToElement(pages.itemOverviewPage().getItemImportStep2NextButton());
+        BrowserUtils.wait(1);
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
         BrowserUtils.wait(2);
     }
@@ -391,5 +394,10 @@ public class ModuleFlowsStepDefs extends BaseStep {
         BrowserUtils.hoverOver(pages.modulFlows().impersonateHoverBtn);
         pages.modulFlows().impersonateButton.click();
         BrowserUtils.wait(3);
+    }
+
+    @Given("The user fill start2 form for {string} and markaisi {int}")
+    public void theUserFillStart2FormForAndMarkaisi(String customerCode, int markaisi) {
+        formNumber = pages.modulFlows().fillTailorStandFlowForm(customerCode,markaisi);
     }
 }

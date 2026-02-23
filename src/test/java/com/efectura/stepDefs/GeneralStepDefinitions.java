@@ -407,6 +407,9 @@ public class GeneralStepDefinitions extends BaseStep {
 
     @When("The user import attribute file")
     public void theUserImportAttributeFile() {
+        BrowserUtils.adjustScreenSize(70,driver);
+        BrowserUtils.moveToElement(pages.itemOverviewPage().getItemImportStep2NextButton());
+        BrowserUtils.wait(1);
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
         BrowserUtils.wait(5);
         Driver.getDriver().findElement(By.xpath("//button[contains(@id,'import-step-edit')]")).click();
