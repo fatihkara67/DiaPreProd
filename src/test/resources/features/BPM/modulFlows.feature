@@ -162,10 +162,13 @@ Feature: Module Flows Cases
     Given The user login with "sahamuduru"
     Given The user go to "panel" page
     Given The user go in "On Trade Stand Akışı" flow
-    Given The user fill start form for '999999999' and markaisi 0
+    Given The user select "Tailor Made" as form type
+    Given The user fill start2 form for '971981' and markaisi 0
+#    Given The user fill start form for '999999999' and markaisi 0
     Then The user verifies info "Form başarıyla gönderildi." appears
     Given The user login with "skgmtest"
     Given The user go in Task and submit
+    When The user wait 8 second
     Given The user login with "kgu"
     Given The user go in Task "DIA: ConfirmationForm"
 #    Given The user go in Task and submit

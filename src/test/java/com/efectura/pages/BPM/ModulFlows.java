@@ -1040,4 +1040,28 @@ public class ModulFlows extends BasePage {
         return true;
 
     }
+
+    public String fillTailorStandFlowForm(String customerCode, int markaisi) {
+        BrowserUtils.adjustScreenSize(80,Driver.getDriver());
+        formNumber = BrowserUtils.getValueInInputBox(driver.findElement(By.xpath("//input[@id='formNo']")));
+        System.out.println("Form Number: " + formNumber);
+        menuMusteriNoInputBox.sendKeys(customerCode);
+        driver.findElement(By.xpath("//button[contains(@id,'searchButton')]")).click();
+
+        BrowserUtils.wait(3);
+
+        WebElement brandSelect = driver.findElement(By.xpath("//select[@id='isBrandJob']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(brandSelect,"Hayır");
+
+        driver.findElement(By.xpath("//textarea[@id='tailor-made-desc']")).sendKeys("saha kalem");
+        driver.findElement(By.xpath("//button[@id='add-tailor-process']")).click();
+
+        BrowserUtils.wait(4);
+        BrowserUtils.adjustScreenSize(75,driver);
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[contains(text(),'Onaya Gönder')]")));
+        BrowserUtils.wait(2);
+        driver.findElement(By.xpath("//button[contains(text(),'Onaya Gönder')]")).click();
+
+        return formNumber;
+    }
 }

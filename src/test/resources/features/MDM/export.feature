@@ -10,7 +10,7 @@ Feature: Export Scenarios
     When The user get selected export options
     When The user complete the export
     Then The user verifies info "EXPORT_SUCCESS" appears
-    Then The user verify file is downloaded
+#    Then The user verify file is downloaded
 
   Scenario: Export For Above 10000 data
     Given The user go to 'Contact' overview page

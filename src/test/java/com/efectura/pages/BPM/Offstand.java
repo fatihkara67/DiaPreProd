@@ -241,7 +241,7 @@ public class Offstand extends BasePage {
 
     public void updateAttribute(String attrLabel, String value) {
         WebElement attrInput = Driver.getDriver().
-                findElement(By.xpath("//header[.//span[contains(text(), '" + attrLabel + "')]]/following::input[1]"));
+                findElement(By.xpath("//header[contains(.,'" + attrLabel + "')]/following-sibling::div/input"));
         attrInput.sendKeys(Keys.CONTROL + "A");
         attrInput.sendKeys(value);
     }

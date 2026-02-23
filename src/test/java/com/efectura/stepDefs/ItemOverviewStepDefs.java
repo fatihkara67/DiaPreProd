@@ -449,7 +449,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user click {string} button")
     public void theUserClickButton(String buttonName) {
-        String locate = "//button[contains(normalize-space(),'" + buttonName + "')]";
+        String locate = "//div[contains(@class,'header')]/button[contains(normalize-space(),'" + buttonName + "')]";
         Driver.getDriver().findElement(By.xpath(locate)).click();
 
     }
@@ -1141,6 +1141,8 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user click second next button")
     public void theUserClickSecondNextButton() {
         BrowserUtils.wait(1);
+        BrowserUtils.moveToElement(pages.message().getSecondNextButton());
+        BrowserUtils.wait(1);
         pages.message().getSecondNextButton().click();
     }
 
@@ -1192,6 +1194,8 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user clicks send button")
     public void theUserClicksSendButton() {
         BrowserUtils.adjustScreenSize(60,Driver.getDriver());
+        BrowserUtils.wait(1);
+        BrowserUtils.moveToElement(pages.message().getSendButton());
         BrowserUtils.wait(1);
         pages.message().getSendButton().click();
         BrowserUtils.wait(11);
@@ -1546,8 +1550,10 @@ public class ItemOverviewStepDefs extends BaseStep {
                 "NewSelect",
                 "NewBoolean"
         ));
+        BrowserUtils.wait(10);
 
         for (String attribute : newAttributes) {
+            BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[@data-column='" + attribute + "']")));
             driver.findElement(By.xpath("//button[@data-column='" + attribute + "']")).click();
             BrowserUtils.wait(1);
             driver.findElement(By.xpath("//input[@id='attr-create-code']")).sendKeys(attribute);
@@ -1584,6 +1590,8 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user click second import next button")
     public void theUserClickSecondImportNextButton() {
+        BrowserUtils.moveToElement(pages.itemOverviewPage().getItemImportStep3NextButton());
+        BrowserUtils.wait(1);
         pages.itemOverviewPage().getItemImportStep3NextButton().click();
         BrowserUtils.wait(1);
     }
