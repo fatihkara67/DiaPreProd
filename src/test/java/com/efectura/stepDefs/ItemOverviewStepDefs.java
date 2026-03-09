@@ -10,13 +10,16 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.sl.In;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -1717,11 +1720,114 @@ public class ItemOverviewStepDefs extends BaseStep {
         driver.findElement(By.xpath("//button[@id='clone-create']")).click();
     }
 
+    @When("The user click {string} attribute header")
+    public void theUserClickAttributeHeader(String attributeHeader) {
+        driver.findElement(By.xpath("//a[contains(text(),'" + attributeHeader + "')]")).click();
+        BrowserUtils.wait(2);
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: Özellik Düzenle");
+    }
 
-//    @Then("The user verify the email with db {string}")
-//    public void theUserVerifyTheEmailWithDb(String dbName) {
-//        String dbUrl = pages.dbProcess().getDbUrl(dbName);
-//        pages.dbProcess().verifyEmailIsSent(dbUrl,emailBody);
-//    }
+    @Then("The user verifies {string} attribute edit page is open")
+    public void theUserVerifiesAttributeEditPageIsOpen(String attributeName) {
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains("https://dia-preprod-ui.efectura.com/Settings/EditAttribute/4542"));
+        Assert.assertTrue(currentUrl.contains("4542"));
+        WebElement pageInfo = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/nav/a[4]"));
+        Assert.assertTrue(pageInfo.getText().contains(attributeName));
+    }
+
+    String singleAccountSku;
+    String singleAccountBatchId;
+    String message;
+    int itemCount;
+    @Given("The user create single event")
+    public void theUserCreateSingleEvent() throws JSONException {
+        String sku = UUID.randomUUID().toString();
+        JSONObject singleAccountResponse = BrowserUtils.singleEventCreate(sku,174);
+
+        System.out.println("singleAccountResponse: " + singleAccountResponse);
+
+        singleAccountBatchId = singleAccountResponse.getString("batchId");
+        message = singleAccountResponse.getString("message");
+        itemCount = singleAccountResponse.getInt("itemCount");
+
+        System.out.println("singleAccountSku: " + singleAccountSku);
+        System.out.println("itemCount: " + itemCount);
+        System.out.println("singleAccountBatchId: " + singleAccountBatchId);
+        System.out.println("Message: " + message);
+
+    }
+
+    @When("The user click date filter area")
+    public void theUserClickDateFilterArea() {
+//        driver.findElement(By.xpath("//div[1]/div[1]/div[1]/div/div[2]/div/div/input[2]")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement dateInput = driver.findElement(By.xpath("//div[1]/div[1]/div[1]/div/div[2]/div/div/input[2]"));
+        js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", dateInput);
+
+// Sadece açık olan calendar içindeki today
+        By visibleToday = By.cssSelector("div.flatpickr-calendar.open span.flatpickr-day.today");
+
+        WebElement today = wait.until(ExpectedConditions.elementToBeClickable(visibleToday));
+        js.executeScript("arguments[0].click();", today);
+
+
+        WebElement hourInput = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("div.flatpickr-calendar.open input.flatpickr-hour")
+                )
+        );
+
+        js.executeScript(
+                "arguments[0].focus();" +
+                        "arguments[0].value='3';" +
+                        "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));" +
+                        "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+                hourInput
+        );
+
+
+//        driver.findElement(By.xpath("/html/body/div[12]/div[2]/div/div[2]/div/span[@class='flatpickr-day today']")).click();
+    }
+
+    @When("The user click second cancel filter button")
+    public void theUserClickSecondCancelFilterButton() {
+        driver.findElements(By.xpath("//button[@class='btn-filter cancel-filter']")).get(1).click();
+    }
+
+    String batchStatusRequestBatchId;
+    int batchStatusRequestCompletedCount;
+    int batchStatusRequestTotalCount;
+    int batchStatusRequestFailedCount;
+    int batchStatusRequestPendingCount;
+    @Given("The user send getBatchStatus request")
+    public void theUserSendGetBatchStatusRequest() throws JSONException {
+        JSONObject batchStatusResponse =
+                BrowserUtils.waitUntilBatchCompleted(singleAccountBatchId, 120, 3);
+
+//        JSONObject batchStatusResponse = Requests.getBatchStatus(singleAccountBatchId);
+        System.out.println("batchStatusResponse: " + batchStatusResponse);
+
+        batchStatusRequestBatchId = batchStatusResponse.getString("batchId");
+        batchStatusRequestCompletedCount = batchStatusResponse.getInt("completedCount");
+        batchStatusRequestTotalCount = batchStatusResponse.getInt("totalCount");
+        batchStatusRequestPendingCount = batchStatusResponse.getInt("pendingCount");
+        batchStatusRequestFailedCount = batchStatusResponse.getInt("failedCount");
+    }
+
+
+
+    int singleAccountCountFromDb;
+    @Then("The user verify Single Account Create scenario")
+    public void theUserVerifySingleAccountCreateScenario() {
+//        BrowserUtils.wait(15);
+//        singleAccountCountFromDb = databaseMethods.getItemCountBySku(singleAccountSku);
+        singleAccountCountFromDb = BrowserUtils.waitForItemInDb(singleAccountSku,30);
+    }
+
 
 }

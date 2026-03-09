@@ -1,6 +1,7 @@
 package com.efectura.utilities;
 
 import org.apache.commons.io.FileUtils;
+import org.json.*;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
@@ -15,6 +16,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -28,6 +32,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -870,6 +878,206 @@ public class BrowserUtils {
             }
             return filePath;
         }
+
+
+    public static JSONObject singleEventCreate(String sku, int familyId) {
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        OkHttpClient client = InsecureHttp.newClient(); // Senin standart yapı
+
+        try {
+
+            JSONObject attribute1 = new JSONObject()
+                    .put("Value", 67670)
+                    .put("Type", "Number")
+                    .put("UpsertAttributeOption", false)
+                    .put("Code", "DIA_Quota")
+                    .put("Id", 3828);
+
+            JSONObject attribute2 = new JSONObject()
+                    .put("Value", today)
+                    .put("Type", "Date")
+                    .put("UpsertAttributeOption", false)
+                    .put("Code", "DIA_Finish_Date_E")
+                    .put("Id", 3811);
+
+
+
+            JSONArray attributes = new JSONArray()
+                    .put(attribute1)
+                    .put(attribute2);
+
+            JSONArray categories = new JSONArray()
+                    .put(new JSONObject().put("Code", "ROOT"))
+                    .put(new JSONObject().put("Code", "On-Trade"));
+
+            JSONObject itemRequest = new JSONObject()
+                    .put("queueEnabled", true)
+                    .put("SKU", sku)
+                    .put("SKUColumnName", "LNGKOD")
+                    .put("SKUAttribute", false)
+                    .put("SKUAssociationAttribute", false)
+                    .put("SendItemEvent", false)
+                    .put("SendItemEventOnUpdate", false)
+                    .put("FamilyId", familyId)
+                    .put("Attributes", attributes)
+                    .put("Categories", categories)
+                    .put("Id", 0);
+
+            JSONArray itemRequests = new JSONArray().put(itemRequest);
+
+            JSONObject requestBodyJson = new JSONObject()
+                    .put("itemRequests", itemRequests);
+
+            RequestBody body = RequestBody.create(
+                    requestBodyJson.toString(),
+                    MediaType.parse("application/json")
+            );
+
+            Request request = new Request.Builder()
+                    .url("https://dia-preprod-item-service.efectura.com/api/Entity/CreateEntityBatchBackground")
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            String responseBody = response.body().string();
+
+            return new JSONObject(responseBody);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    public static JSONObject getBatchStatus(String batchId) {
+
+        OkHttpClient client = InsecureHttp.newClient(); // Senin standart yapı
+
+        try {
+
+            String url = "https://dia-preprod-item-service.efectura.com/api/Entity/GetBatchStatus/" + batchId;
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            String responseBody = response.body().string();
+
+            return new JSONObject(responseBody);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    public static JSONObject waitUntilBatchCompleted(String batchId,
+                                                     int maxWaitSeconds,
+                                                     int pollIntervalSeconds) throws JSONException {
+
+        long startTime = System.currentTimeMillis();
+        long maxWaitMillis = maxWaitSeconds * 1000L;
+
+        while (true) {
+
+            JSONObject status = BrowserUtils.getBatchStatus(batchId);
+
+            if (status == null) {
+                throw new RuntimeException("Batch status response is null!");
+            }
+
+            int pending = status.getInt("pendingCount");
+            int completed = status.getInt("completedCount");
+            int failed = status.getInt("failedCount");
+            int total = status.getInt("totalCount");
+
+            System.out.println("BatchId: " + batchId +
+                    " | completed=" + completed +
+                    " | failed=" + failed +
+                    " | pending=" + pending +
+                    " | total=" + total);
+
+            // ✅ Bitti mi?
+            if (pending == 0) {
+                System.out.println("Batch processing completed.");
+                return status;
+            }
+
+            // ⛔ Timeout kontrolü
+            long elapsed = System.currentTimeMillis() - startTime;
+            if (elapsed > maxWaitMillis) {
+                throw new RuntimeException("Timeout! Batch did not complete within "
+                        + maxWaitSeconds + " seconds.");
+            }
+
+            // ⏳ Bekle
+            try {
+                Thread.sleep(pollIntervalSeconds * 1000L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Thread interrupted while waiting for batch.", e);
+            }
+        }
+    }
+
+
+    public static int getItemCountBySku(String itemSku) {
+        String query = "SELECT COUNT(*) AS itemCount FROM dbo.Items WHERE SKU = '" + itemSku + "'";
+
+//        System.out.println("Executing query: " + query);
+
+        int itemCount = 0;
+
+        try (java.sql.Connection conn = DatabaseManager.getConnection(
+                DbConfigs.SQLSERVER_PREPROD, DbConfigs.DB_USERNAME, DbConfigs.DB_PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                itemCount = rs.getInt("itemCount");
+            }
+
+            // İsteğe bağlı: log
+            System.out.println("-----\nitemCount: " + itemCount + "\n-----");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return itemCount;
+    }
+
+
+    public static int waitForItemInDb(String sku, int timeoutSeconds) {
+        long start = System.currentTimeMillis();
+        int count = 0;
+
+        while ((System.currentTimeMillis() - start) < timeoutSeconds * 1000) {
+
+            count = getItemCountBySku(sku);
+
+            if (count > 0) {
+                return count;
+            }
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        return count;
+    }
 
 
 

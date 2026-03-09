@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -597,6 +598,8 @@ public class GeneralStepDefinitions extends BaseStep {
 
     @When("The user select {string} in bulk actions")
     public void theUserSelectInBulkActions(String bulkOption) {
+        BrowserUtils.wait(2);
+        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='bulkActionIframe']")));
         String locate = "//div[.='" + bulkOption + "']";
 //        driver.findElement(By.xpath("//div[.='Kategori Ekle']")).click();
 
@@ -626,5 +629,20 @@ public class GeneralStepDefinitions extends BaseStep {
             pages.membershipAccountRulePage().getAccordionButton().click();
         }
         BrowserUtils.wait(1);
+    }
+
+    @Then("The user verify {string} date filter with value today in {string}")
+    public void theUserVerifyDateFilterWithValueTodayIn(String columnName, String table) {
+        BrowserUtils.wait(2);
+        WebElement tableElement = Driver.getDriver().findElement(By.id(ConfigurationReader.getProperty(table)));
+        List<String> values =  getColumnData(tableElement,columnName);
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+        System.out.println(values);
+        BrowserUtils.wait(2);
+        for (String actualValue : values) {
+            Assert.assertTrue(actualValue.split(" ")[0].contains(today));
+//            Assert.assertEquals(expectedValue,actualValue);
+        }
     }
 }
