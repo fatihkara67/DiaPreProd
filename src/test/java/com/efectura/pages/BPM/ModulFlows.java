@@ -786,6 +786,8 @@ public class ModulFlows extends BasePage {
         driver.findElement(By.xpath("//button[@id='add-stand-process']")).click();
         BrowserUtils.wait(6);
         BrowserUtils.adjustScreenSize(75,driver);
+
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[contains(text(),'Onaya Gönder')]")));
         driver.findElement(By.xpath("//button[contains(text(),'Onaya Gönder')]")).click();
 
         return formNumber;
