@@ -111,6 +111,10 @@ public class ModulFlows extends BasePage {
     private WebElement moduleBudgetInvoiceInfoMessage;
 
 
+    //-------- Stand Flows --------------------------------
+    @FindBy(xpath = "//select[@id='kalem-options']")
+    private WebElement kalemSelect;
+
 
 //    ----------------------------------------------------
 
@@ -516,13 +520,13 @@ public class ModulFlows extends BasePage {
 //        System.out.println("Title: " + Driver.getDriver().getTitle());
     }
 
-    public void submitTask() {
+    public void submitTask(String message) {
         BrowserUtils.scrollToElement(Driver.getDriver(), formSubmitButton);
         BrowserUtils.wait(5);
         BrowserUtils.waitForClickability(formSubmitButton,30);
         formSubmitButton.click();
         BrowserUtils.waitForVisibility(flowInfoMessage,20);
-        Assert.assertEquals("Başarılı", flowInfoMessage.getText());
+        Assert.assertEquals(message, flowInfoMessage.getText());
     }
 
     public void rejectTask() {
@@ -647,7 +651,7 @@ public class ModulFlows extends BasePage {
     }
 
     int firstStandBlockedBudget;
-    public int getBlockedBudgetForStand() {
+    public int getBlockedBudgetForStand(String customerCode) {
         String query = "with cte as (\n" +
                 "SELECT \n" +
                 "T1.TrackKodu, \n" +
@@ -686,7 +690,7 @@ public class ModulFlows extends BasePage {
                 "WHEN Markaisi = 1 THEN 120000\n" +
                 "END AS Limit\n" +
                 "from cte\n" +
-                "WHERE TrackKodu = '999999999' AND Markaisi = 0";
+                "WHERE TrackKodu = '" + customerCode + "' AND Markaisi = 0";
 
         firstStandBlockedBudget = 0;
         try (Connection conn = Database.getInstance();
@@ -705,7 +709,7 @@ public class ModulFlows extends BasePage {
     }
 
     int standActualBudgetBeforeFlow;
-    public int getActualBudgetForStand() {
+    public int getActualBudgetForStand(String customerCode) {
         String query = "with cte as (\n" +
                 "SELECT \n" +
                 "T1.TrackKodu, \n" +
@@ -744,7 +748,7 @@ public class ModulFlows extends BasePage {
                 "WHEN Markaisi = 1 THEN 120000\n" +
                 "END AS Limit\n" +
                 "from cte\n" +
-                "WHERE TrackKodu = '999999999' AND Markaisi = 0";
+                "WHERE TrackKodu = '" + customerCode + "' AND Markaisi = 0";
 
         int standActualBudgetBeforeFlow = 0;
         try (Connection conn = Database.getInstance();
@@ -763,6 +767,7 @@ public class ModulFlows extends BasePage {
         return standActualBudgetBeforeFlow;
     }
 
+
     public String fillStandFlowForm(String customerCode, int markaisi) {
 
         BrowserUtils.adjustScreenSize(80,Driver.getDriver());
@@ -773,9 +778,9 @@ public class ModulFlows extends BasePage {
 
         BrowserUtils.wait(3);
 
-        WebElement brandSelect = driver.findElement(By.xpath("//select[@id='isBrandJob']"));
-        WebElement kalemSelect = driver.findElement(By.xpath("//select[@id='kalem-options']"));
 
+
+        WebElement brandSelect = driver.findElement(By.xpath("//select[@id='isBrandJob']"));
         BrowserUtils.selectDropdownOptionByVisibleText(brandSelect,"Hayır");
         BrowserUtils.selectDropdownOptionByVisibleText(kalemSelect,"JW_Ağac_Stand_tr");
         driver.findElement(By.xpath("//button[@id='add-stand-process']")).click();
@@ -885,7 +890,7 @@ public class ModulFlows extends BasePage {
 
     }
 
-    public boolean verifyStandBlockedBudget(String budget, int blockedBudgetBeforeFlow) {
+    public boolean verifyStandBlockedBudget(String budget, int blockedBudgetBeforeFlow, String customerCode) {
 
         String query = "with cte as (\n" +
                 "SELECT \n" +
@@ -925,7 +930,7 @@ public class ModulFlows extends BasePage {
                 "WHEN Markaisi = 1 THEN 120000\n" +
                 "END AS Limit\n" +
                 "from cte\n" +
-                "WHERE TrackKodu = '999999999' AND Markaisi = 0";
+                "WHERE TrackKodu = '" + customerCode + "' AND Markaisi = 0";
 
         int totalBlockedBudget = 0;
         try (Connection conn = Database.getInstance();
@@ -980,7 +985,7 @@ public class ModulFlows extends BasePage {
 
     }
 
-    public boolean verifyStandActualBudget(String budget,int actualBeforeFlow) {
+    public boolean verifyStandActualBudget(String budget,int actualBeforeFlow, String customerCode) {
 
         String query = "with cte as (\n" +
                 "SELECT \n" +
@@ -1020,7 +1025,7 @@ public class ModulFlows extends BasePage {
                 "WHEN Markaisi = 1 THEN 120000\n" +
                 "END AS Limit\n" +
                 "from cte\n" +
-                "WHERE TrackKodu = '999999999' AND Markaisi = 0";
+                "WHERE TrackKodu = '" + customerCode + "' AND Markaisi = 0";
 
         int totalActualBudget = 0;
         try (Connection conn = Database.getInstance();
@@ -1056,6 +1061,9 @@ public class ModulFlows extends BasePage {
         driver.findElement(By.xpath("//textarea[@id='tailor-made-desc']")).sendKeys("saha kalem");
         driver.findElement(By.xpath("//button[@id='add-tailor-process']")).click();
 
+        driver.findElement(By.xpath("//textarea[@id='tailor-made-desc']")).sendKeys("saha kalem 2");
+        driver.findElement(By.xpath("//button[@id='add-tailor-process']")).click();
+
         BrowserUtils.wait(4);
         BrowserUtils.adjustScreenSize(75,driver);
         BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[contains(text(),'Onaya Gönder')]")));
@@ -1063,5 +1071,107 @@ public class ModulFlows extends BasePage {
         driver.findElement(By.xpath("//button[contains(text(),'Onaya Gönder')]")).click();
 
         return formNumber;
+    }
+
+    public void fillTailorVendor1Form() {
+        BrowserUtils.wait(2);
+        Driver.getDriver().get("https://dia-preprod-ui.efectura.com/Task/TaskListVendor");
+        BrowserUtils.wait(3);
+        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),60);
+        taskList.getSearchAllFilterInput().sendKeys(formNumber);
+        BrowserUtils.wait(4);
+        taskList.getFirstColumn().click();
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: StandFlowForm");
+        BrowserUtils.wait(3);
+        System.out.println("Title: " + Driver.getDriver().getTitle());
+
+        driver.findElement(By.xpath("//input[@id='productionStartDateInput']")).click();
+
+        driver.findElement(By.xpath("/html/body/div[10]/div[2]/div/div[2]/div/span[@class='flatpickr-day today']")).click();
+        BrowserUtils.wait(5);
+
+        List<WebElement> kalemPriceInputs = driver.findElements(By.xpath("//input[@placeholder='Teklif Giriniz']"));
+        for (WebElement input : kalemPriceInputs) {
+//            input.sendKeys(Keys.CONTROL + "A");
+            input.sendKeys("600");
+        }
+
+        BrowserUtils.adjustScreenSize(60,driver);
+        BrowserUtils.wait(3);
+        driver.findElement(By.xpath("//button[contains(.,'Onaya Gönder')]")).click();
+        BrowserUtils.waitForVisibility(flowInfoMessage,20);
+        Assert.assertEquals("Form başarıyla gönderildi.", flowInfoMessage.getText());
+
+    }
+
+    public void selectKalem(String kalem) {
+        BrowserUtils.selectDropdownOptionByVisibleText(kalemSelect,kalem);
+        driver.findElement(By.xpath("//button[@id='add-stand-process']")).click();
+    }
+
+    public void fillStandLastVendorFormAndComplete() {
+        BrowserUtils.wait(3);
+        BrowserUtils.waitForVisibility(taskList.getSearchAllFilterInput(),50);
+        taskList.getSearchAllFilterInput().sendKeys(formNumber);
+        BrowserUtils.wait(5);
+        taskList.getFirstColumn().click();
+
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: StandFlowForm");
+        BrowserUtils.wait(3);
+        System.out.println("Title: " + Driver.getDriver().getTitle());
+
+        BrowserUtils.adjustScreenSize(60,driver);
+        BrowserUtils.wait(3);
+
+
+        BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Tedarikçi Faturası");
+        vendorDocDateInput.click();
+        vendorTodayDate.click();
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+        vendorFileInput.sendKeys(absoluteFilePath);
+
+        BrowserUtils.wait(3);
+        BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Teslimat Kanıt Belgeleri");
+        vendorDocDateInput.click();
+        vendorTodayDate.click();
+
+        // 1) Proje kökünü al
+//        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+//        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+//        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+        vendorFileInput.sendKeys(absoluteFilePath);
+//            BrowserUtils.wait(2);
+
+        By file = By.xpath("//td[contains(text(),'" + "Teslimat Kanıt Belgeleri" +"')]");
+        BrowserUtils.waitForVisibility(file,30);
+
+        BrowserUtils.adjustScreenSize(60,driver);
+
+        driver.findElement(By.id("vendorInvoice")).sendKeys("1000");
+
+        BrowserUtils.wait(3);
+        driver.findElement(By.xpath("//button[contains(.,'Tamamla')]")).click();
+        BrowserUtils.waitForVisibility(flowInfoMessage,20);
+        Assert.assertEquals("Form başarıyla gönderildi.", flowInfoMessage.getText());
     }
 }

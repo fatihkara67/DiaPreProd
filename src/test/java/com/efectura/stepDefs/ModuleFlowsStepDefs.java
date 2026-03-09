@@ -106,10 +106,10 @@ public class ModuleFlowsStepDefs extends BaseStep {
         pages.modulFlows().goInTask(tabTitleName);
     }
 
-    @Given("The user submit the task")
-    public void theUserSubmitTheTask() {
+    @Given("The user submit the task {string}")
+    public void theUserSubmitTheTask(String message) {
         BrowserUtils.wait(2);
-        pages.modulFlows().submitTask();
+        pages.modulFlows().submitTask(message);
 //        Driver.getDriver().get(ConfigurationReader.getProperty("url"));
 //        BrowserUtils.wait(12);
     }
@@ -201,16 +201,16 @@ public class ModuleFlowsStepDefs extends BaseStep {
     }
 
     int blockedBudgetBeforeFlow;
-    @Given("The user get blocked budget for stand")
-    public void theUserGetBlockedBudgetForStand() {
-        blockedBudgetBeforeFlow = pages.modulFlows().getBlockedBudgetForStand();
+    @Given("The user get blocked budget for stand {string}")
+    public void theUserGetBlockedBudgetForStand(String customerCode) {
+        blockedBudgetBeforeFlow = pages.modulFlows().getBlockedBudgetForStand(customerCode);
     }
 
     int actualStandBudgetBeforeFlow;
-    @Given("The user get actual budget for stand")
-    public void theUserGetActualBudgetForStand() {
+    @Given("The user get actual budget for stand {string}")
+    public void theUserGetActualBudgetForStand(String customerCode) {
 //        pages.modulFlows().getActualBudget();
-        actualStandBudgetBeforeFlow = pages.modulFlows().getActualBudgetForStand();
+        actualStandBudgetBeforeFlow = pages.modulFlows().getActualBudgetForStand(customerCode);
     }
 
     @Given("The user fill start form for {string} and markaisi {int}")
@@ -238,10 +238,10 @@ public class ModuleFlowsStepDefs extends BaseStep {
         pages.modulFlows().fillVendor2Form();
     }
 
-    @Given("The user verify stand blocked budget with {string}")
-    public void theUserVerifyStandBlockedBudgetWith(String budget) {
+    @Given("The user verify stand blocked budget with {string} for {string}")
+    public void theUserVerifyStandBlockedBudgetWith(String budget, String customerCode) {
         BrowserUtils.wait(2);
-        boolean isBudgetOk = pages.modulFlows().verifyStandBlockedBudget(budget,blockedBudgetBeforeFlow);
+        boolean isBudgetOk = pages.modulFlows().verifyStandBlockedBudget(budget,blockedBudgetBeforeFlow,customerCode);
     }
 
     @Given("The user fill vendor3 form and submit")
@@ -249,9 +249,9 @@ public class ModuleFlowsStepDefs extends BaseStep {
         pages.modulFlows().fillVendor3Form();
     }
 
-    @Given("The user verify stand actual budget with {string}")
-    public void theUserVerifyStandActualBudgetWith(String budget) {
-        boolean isBudgetOk = pages.modulFlows().verifyStandActualBudget(budget,actualStandBudgetBeforeFlow);
+    @Given("The user verify stand actual budget with {string} for {string}")
+    public void theUserVerifyStandActualBudgetWith(String budget, String customerCode) {
+        boolean isBudgetOk = pages.modulFlows().verifyStandActualBudget(budget,actualStandBudgetBeforeFlow,customerCode);
         Assert.assertTrue(isBudgetOk);
         BrowserUtils.wait(3);
     }
@@ -399,5 +399,30 @@ public class ModuleFlowsStepDefs extends BaseStep {
     @Given("The user fill start2 form for {string} and markaisi {int}")
     public void theUserFillStart2FormForAndMarkaisi(String customerCode, int markaisi) {
         formNumber = pages.modulFlows().fillTailorStandFlowForm(customerCode,markaisi);
+    }
+
+    @Given("The user select vendor {string}")
+    public void theUserSelectVendorEfecturaVendor(String vendorName) {
+        WebElement vendorSelect = Driver.getDriver().findElement(By.xpath("//select[@id='vendorList']"));
+
+        BrowserUtils.selectDropdownOptionByVisibleText(vendorSelect,vendorName);
+
+    }
+
+    @Given("The user fill tailor vendor1 form")
+    public void theUserFillTailorVendor1Form() {
+        pages.modulFlows().fillTailorVendor1Form();
+    }
+
+    @Given("The user select kalem {string}")
+    public void theUserSelectKalem(String kalem) {
+
+        pages.modulFlows().selectKalem(kalem);
+
+    }
+
+    @Given("The user fill last vendor form and complete")
+    public void theUserFillLastVendorFormAndComplete() {
+        pages.modulFlows().fillStandLastVendorFormAndComplete();
     }
 }

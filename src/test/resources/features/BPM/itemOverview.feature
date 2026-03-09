@@ -173,6 +173,19 @@ Feature: Item Overview Scenarios
     Then The user verify "Etkinlik Türü" select filter with value "Konferans" in "overviewTable"
     Then The user verify "Fletum Kod" text filter with value "test" in "overviewTable"
 
+  Scenario: Event Overview Advanced Filter Date Check
+#    Given The user create single event
+#    Given The user send getBatchStatus request
+#    Then The user verify Single Account Create scenario
+    Given The user go to 'Event' overview page
+    When The user click advanced filter button
+    When The user select 'Bitiş Tarihi' in first filter select
+    When The user click date filter area
+    When The user click add filter button
+    When The user click second cancel filter button
+    When The user click apply filter button
+    Then The user verify "Bitiş Tarihi" date filter with value today in "overviewTable"
+
 
   Scenario: Product Item Clone
 #    Given The user go to 'Product' overview page
@@ -187,4 +200,11 @@ Feature: Item Overview Scenarios
     When The user click clone button
     When The user fill product clone item info
     Then The user verifies info "Item was cloned successfully." appears
+
+  Scenario: Edit Item Attribute Navigation
+    When The user go to edit item '3499092'
+    When The user clicks "Ürün Grubu" attribute group
+    When The user click 'Ürün Adı' attribute header
+    Then The user verifies 'Ürün Adı' attribute edit page is open
+
 
