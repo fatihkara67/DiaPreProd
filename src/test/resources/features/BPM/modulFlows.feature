@@ -225,6 +225,7 @@ Feature: Module Flows Cases
     Given The user login with "Tedarikçi"
 #    Given The user go in Task "DIA: StandFlowForm"
     Given The user fill last vendor form and complete
-    Given The user verify stand blocked budget with "1000" for '999999999'
+    Given The user verify stand blocked budget with "0" for '999999999'
+    Given The user verify stand actual budget with "1000" for '999999999'
 
 
