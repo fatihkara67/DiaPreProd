@@ -886,6 +886,7 @@ public class ModulFlows extends BasePage {
 
         BrowserUtils.adjustScreenSize(60,driver);
         BrowserUtils.wait(3);
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[contains(.,'Onaya Gönder')]")));
         driver.findElement(By.xpath("//button[contains(.,'Onaya Gönder')]")).click();
         BrowserUtils.waitForVisibility(flowInfoMessage,20);
         Assert.assertEquals("Form başarıyla gönderildi.", flowInfoMessage.getText());
@@ -981,6 +982,7 @@ public class ModulFlows extends BasePage {
 
         BrowserUtils.adjustScreenSize(60,driver);
         BrowserUtils.wait(3);
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[contains(.,'Onaya Gönder')]")));
         driver.findElement(By.xpath("//button[contains(.,'Onaya Gönder')]")).click();
         BrowserUtils.waitForVisibility(flowInfoMessage,20);
         Assert.assertEquals("Form başarıyla gönderildi.", flowInfoMessage.getText());
@@ -1172,6 +1174,7 @@ public class ModulFlows extends BasePage {
         driver.findElement(By.id("vendorInvoice")).sendKeys("1000");
 
         BrowserUtils.wait(3);
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[contains(.,'Tamamla')]")));
         driver.findElement(By.xpath("//button[contains(.,'Tamamla')]")).click();
         BrowserUtils.waitForVisibility(flowInfoMessage,20);
         Assert.assertEquals("Form başarıyla gönderildi.", flowInfoMessage.getText());

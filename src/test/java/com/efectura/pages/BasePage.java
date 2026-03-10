@@ -32,6 +32,10 @@ public class BasePage {
     public static List<String> getColumnData(WebElement table, String header) {
         List<String> columnData = new ArrayList<>();
 
+        String id = table.getAttribute("id");
+
+        //*[@id="items"]/tbody/tr/td[2]
+
         // Get all headers //div[2]/div/div[6]/div/div/div[2]/div/table/thead/tr[1]/th
         List<WebElement> headers = table.findElements(By.cssSelector("thead tr:first-child th"));
 
@@ -49,12 +53,12 @@ public class BasePage {
         }
 
         // Get all rows
-        List<WebElement> rows = table.findElements(By.xpath(".//tbody/tr"));
+        List<WebElement> rows = table.findElements(By.xpath("//*[@id='" + id + "']/tbody/tr"));
 
         // Extract data from the specified column
         for (WebElement row : rows) {
-            WebElement cell = row.findElement(By.xpath(".//td[" + columnIndex + "]"));
-            System.out.println(".//td[" + columnIndex + "]");
+            WebElement cell = row.findElement(By.xpath("//*[@id='" + id + "']/tbody/tr/td[" + columnIndex + "]"));
+            System.out.println("//*[@id='" + id + "']/tbody/tr/td[" + columnIndex + "]");
             columnData.add(cell.getText().trim());
         }
 
