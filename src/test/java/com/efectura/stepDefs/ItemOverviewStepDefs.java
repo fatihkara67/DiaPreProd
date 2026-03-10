@@ -1051,6 +1051,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user get item info")
     public void theUserGetItemInfo() {
         BrowserUtils.adjustScreenSize(60,driver);
+        BrowserUtils.wait(2);
         WebElement table = Driver.getDriver().findElement(By.id("items"));
         List<String> data = getColumnData(table,"Fletum Kimlik");
         selectedId = data.get(0);
@@ -1065,7 +1066,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user click overview edit button")
     public void theUserClickOverviewEditButton() {
-        Driver.getDriver().findElement(By.xpath("//*[@id=\"items\"]/tbody/tr/td[15]/a[1]")).click();
+        Driver.getDriver().findElement(By.xpath("//*[@id=\"items\"]/tbody/tr/td[16]/a[1]")).click();
     }
 
     String randomValue = UUID.randomUUID().toString();
@@ -1343,7 +1344,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     String selectedId2;
     @When("The user get category of first two items")
     public void theUserGetCategoryOfFirstTwoItems() {
-        BrowserUtils.adjustScreenSize(60,driver);
+//        BrowserUtils.adjustScreenSize(60,driver);
         WebElement table = Driver.getDriver().findElement(By.id("items"));
         List<String> data = getColumnData(table,"Fletum Kimlik");
         selectedId1 = data.get(0);
@@ -1354,8 +1355,9 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user select first two items")
     public void theUserSelectFirstTwoItems() {
-        BrowserUtils.adjustScreenSize(30,driver);
+//        BrowserUtils.adjustScreenSize(30,driver);
         List<WebElement> checkboxes = driver.findElements(By.xpath("//td[1]/div/div/input/following-sibling::label"));
+        BrowserUtils.moveToElement(checkboxes.get(0));
         checkboxes.get(0).click();
         checkboxes.get(1).click();
     }

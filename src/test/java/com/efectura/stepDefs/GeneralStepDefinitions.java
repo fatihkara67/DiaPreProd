@@ -33,7 +33,7 @@ public class GeneralStepDefinitions extends BaseStep {
 
     @And("The user select {string} in {string} select filter")
     public void theUserSelectInSelectFilter(String selectOption, String selectFilter) {
-        BrowserUtils.adjustScreenSize(70, Driver.getDriver());
+//        BrowserUtils.adjustScreenSize(70, Driver.getDriver());
         pages.generalPage().selectOptionInSelectFilter(selectOption,selectFilter);
         BrowserUtils.wait(5);
     }
@@ -486,7 +486,9 @@ public class GeneralStepDefinitions extends BaseStep {
 
         if (assocReadOnlyCheckbox.getAttribute("old-value").equals("false")) {
             assocReadOnlyCheckbox.click();
-            Driver.getDriver().findElement(By.xpath("//button[@id='saveModal_']")).click();
+            driver.findElement(By.xpath("//button[@id='saveChangeButton']")).click();
+            driver.findElement(By.xpath("//textarea[@id='floatingComment']")).sendKeys("Test Automation - Unselect ReadOnly");
+            Driver.getDriver().findElement(By.xpath("//button[@id='floatingSaveButton']")).click();
         }
 
     }
@@ -519,7 +521,9 @@ public class GeneralStepDefinitions extends BaseStep {
 
         if (assocReadOnlyCheckbox.getAttribute("old-value").equals("true")) {
             assocReadOnlyCheckbox.click();
-            Driver.getDriver().findElement(By.xpath("//button[@id='saveModal_']")).click();
+            driver.findElement(By.xpath("//button[@id='saveChangeButton']")).click();
+            driver.findElement(By.xpath("//textarea[@id='floatingComment']")).sendKeys("Test Automation - Unselect ReadOnly");
+            Driver.getDriver().findElement(By.xpath("//button[@id='floatingSaveButton']")).click();
         }
     }
 
@@ -598,8 +602,9 @@ public class GeneralStepDefinitions extends BaseStep {
 
     @When("The user select {string} in bulk actions")
     public void theUserSelectInBulkActions(String bulkOption) {
-        BrowserUtils.wait(2);
-        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='bulkActionIframe']")));
+//        BrowserUtils.adjustScreenSize(80,driver);
+        BrowserUtils.wait(3);
+//        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='bulkActionIframe']")));
         String locate = "//div[.='" + bulkOption + "']";
 //        driver.findElement(By.xpath("//div[.='Kategori Ekle']")).click();
 
@@ -608,17 +613,22 @@ public class GeneralStepDefinitions extends BaseStep {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         WebElement el = wait.until(ExpectedConditions.elementToBeClickable(kategoriEkle));
 
-        // Bazı UI'larda element görünür ama üstünde başka layer olur -> önce scroll
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", el);
-        el.click();
+//        driver.findElement(By.xpath(locate)).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/div[4]/div[2]")).click();
 
+        // Bazı UI'larda element görünür ama üstünde başka layer olur -> önce scroll
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", el);
+//        el.click();
+
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[.='İleri']")));
         driver.findElement(By.xpath("//button[.='İleri']")).click();
     }
 
     @When("The user select {string} under {string}")
     public void theUserSelectUnder(String sub, String main) {
-        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/label")).click();
-        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/div/div/div[2]/div/div/div[1]/div[2]/div/div[2]/div[1]/div[1]/div[2]/div/span/span[2]")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/div/div/div[1]/div[1]/div")).click();
+        driver.findElement(By.xpath("//.[.='IWSA']")).click();
+        driver.findElement(By.xpath("//.[.='Genel [7]']")).click();
         BrowserUtils.wait(3);
 
     }

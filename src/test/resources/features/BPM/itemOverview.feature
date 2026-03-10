@@ -56,16 +56,16 @@ Feature: Item Overview Scenarios
   Scenario: Association Type
     When The user go to assoc type
     When The user select readOnly checkbox
-    And The user enters "update by automation" in comment area
-    And The user clicks save button in assoc type save modal
+#    And The user enters "update by automation" in comment area
+#    And The user clicks save button in assoc type save modal
 #    Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
     When The user go to account edit item
     And The user clicks "Komşu" tab
     And The user verify assoc tab disabled
     When The user go to assoc type
     When The user unselect readOnly checkbox
-    And The user enters "update by automation" in comment area
-    And The user clicks save button in assoc type save modal
+#    And The user enters "update by automation" in comment area
+#    And The user clicks save button in assoc type save modal
     When The user go to account edit item
     And The user clicks "Komşu" tab
     And The user verify assoc tab enabled
