@@ -282,7 +282,7 @@ public class DbProcess extends BasePage {
 
     public String getCategoryOfImportedItem(String randomSku) {
         String query = """
-                        SELECT code as CategoryCode
+                        SELECT tr_TR as CategoryCode
                         FROM DIA_PREPROD.dbo.Categories
                         WHERE Id = (
                             SELECT TOP 1 Category_Id

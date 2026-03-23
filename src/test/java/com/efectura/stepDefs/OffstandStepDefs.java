@@ -120,4 +120,9 @@ public class OffstandStepDefs extends BaseStep {
         pages.editItemPage().getDeleteButtonInDeleteItemModal().click();
         BrowserUtils.wait(2);
     }
+
+    @When("The user click NewImport button")
+    public void theUserClickNewImportButton() {
+        Driver.getDriver().findElement(By.xpath("//button[@data-target='imp-tab-new-import']")).click();
+    }
 }

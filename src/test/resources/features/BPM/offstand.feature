@@ -10,6 +10,7 @@ Feature: Offstand Import Cases
     Given The user login with "fatihkara"
     Given The user navigate to import page
     And The user accepts import popup
+    When The user click NewImport button
     When The user select "OFFSTAND" for importType
     When The user upload "OFFSTAND" file
     When The user import the uploaded file
