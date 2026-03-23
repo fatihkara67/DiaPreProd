@@ -99,7 +99,7 @@ Feature: Item Imports
     When The user fill import excel for create
     When The user click item import button
     When The user upload file 'Contact'
-    When The user click second import next button
+#    When The user click second import next button
     When The user import the file new
     Then The user verify import for create
 #    When The user fill item import excel with 2 value
@@ -115,7 +115,7 @@ Feature: Item Imports
     When The user fill import excel for create2
     When The user click item import button
     When The user upload file 'Contact'
-    When The user click second import next button
+#    When The user click second import next button
     When The user import the file new
     Then The user verify import for create2
 
@@ -129,7 +129,7 @@ Feature: Item Imports
     When The user fill import excel for create event
     When The user click item import button
     When The user upload file 'Event'
-    When The user click second import next button
+#    When The user click second import next button
     When The user import the file new
 #    Then The user verify import for create
     Then The user verify import for create event
@@ -145,7 +145,7 @@ Feature: Item Imports
     When The user fill import excel for create product
     When The user click item import button
     When The user upload file 'Product'
-    When The user click second import next button
+#    When The user click second import next button
     When The user import the file new
 #    Then The user verify import for create
     Then The user verify import for create product
@@ -178,7 +178,6 @@ Feature: Item Imports
     When The user fill import excel for create event
     When The user click item import button
     When The user upload file 'Event'
-    When The user click second import next button
     When The user set new attributes
     When The user import the file new
 #    Then The user verify import for create event with new attribute

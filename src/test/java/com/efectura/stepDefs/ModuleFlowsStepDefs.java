@@ -425,4 +425,14 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserFillLastVendorFormAndComplete() {
         pages.modulFlows().fillStandLastVendorFormAndComplete();
     }
+
+    @Given("The user search form")
+    public void theUserSearchForm() {
+        BrowserUtils.wait(1);
+        Driver.getDriver().get("https://dia-preprod-ui.efectura.com/Task/TaskList");
+        BrowserUtils.wait(3);
+        BrowserUtils.waitForVisibility(pages.taskList().getSearchAllFilterInput(),50);
+        pages.taskList().getSearchAllFilterInput().sendKeys(formNumber);
+        BrowserUtils.wait(5);
+    }
 }
