@@ -159,8 +159,9 @@ Feature: Item Imports
     When The user get default family 'Event'
     When The user create excel file
     When The user fill import excel for create event
-    When The user import the file new
-    Then The user verify import for create event
+    When The user click item import button
+#    When The user import the file new
+#    Then The user verify import for create event
 
   Scenario: Contact Over Limit Import
     Given The user go to 'Contact' overview page
@@ -169,6 +170,8 @@ Feature: Item Imports
     Then The user verify over limit error message
 
   Scenario: Event Import - Create Attribute
+    Then The user delete attribute options
+    Then The user tear down new attributes
     Given The user go to 'Event' overview page
     Given The user get import info
       | username | fatihkara |

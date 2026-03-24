@@ -783,6 +783,7 @@ public class ModulFlows extends BasePage {
         WebElement brandSelect = driver.findElement(By.xpath("//select[@id='isBrandJob']"));
         BrowserUtils.selectDropdownOptionByVisibleText(brandSelect,"Hayır");
         BrowserUtils.selectDropdownOptionByVisibleText(kalemSelect,"JW_Ağac_Stand_tr");
+        BrowserUtils.wait(2);
         driver.findElement(By.xpath("//button[@id='add-stand-process']")).click();
         BrowserUtils.wait(6);
         BrowserUtils.adjustScreenSize(75,driver);
