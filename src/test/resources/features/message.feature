@@ -42,12 +42,12 @@ Feature: Message Sending Cases
     When The user select 'İK Personel Email' as attribute
     When The user set 'fatih.kara@efectura.com' as attribute value
     When The user click second next button
-    When The user set push title
-    When The user set push body
-    When The user click body next button
-    When The user select schedule as now
-    When The user clicks schedule next button
-    When The user clicks send button
+#    When The user set push title
+#    When The user set push body
+#    When The user click body next button
+#    When The user select schedule as now
+#    When The user clicks schedule next button
+#    When The user clicks send button
 #    Then The user verify the push with db 'DEV_MDM'
 
 

@@ -20,7 +20,7 @@ Feature: Export Scenarios
     Then The user verifies info "Mail Gönderildi" appears
 
   Scenario: Transaction Tables Export
-    Given The user go to edit item '3495770'
+    Given The user go to edit item '3496205'
     And The user clicks "TRX_ICHEDEF_PLANLAMA" tab
     When The user click 'Dışarı Aktar' button
     When The user get selected export options
@@ -38,6 +38,6 @@ Feature: Export Scenarios
     Then The user verifies info "Başarılı" appears
     When The user wait 1 second
     Then The user verify file is downloaded
-    And The user clicks "Siparişler" tab
+    And The user clicks "Akış Detay" tab
     When The user click 'Dışarı Aktar' button
-    Then The user verifies info "NoDataToExport" appears
+    Then The user verifies info "ERR_NO_EXPORT_DATA" appears

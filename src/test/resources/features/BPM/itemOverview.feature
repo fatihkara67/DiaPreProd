@@ -199,7 +199,8 @@ Feature: Item Overview Scenarios
     When The user click edit item side bar button
     When The user click clone button
     When The user fill product clone item info
-    Then The user verifies info "Item was cloned successfully." appears
+    Then the user verify clone message
+#    Then The user verifies info "Item was cloned successfully." appears
 
   Scenario: Edit Item Attribute Navigation
     When The user go to edit item '3499092'

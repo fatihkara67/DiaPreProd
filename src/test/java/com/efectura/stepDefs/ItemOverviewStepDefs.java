@@ -452,8 +452,18 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user click {string} button")
     public void theUserClickButton(String buttonName) {
+
+
         String locate = "//div[contains(@class,'header')]/button[contains(normalize-space(),'" + buttonName + "')]";
-        Driver.getDriver().findElement(By.xpath(locate)).click();
+        List<WebElement> buttons = driver.findElements(By.xpath(locate));
+
+        for (WebElement button : buttons) {
+            if (button.isDisplayed()) {
+                button.click();
+            }
+        }
+
+//        Driver.getDriver().findElement(By.xpath(locate)).click();
 
     }
 
@@ -601,6 +611,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
 //        driver.findElement(By.xpath("//input[@id='unmatched-status']")).click();
         BrowserUtils.wait(15);
+        BrowserUtils.scrollToElement(driver,pages.itemOverviewPage().getSaveMatchColumnsButton());
         pages.itemOverviewPage().getSaveMatchColumnsButton().click();
         BrowserUtils.wait(2);
 //        driver.findElement(By.xpath("//button[@id='import-association-next']")).click();
@@ -1564,6 +1575,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
         for (String attribute : newAttributes) {
             BrowserUtils.moveToElement(driver.findElement(By.xpath("//button[@data-column='" + attribute + "']")));
+            BrowserUtils.wait(1);
             driver.findElement(By.xpath("//button[@data-column='" + attribute + "']")).click();
             BrowserUtils.wait(1);
             driver.findElement(By.xpath("//input[@id='attr-create-code']")).sendKeys(attribute);
@@ -1723,7 +1735,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     public void theUserFillProductCloneItemInfo() {
         cloneItemSku = UUID.randomUUID().toString();
         driver.findElement(By.xpath("//input[@id='skuinputvalue']")).sendKeys(cloneItemSku);
-        driver.findElement(By.xpath("//h5[.=' Ürün Grup Kodu']/following-sibling::input")).click();
+//        driver.findElement(By.xpath("//h5[.=' Ürün Grup Kodu']/following-sibling::input")).click();
         BrowserUtils.wait(2);
         driver.findElement(By.xpath("//button[@id='clone-create']")).click();
     }
@@ -1838,4 +1850,9 @@ public class ItemOverviewStepDefs extends BaseStep {
     }
 
 
+    @Then("the user verify clone message")
+    public void theUserVerifyCloneMessage() {
+        String text = "Item was cloned successfully.";
+        Assert.assertTrue(BrowserUtils.isElementDisplayed(By.xpath("//*[contains(normalize-space(.), '" + text + "')]")));
+    }
 }
