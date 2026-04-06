@@ -208,4 +208,28 @@ Feature: Item Overview Scenarios
     When The user click 'Ürün Adı' attribute header
     Then The user verifies 'Ürün Adı' attribute edit page is open
 
+  Scenario: Currency Atribute
+    When The user go to edit item '3621034'
+    When The user click "SYSTEM_ATTRIBUTES_Product" attribute group
+#  //header/a[contains(.,'Price')]/parent::header/following-sibling::div/span
+    When The user click 'Para Birimi' attribute header
+    Then The user verifies 'Para Birimi' attribute edit page is open
+
+  Scenario: Transaction Table Create
+    When The user go to transaction page
+    When The user click create transaction button
+    When The user select db type 'SQLServer'
+    When The user fill transaction create inputs
+    When The user click create transaction create button
+    Then The user verifies info "TableSavedSuccessfully" appears
+    And The user enters created name into "TabName" filter text input box
+    Then The user verify "TabName" text filter with value in "transaction_pages_table"
+    Then The user delete created transaction
+
+  Scenario: PreProd Seatunnel
+    When The user go to seatunnel page
+    Then The user verify dashboard
+    When The user click 'Finished Jobs' seatunnel tab
+    Then The user verify finished jobs table
+
 
