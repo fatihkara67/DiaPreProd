@@ -236,14 +236,14 @@ public class DbProcess extends BasePage {
                 "WHERE TypeName = '" + itemType + "')";
 
         System.out.println("query: \n" + query);
-        Map<String,String> categoriesInfo = new HashMap<>();
+        Map<String, String> categoriesInfo = new HashMap<>();
 
         try (Connection conn = Database.getInstance();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                categoriesInfo.put(rs.getString("Code"),rs.getString("category"));
+                categoriesInfo.put(rs.getString("Code"), rs.getString("category"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -262,14 +262,14 @@ public class DbProcess extends BasePage {
 
 
         System.out.println("query: \n" + query);
-        Map<String,String> familiesInfo = new HashMap<>();
+        Map<String, String> familiesInfo = new HashMap<>();
 
         try (Connection conn = Database.getInstance();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                familiesInfo.put(rs.getString("Code"),rs.getString("family"));
+                familiesInfo.put(rs.getString("Code"), rs.getString("family"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -297,14 +297,14 @@ public class DbProcess extends BasePage {
                 """.formatted(randomSku.trim());
 
         String debugCatSql = """
-    SELECT COUNT(*) AS cnt
-    FROM DIA_PREPROD.dbo.CategoryItems
-    WHERE Item_Id = (
-        SELECT Id
-        FROM DIA_PREPROD.dbo.Items
-        WHERE SKU = '%s'
-    )
-    """.formatted(randomSku);
+                SELECT COUNT(*) AS cnt
+                FROM DIA_PREPROD.dbo.CategoryItems
+                WHERE Item_Id = (
+                    SELECT Id
+                    FROM DIA_PREPROD.dbo.Items
+                    WHERE SKU = '%s'
+                )
+                """.formatted(randomSku);
 
 //        System.out.println("randomSku: >" + randomSku + "< len=" + randomSku.length());
 //        for (int i = 0; i < randomSku.length(); i++) {
@@ -477,7 +477,7 @@ public class DbProcess extends BasePage {
 
     }
 
-    public String getAnySku(String itemType,String count) {
+    public String getAnySku(String itemType, String count) {
         String query = "SELECT TOP " + count + " SKU FROM Items\n" +
                 "        WHERE Type = (SELECT Type FROM ItemTypeColumns\n" +
                 "        WHERE TypeName = '" + itemType + "')";
@@ -585,7 +585,7 @@ public class DbProcess extends BasePage {
         return time;
     }
 
-    public String getEventName(String randomSku5,String itemType) {
+    public String getEventName(String randomSku5, String itemType) {
         String query = "SELECT ValueString FROM ItemValues\n" +
                 "WHERE AttributeId = (SELECT Id FROM Attributes\n" +
                 "WHERE Code = 'DIA_FirstName') AND ItemId = (SELECT Id FROM Items WHERE SKU = '" + randomSku5 + "')";
@@ -849,7 +849,7 @@ public class DbProcess extends BasePage {
     }
 
     public List<Integer> getItemId(int count, String itemType) {
-        String query =  "SELECT TOP " + count  + " Id FROM Items i\n" +
+        String query = "SELECT TOP " + count + " Id FROM Items i\n" +
                 "WHERE [Type] = (\n" +
                 "SELECT [Type] FROM ItemTypeColumns\n" +
                 "WHERE TypeName = '" + itemType + "')";
@@ -873,9 +873,9 @@ public class DbProcess extends BasePage {
 
     }
 
-    public void clearRelatedTables() {
-        String query1 = "ALTER TABLE my_database.TRX_KARNE_TARGETS\n" +
-                "DELETE WHERE FISCALYEAR = " + 2025 + " AND FISCALMONTH = " + 10 ;
+    public void clearRelatedTables(String tableName) {
+        String query1 = "ALTER TABLE my_database." + tableName + "\n" +
+                "DELETE WHERE FISCALYEAR = " + 2025 + " AND FISCALMONTH = " + 10;
 
         System.out.println(query1);
 
@@ -918,7 +918,6 @@ public class DbProcess extends BasePage {
         System.out.println("type: " + type);
 
         return type;
-
 
 
     }
@@ -1099,6 +1098,19 @@ public class DbProcess extends BasePage {
             e.printStackTrace();
         }
 
+
+    }
+
+    public void deleteTransaction(String tableName) {
+        String query = "DROP TABLE " + tableName + ";";
+
+
+        try (Connection conn = DatabaseManager.getConnection(DbConfigs.DB_URL, DbConfigs.DB_USERNAME, DbConfigs.DB_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

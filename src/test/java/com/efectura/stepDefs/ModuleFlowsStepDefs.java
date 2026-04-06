@@ -42,7 +42,9 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @Given("The user go in {string} flow")
     public void theUserGoInFlow(String formName) {
+        BrowserUtils.wait(7);
         pages.panel().goInFlow(formName);
+        BrowserUtils.wait(3);
     }
 
     @Given("The user select {string} as form type")
@@ -258,15 +260,21 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @When("The user clear related tables")
     public void theUserClearRelatedTables() {
-        pages.dbProcess().clearRelatedTables();
+        List<String> tables = List.of("TRX_ROUTE_TARGETS","TRX_SALES_DASHBOARD_TARGETS","TRX_ICHEDEF_PLANLAMA","TRX_KARNE_TARGETS");
+
+        for (String table : tables) {
+            pages.dbProcess().clearRelatedTables(table);
+        }
     }
 
+    String targetExportFile;
     @When("The user export target file")
     public void theUserExportTargetFile() {
         BrowserUtils.wait(1);
         Driver.getDriver().findElement(By.id("export-target-dropdown")).click();
         Driver.getDriver().findElement(By.id("export-target")).click();
-
+        BrowserUtils.wait(15);
+        targetExportFile = BrowserUtils.getLatestExcelFilePath("C:\\Downloads");
     }
 
     @When("The user import target file")
@@ -275,15 +283,18 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
 //        Driver.getDriver().findElement(By.id("target-import-step-two")).click();
         BrowserUtils.wait(6);
+        BrowserUtils.waitForVisibility(By.id("target-import-step-three"),40);
         Driver.getDriver().findElement(By.id("target-import-step-three")).click();
+
         BrowserUtils.wait(6);
+        BrowserUtils.waitForVisibility(By.id("target-apply-details-button"),40);
         Driver.getDriver().findElement(By.id("target-apply-details-button")).click();
-        BrowserUtils.wait(12);
+        BrowserUtils.wait(25);
     }
 
     @When("The user click target import button")
     public void theUserClickTargetImportButton() {
-        BrowserUtils.wait(2);
+        BrowserUtils.wait(3);
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(15));
 
         By importDropdownBtn = By.id("import-target-dropdown");
@@ -309,13 +320,19 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @When("The user click flow button")
     public void theUserClickFlowButton() {
+        BrowserUtils.wait(12);
         Driver.getDriver().findElement(By.xpath("//button[@id='modal_actionBtn']")).click();
         BrowserUtils.wait(2);
     }
 
     @When("The user select bm {string}")
     public void theUserSelectBm(String bmName) {
-        BrowserUtils.wait(2);
+        BrowserUtils.waitForVisibility(By.xpath("//select[@id='bmSelect']"),40);
+        BrowserUtils.wait(22);
+
+//        Driver.getDriver().navigate().refresh();
+//        BrowserUtils.wait(7);
+
         WebElement select = Driver.getDriver().findElement(By.xpath("//select[@id='bmSelect']"));
         BrowserUtils.selectDropdownOptionByVisibleText(select,bmName);
         BrowserUtils.wait(2);
@@ -323,12 +340,14 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @When("The user click start flow button")
     public void theUserClickStartFlowButton() {
+        BrowserUtils.wait(2);
         Driver.getDriver().findElement(By.xpath("//button[@id='gotoNextScreenBtnAll']")).click();
         BrowserUtils.wait(3);
     }
 
     @When("The user go in route flow")
     public void theUserGoInRouteFlow() {
+        BrowserUtils.waitForVisibility(By.xpath("(//td[.='__LZM_ROUTES__'])[1]"),120);
         Driver.getDriver().findElement(By.xpath("(//td[.='__LZM_ROUTES__'])[1]")).click();
     }
 
@@ -354,9 +373,9 @@ public class ModuleFlowsStepDefs extends BaseStep {
         pages.itemOverviewPage().getItemImportInput().sendKeys(getExcelPath(fileName));
         BrowserUtils.adjustScreenSize(70,Driver.getDriver());
         BrowserUtils.moveToElement(pages.itemOverviewPage().getItemImportStep2NextButton());
-        BrowserUtils.wait(1);
+        BrowserUtils.wait(3);
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
-        BrowserUtils.wait(2);
+        BrowserUtils.wait(4);
     }
 
     @When("The user click start import button")
@@ -434,5 +453,26 @@ public class ModuleFlowsStepDefs extends BaseStep {
         BrowserUtils.waitForVisibility(pages.taskList().getSearchAllFilterInput(),50);
         pages.taskList().getSearchAllFilterInput().sendKeys(formNumber);
         BrowserUtils.wait(5);
+    }
+
+    @When("The user upload the target file")
+    public void theUserUploadTheTargetFile() {
+        //        Driver.getDriver().findElement(By.xpath("//input[contains(@id,'file-import')]")).sendKeys(getExcelPath(fileName));
+        pages.itemOverviewPage().getItemImportInput().sendKeys(targetExportFile);
+        BrowserUtils.adjustScreenSize(70,Driver.getDriver());
+        BrowserUtils.moveToElement(pages.itemOverviewPage().getItemImportStep2NextButton());
+        BrowserUtils.wait(3);
+        pages.itemOverviewPage().getItemImportStep2NextButton().click();
+        BrowserUtils.wait(4);
+    }
+
+    @When("The user impersonate to st")
+    public void theUserImpersonateToSt() {
+        Driver.getDriver().get("https://dia-preprod-ui.efectura.com/UserManage/Edit/20fc6cda-e3d1-4024-aa03-ca9dbece0033");
+
+        BrowserUtils.waitForVisibility(pages.modulFlows().impersonateHoverBtn, 30);
+        BrowserUtils.hoverOver(pages.modulFlows().impersonateHoverBtn);
+        pages.modulFlows().impersonateButton.click();
+        BrowserUtils.wait(3);
     }
 }

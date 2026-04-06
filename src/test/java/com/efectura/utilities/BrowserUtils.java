@@ -1079,6 +1079,32 @@ public class BrowserUtils {
         return count;
     }
 
+    public static String getLatestExcelFilePath(String folderPath) {
+        File folder = new File(folderPath);
+
+        if (!folder.exists() || !folder.isDirectory()) {
+            throw new RuntimeException("Geçersiz klasör yolu: " + folderPath);
+        }
+
+        File[] excelFiles = folder.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                String lower = name.toLowerCase();
+                return lower.endsWith(".xlsx") || lower.endsWith(".xls");
+            }
+        });
+
+        if (excelFiles == null || excelFiles.length == 0) {
+            throw new RuntimeException("Klasörde Excel dosyası bulunamadı: " + folderPath);
+        }
+
+        File latestFile = Arrays.stream(excelFiles)
+                .max(Comparator.comparingLong(File::lastModified))
+                .orElseThrow(() -> new RuntimeException("En son indirilen Excel dosyası bulunamadı."));
+
+        return latestFile.getAbsolutePath();
+    }
+
 
 
 

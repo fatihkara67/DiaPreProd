@@ -1,9 +1,7 @@
 package com.efectura.stepDefs;
 
 import com.efectura.pages.BPM.Offstand;
-import com.efectura.utilities.BrowserUtils;
-import com.efectura.utilities.CommonExcelReader;
-import com.efectura.utilities.Driver;
+import com.efectura.utilities.*;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -19,13 +17,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.efectura.pages.BasePage.getColumnData;
-import static com.efectura.utilities.BrowserUtils.getFormattedDate;
-import static com.efectura.utilities.BrowserUtils.getFormattedDateWithoutHour;
+import static com.efectura.utilities.BrowserUtils.*;
 import static com.efectura.utilities.CommonExcelReader.getExcelPath;
 
 public class ItemOverviewStepDefs extends BaseStep {
@@ -1625,6 +1625,13 @@ public class ItemOverviewStepDefs extends BaseStep {
         Assert.assertEquals("Yeni oluşturulan attribute'lar silinemedi",4,deletenAttributeCount);
     }
 
+    @Then("The user tear down new attributes before")
+    public void theUserTearDownNewAttributesBefore() {
+        BrowserUtils.wait(3);
+        int deletenAttributeCount = pages.dbProcess().deleteTestAttributesInItemImport();
+        System.out.println("Deleted attribute count: " + deletenAttributeCount);
+    }
+
     @Then("The user delete new items")
     public void theUserDeleteNewItems() {
 
@@ -1854,5 +1861,158 @@ public class ItemOverviewStepDefs extends BaseStep {
     public void theUserVerifyCloneMessage() {
         String text = "Item was cloned successfully.";
         Assert.assertTrue(BrowserUtils.isElementDisplayed(By.xpath("//*[contains(normalize-space(.), '" + text + "')]")));
+    }
+
+    @When("The user go to transaction page")
+    public void theUserGoToTransactionPage() {
+        driver.get("https://dia-preprod-ui.efectura.com/Settings/TransactionPage");
+    }
+
+    @When("The user click create transaction button")
+    public void theUserClickCreateTransactionButton() {
+        driver.findElement(By.xpath("//button[@id='transaction_pages_table-AddNew']")).click();
+    }
+
+    @When("The user select db type {string}")
+    public void theUserSelectDbType(String dbType) {
+        WebElement dbTypeSelect = driver.findElement(By.xpath("//select[@id='db-type-create']"));
+
+        BrowserUtils.selectDropdownOptionByVisibleText(dbTypeSelect, dbType);
+
+    }
+
+    String tableName;
+    @When("The user fill transaction create inputs")
+    public void theUserFillTransactionCreateInputs() {
+        tableName = "Automation_" + UUID.randomUUID().toString().replace("-","").substring(0,6);
+        System.out.println("Table Name: " + tableName);
+        driver.findElement(By.xpath("//input[@id='table-name-create']")).sendKeys(tableName);
+
+        WebElement itemTypeSelect = driver.findElement(By.xpath("//select[contains(@data-placeholder,'SelectItemType')]"));
+        BrowserUtils.selectDropdownOptionByVisibleText(itemTypeSelect,"Event");
+
+        driver.findElement(By.xpath("//input[@id='item-id-column-create']")).sendKeys("Id");
+
+        driver.findElement(By.xpath("//button[contains(.,'AddColumn')]")).click();
+        driver.findElement(By.xpath("//*[@id='columns-table-create']/tbody/tr/td[1]/input")).sendKeys("Id");
+        driver.findElement(By.xpath("//*[@id='columns-table-create']/tbody/tr/td[3]/input")).click();
+    }
+
+    @When("The user click create transaction create button")
+    public void theUserClickCreateTransactionCreateButton() {
+        driver.findElement(By.xpath("//button[contains(.,'CreateTable')]")).click();
+    }
+
+    @And("The user enters created name into {string} filter text input box")
+    public void theUserEntersCreatedNameIntoFilterTextInputBox(String transactionName) {
+        //thead/tr[1]/th[normalize-space()='Address']/following::tr[1]/th[position()=count(//thead/tr[1]/th[normalize-space()='Address']/preceding-sibling::th)+1]//input
+        String locate = "//thead/tr[1]/th[normalize-space()='" + transactionName +
+                "']/following::tr[1]/th[position()=count(//thead/tr[1]/th[normalize-space()='" + transactionName +
+                "']/preceding-sibling::th)+1]//input";
+
+        WebElement filterInput = Driver.getDriver().findElement(By.xpath(locate));
+        filterInput.sendKeys(tableName + Keys.ENTER);
+    }
+
+    @Then("The user verify {string} text filter with value in {string}")
+    public void theUserVerifyTextFilterWithValueIn(String columnName, String table) {
+        BrowserUtils.wait(2);
+        WebElement tableElement = Driver.getDriver().findElement(By.id(ConfigurationReader.getProperty(table)));
+        List<String> values =  getColumnData(tableElement,columnName);
+
+        System.out.println(values);
+        BrowserUtils.wait(2);
+        for (String actualValue : values) {
+            Assert.assertTrue(actualValue.toLowerCase().contains(tableName.toLowerCase()));
+//            Assert.assertEquals(expectedValue,actualValue);
+        }
+    }
+
+    @Then("The user delete created transaction")
+    public void theUserDeleteCreatedTransaction() {
+        pages.dbProcess().deleteTransaction(tableName);
+    }
+
+    @When("The user go to seatunnel page")
+    public void theUserGoToSeatunnelPage() {
+        driver.get("https://dia-preprod-ui.efectura.com/Settings/Sentinel");
+    }
+
+    String runningJobs;
+    String finishedJobs;
+    String pendingJobs;
+    String failedJobs;
+    @Then("The user verify dashboard")
+    public void theUserVerifyDashboard() {
+        driver.switchTo().frame(driver.findElement(By.id("seaTunnelFrame")));
+
+        runningJobs = driver.findElement(By.xpath("//p[text()='Running Jobs']/following-sibling::p")).getText();
+        System.out.println("runningJobs: " + runningJobs);
+        Assert.assertTrue("runningJobs sayısı negatif",Integer.parseInt(runningJobs) >= 0);
+
+        finishedJobs = driver.findElement(By.xpath("//p[text()='Finished Jobs']/following-sibling::p")).getText();
+        System.out.println("finishedJobs: " + finishedJobs);
+        Assert.assertTrue("finishedJobs sayısı negatif",Integer.parseInt(finishedJobs) >= 0);
+
+        pendingJobs = driver.findElement(By.xpath("//p[text()='Pending Jobs']/following-sibling::p")).getText();
+        System.out.println("pendingJobs: " + pendingJobs);
+        Assert.assertTrue("pendingJobs sayısı negatif",Integer.parseInt(pendingJobs) >= 0);
+
+        failedJobs = driver.findElement(By.xpath("//p[text()='Failed Jobs']/following-sibling::p")).getText();
+        System.out.println("failedJobs: " + failedJobs);
+        Assert.assertTrue("failedJobs sayısı negatif",Integer.parseInt(failedJobs) >= 0);
+
+
+        boolean recentJobsTableVisible = BrowserUtils.isElementDisplayed(By.xpath("/html/body/div/div/main/div/div/div[4]/div[2]/table"));
+        Assert.assertTrue("Recent Job Runs tablosu gelmedi", recentJobsTableVisible);
+
+    }
+
+    @When("The user click {string} seatunnel tab")
+    public void theUserClickRunningJobsSeatunnelTab(String tabName) {
+        driver.findElement(By.xpath("//a[normalize-space()='" + tabName + "']")).click();
+        BrowserUtils.wait(3);
+    }
+
+    @Then("The user verify finished jobs table")
+    public void theUserVerifyFinishedJobsTable() {
+        List<WebElement> finishedJobsRows = driver.findElements(By.xpath("//tbody[contains(@class,'divide-y')]//tr"));
+
+        int count = finishedJobsRows.size();
+
+
+        while (isButtonActive(driver.findElement(By.xpath("//*[@id=\"root\"]/div/main/div/div/div[3]/button[2]")))) {
+            driver.findElement(By.xpath("//*[@id=\"root\"]/div/main/div/div/div[3]/button[2]")).click();
+            BrowserUtils.wait(2);
+            count += finishedJobsRows.size();
+        }
+
+        System.out.println("Finished Jobs Count: " + count);
+
+    }
+
+    @Then("The user delete item values")
+    public void theUserDeleteItemValues() {
+        BrowserUtils.wait(10);
+        String query = "DELETE FROM ItemValues\n" +
+                "    WHERE AttributeId IN (\n" +
+                "    SELECT Id FROM Attributes\n" +
+                "    WHERE Code In ('NewText','NewBoolean','NewSelect','NewDate')\n" +
+                "    )";
+
+
+        int affectedRows = 0;
+        try (Connection conn = Database.getInstance();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+//            ps.setString(1, "%Test Automation%");
+
+            affectedRows = ps.executeUpdate();
+            System.out.println("Silinen kayıt sayısı: " + affectedRows);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

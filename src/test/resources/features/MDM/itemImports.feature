@@ -171,7 +171,7 @@ Feature: Item Imports
 
   Scenario: Event Import - Create Attribute
     Then The user delete attribute options
-    Then The user tear down new attributes
+    Then The user tear down new attributes before
     Given The user go to 'Event' overview page
     Given The user get import info
       | username | fatihkara |
@@ -184,6 +184,7 @@ Feature: Item Imports
     When The user set new attributes
     When The user import the file new
 #    Then The user verify import for create event with new attribute
+    Then The user delete item values
     Then The user delete new items
     Then The user delete attribute options
    Then The user tear down new attributes

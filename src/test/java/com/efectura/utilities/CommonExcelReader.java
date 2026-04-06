@@ -363,6 +363,42 @@ public class CommonExcelReader {
         return headers;
     }
 
+    public static int getNonEmptyRowCount(String filePath) throws IOException {
+        FileInputStream fis = new FileInputStream(new File(filePath));
+        Workbook workbook = new XSSFWorkbook(fis);
+        Sheet sheet = workbook.getSheetAt(0);
+
+        int nonEmptyRowCount = 0;
+
+        for (Row row : sheet) {
+            if (row == null) continue;
+
+            boolean isRowEmpty = true;
+
+            for (Cell cell : row) {
+                if (cell != null && cell.getCellType() != CellType.BLANK) {
+                    // Hücrede gerçek değer var mı kontrol et
+                    if (cell.getCellType() == CellType.STRING && !cell.getStringCellValue().trim().isEmpty()) {
+                        isRowEmpty = false;
+                        break;
+                    } else if (cell.getCellType() != CellType.STRING) {
+                        isRowEmpty = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!isRowEmpty) {
+                nonEmptyRowCount++;
+            }
+        }
+
+        workbook.close();
+        fis.close();
+
+        return nonEmptyRowCount;
+    }
+
 
 
 }
