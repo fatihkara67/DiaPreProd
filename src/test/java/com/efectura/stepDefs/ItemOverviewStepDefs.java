@@ -226,7 +226,8 @@ public class ItemOverviewStepDefs extends BaseStep {
         CommonExcelReader.setColumnHeader(filePath,5,"NewText");
         CommonExcelReader.setColumnHeader(filePath,6,"NewSelect");
         CommonExcelReader.setColumnHeader(filePath,7,"NewDate");
-        
+        CommonExcelReader.setColumnHeader(filePath,12,"E-Posta");
+
         indexAndHeaders.put("SKU",0);
         indexAndHeaders.put("Category",1);
         indexAndHeaders.put("Family",2);
@@ -609,12 +610,10 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user import the file new")
     public void theUserImportTheFileNew() {
 
-//        driver.findElement(By.xpath("//input[@id='unmatched-status']")).click();
         BrowserUtils.wait(15);
         BrowserUtils.scrollToElement(driver,pages.itemOverviewPage().getSaveMatchColumnsButton());
         pages.itemOverviewPage().getSaveMatchColumnsButton().click();
         BrowserUtils.wait(2);
-//        driver.findElement(By.xpath("//button[@id='import-association-next']")).click();
         BrowserUtils.waitForVisibility(pages.editItemPage().getInfoMessage(),90);
         Assert.assertEquals("ValidationCompleted", pages.editItemPage().getInfoMessage().getText());
 
@@ -1481,8 +1480,8 @@ public class ItemOverviewStepDefs extends BaseStep {
         driver.findElement(By.xpath("//button[@id='create-segment']")).click();
     }
 
-    @When("The user verify created event edit page is open")
-    public void theUserVerifyCreatedEventEditPageIsOpen() {
+    @When("The user verify created item edit page is open")
+    public void theUserVerifyCreatedItemEditPageIsOpen() {
         BrowserUtils.wait(10);
         String url = Driver.getDriver().getCurrentUrl();
         System.out.println("Url: " + url);
@@ -2014,5 +2013,260 @@ public class ItemOverviewStepDefs extends BaseStep {
             e.printStackTrace();
         }
 
+    }
+
+    @When("The user click family title")
+    public void theUserClickFamilyTitle() {
+        driver.findElement(By.xpath("//a[.='FamilySelect']")).click();
+        BrowserUtils.wait(2);
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: Aileler");
+    }
+
+    @Then("The user verify family overview page is open")
+    public void theUserVerifyFamilyOverviewPageIsOpen() {
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains("https://dia-preprod-ui.efectura.com/Settings/Families"));
+    }
+
+    @When("The user click status title")
+    public void theUserClickStatusTitle() {
+        driver.findElement(By.xpath("//a[.='Öğe Durumu']")).click();
+        BrowserUtils.wait(2);
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: Öğe Durumları");
+
+    }
+
+    @Then("The user verify item status page is open")
+    public void theUserVerifyItemStatusPageIsOpen() {
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains("https://dia-preprod-ui.efectura.com/Settings/ItemStatuses"));
+    }
+
+    @When("The user click tags title")
+    public void theUserClickTagsTitle() {
+        driver.findElement(By.xpath("//div[@class='sidebar-overlay-section']/a[.='Etiketler']")).click();
+        BrowserUtils.wait(2);
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: Etiketler");
+    }
+
+    @Then("The user verify tags page is open")
+    public void theUserVerifyTagsPageIsOpen() {
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains("https://dia-preprod-ui.efectura.com/Settings/Tags"));
+    }
+
+    String anySKU10;
+    @When("The user fill import excel for create3")
+    public void theUserFillImportExcelForCreate3() throws IOException {
+        anySKU10 = pages.dbProcess().getAnySku("Contact","10");
+        String filePath = getExcelPath(itemType);
+        CommonExcelReader.setColumnHeader(filePath,indexAndHeaders.get("DIA_FirstName"),"İsim");
+
+        anySKU9 = pages.dbProcess().getAnySku("Contact","4");
+        randomName9 = UUID.randomUUID().toString();
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",1, anySKU9);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",1, randomName9);
+
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"SKU",2, anySKU10);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"İsim",2, randomName9);
+        CommonExcelReader.updateCellValue(getExcelPath(itemType),"E-Posta",2, "xxx");
+    }
+
+    @When("The user import the file new by skipping failed ones")
+    public void theUserImportTheFileNewBySkippingFailedOnes() {
+        BrowserUtils.wait(15);
+        BrowserUtils.scrollToElement(driver,pages.itemOverviewPage().getSaveMatchColumnsButton());
+        pages.itemOverviewPage().getSaveMatchColumnsButton().click();
+        BrowserUtils.wait(2);
+        BrowserUtils.waitForVisibility(pages.editItemPage().getInfoMessage(),90);
+        Assert.assertEquals("ValidationFailed: DIA_Email:'Value String' is not in the correct format.", pages.editItemPage().getInfoMessage().getText());
+
+        driver.findElement(By.xpath("//input[@id='ef-import-edit-skip-errors']")).click();
+
+        importTime = BrowserUtils.getFormattedNow("UTC");
+        System.out.println("import time utc: " + importTime);
+
+        BrowserUtils.wait(4);
+
+        BrowserUtils.waitForVisibility(pages.itemOverviewPage().getApplyImportValidationButton(),80);
+        pages.itemOverviewPage().getApplyImportValidationButton().click();
+        //FileUploaded
+        BrowserUtils.wait(1);
+
+        BrowserUtils.waitForVisibility(pages.editItemPage().getInfoMessage(),90);
+        Assert.assertEquals("FileUploaded", pages.editItemPage().getInfoMessage().getText());
+        System.out.println(pages.editItemPage().getInfoMessage().getText());
+    }
+
+    @When("The user go to findAndMatch page")
+    public void theUserGoToFindAndMatchPage() {
+        driver.get("https://dia-preprod-ui.efectura.com/Enrich/FindAndMatch");
+    }
+
+    @When("The user select {string} association type")
+    public void theUserSelectAssociationType(String assocType) {
+        WebElement assocSelect = driver.findElement(By.xpath("//select[@id='association-type']"));
+
+        BrowserUtils.selectDropdownOptionByVisibleText(assocSelect, assocType);
+        BrowserUtils.wait(5);
+
+    }
+
+    @When("The user select primary item attribute {string}")
+    public void theUserSelectPrimaryItemAttribute(String attributeName) {
+        WebElement primaryContainer = driver.findElement(By.xpath("//span[@id='select2-selectPrimaryAttributes-container']"));
+        primaryContainer.click();
+        driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(attributeName);
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+    }
+
+    @When("The user select secondary item attribute {string}")
+    public void theUserSelectSecondaryItemAttribute(String attributeName) {
+        WebElement secondaryContainer = driver.findElement(By.xpath("//span[@id='select2-selectSecondaryAttributes-container']"));
+        secondaryContainer.click();
+        driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(attributeName);
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+    }
+
+    @When("The user click find and match preview button")
+    public void theUserClickFindAndMatchPreviewButton() {
+        driver.findElement(By.xpath("//button[@id='previewConnectedAttributes']")).click();
+        BrowserUtils.wait(3);
+    }
+
+    @When("The user click connect button in find and match table")
+    public void theUserClickConnectButtonInFindAndMatchTable() {
+        driver.findElement(By.xpath("//button[@id='connect-attributes']")).click();
+    }
+
+    @Then("The user verify items has association")
+    public void theUserVerifyItemsHasAssociation() {
+        pages.itemOverviewPage().verifyFindAndMatchItemAssoc();
+    }
+
+    @Then("The user delete association between items")
+    public void theUserDeleteAssociationBetweenItems() {
+        String query = "DELETE FROM Associations\n" +
+                "   WHERE FirstItemId = 3496510\n" +
+                "   AND SecondItemId = 3496333";
+
+        int affectedRows = 0;
+        try (Connection conn = Database.getInstance();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+//            ps.setString(1, "%Test Automation%");
+
+            affectedRows = ps.executeUpdate();
+            System.out.println("Silinen kayıt sayısı: " + affectedRows);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals("Association silinemedi",1,affectedRows);
+
+
+    }
+
+    @When("The user select saved connect {string}")
+    public void theUserSelectSavedConnectTest(String connectName) {
+        List<WebElement> savedConnections = driver.findElements(By.xpath("//div[@id='dc-src-saved-conn-chips']/button"));
+        for (WebElement connection : savedConnections) {
+            if (connection.getText().equals(connectName)) {
+                connection.click();
+                break;
+            }
+        }
+
+    }
+
+    @When("The user click test connect button")
+    public void theUserClickTestConnectButton() {
+        driver.findElement(By.xpath("//button[@id='dc-src-test-conn']")).click();
+    }
+
+    @When("The user click first next button")
+    public void theUserClickFirstNextButton() {
+        driver.findElement(By.xpath("//button[@id='dc-src-next']")).click();
+    }
+
+    @When("The user click sql button")
+    public void theUserClickSqlButton() {
+        driver.findElement(By.xpath("//button[@data-ds-tab='sql']")).click();
+    }
+
+    @When("The user fill sql query")
+    public void theUserFillSqlQuery() {
+        WebElement sqlTextArea = driver.findElement(By.xpath("//textarea[@id='dc-src-sql']"));
+
+        String query = "SELECT FirstItemId,SecondItemId FROM Associations\n" +
+                "   WHERE SecondItemId = 1188307\n" +
+                "   AND FirstItemId = 1527140";
+        sqlTextArea.sendKeys(query);
+    }
+
+    String resultCount;
+    @When("The user click run query button")
+    public void theUserClickRunQueryButton() {
+        driver.findElement(By.xpath("//button[@id='dc-src-run-query']")).click();
+
+        resultCount = driver.findElement(By.xpath("//span[@id='dc-src-sql-result-msg']/span")).getText().split(" ")[0];
+
+        System.out.println("resultCount: " + resultCount);
+
+    }
+
+    @When("The user click data connect second next button")
+    public void theUserClickDataConnectSecondNextButton() {
+        driver.findElement(By.xpath("//*[@id=\"dc-create-modal\"]/div/div/div[2]/div[2]/div[2]/div/div[2]/button[3]")).click();
+    }
+
+    @When("The user click data connect third next button")
+    public void theUserClickDataConnectThirdNextButton() {
+        driver.findElement(By.xpath("//*[@id=\"dc-create-modal\"]/div/div/div[2]/div[2]/div[3]/div/div[2]/button[3]")).click();
+    }
+
+    @When("The user select {string} for data connect family")
+    public void theUserSelectForDataConnectFamily(String family) {
+        WebElement familySelect = driver.findElement(By.xpath("//select[@id='dc-is-familyid']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(familySelect,family);
+    }
+
+    @When("The user select {string} for data connect item type")
+    public void theUserSelectForDataConnectItemType(String itemType) {
+        WebElement itemTypeSelect = driver.findElement(By.xpath("//select[@id='dc-is-itemtype']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(itemTypeSelect, itemType);
+    }
+
+    @When("the user select {string} for data connect sku")
+    public void theUserSelectForDataConnectSku(String skuOption) {
+        WebElement skuSelect = driver.findElement(By.xpath("//select[@id='dc-is-sku-column']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(skuSelect,skuOption);
+    }
+
+    @When("The user map attribute {string}")
+    public void theUserMapAttribute(String attributeName) {
+        driver.findElement(By.xpath("//*[@id=\"dc-is-attr-rows\"]/div[1]/div[1]/input")).click();
+
+        WebElement attributeSelect = driver.findElement(By.xpath("//*[@id=\"dc-is-attr-rows\"]/div[1]/div[4]/div/select"));
+        BrowserUtils.selectDropdownOptionByVisibleText(attributeSelect,attributeName);
+
+    }
+
+    @When("The user set cron expression")
+    public void theUserSetCronExpression() {
+        driver.findElement(By.xpath("//input[@id='dc-enable-cron']")).click();
+
+        String cron = BrowserUtils.getCronForNext2Minutes();
+        System.out.println("cron: " + cron);
+        driver.findElement(By.xpath("//input[@id='dc-cron-expression']")).sendKeys(cron);
+
+    }
+
+    @When("The user click data connect create button")
+    public void theUserClickDataConnectCreateButton() {
+        driver.findElement(By.xpath("//button[@id='dc-create-submit']")).click();
     }
 }

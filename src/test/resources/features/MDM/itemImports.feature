@@ -190,6 +190,21 @@ Feature: Item Imports
    Then The user tear down new attributes
 
 
+  Scenario: Contact Import Skip Failed Row
+    Given The user go to 'Contact' overview page
+    Given The user get import info
+      | username | fatihkara |
+      | itemType | Contact   |
+    When The user create excel file
+    When The user fill import excel for create3
+    When The user click item import button
+    When The user upload file 'Contact'
+    When The user import the file new by skipping failed ones
+    Then The user verify import for create2
+#    When The user click skip failed row button
+#    Then The user verify items are created except failed row
+
+
 
 
 

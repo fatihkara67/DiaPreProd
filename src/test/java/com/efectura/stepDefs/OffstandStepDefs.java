@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class OffstandStepDefs extends BaseStep {
 
@@ -124,5 +125,12 @@ public class OffstandStepDefs extends BaseStep {
     @When("The user click NewImport button")
     public void theUserClickNewImportButton() {
         Driver.getDriver().findElement(By.xpath("//button[@data-target='imp-tab-new-import']")).click();
+    }
+
+    String value;
+    @When("The user update {string} attribute with random value")
+    public void theUserUpdateAttributeWithRandomValue(String attrLabel) {
+        value = UUID.randomUUID().toString();
+        pages.offstand().updateAttribute(attrLabel,value);
     }
 }

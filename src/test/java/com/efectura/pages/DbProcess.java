@@ -1113,4 +1113,25 @@ public class DbProcess extends BasePage {
         }
 
     }
+
+    public int getAttributeIdByLabel(String attributeLabel) {
+        String query = "SELECT Id FROM Attributes WHERE tr_TR = '" + attributeLabel + "'";
+
+        int attributeId = -1;
+
+        try (Connection conn = DatabaseManager.getConnection(DbConfigs.DB_URL, DbConfigs.DB_USERNAME, DbConfigs.DB_PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                attributeId = rs.getInt("Id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("attributeId: " + attributeId);
+
+        return attributeId;
+
+    }
 }

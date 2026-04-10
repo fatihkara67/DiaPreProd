@@ -63,7 +63,7 @@ public class EditItemPage extends BasePage {
     @FindBy(xpath = "//ul[@class='nav nav-tabs current_nav_tabs']//li//a")
     private List<WebElement> editItemTabs;
 
-    @FindBy(xpath = "//*[@id='association-table']/tbody/tr/td/input")
+    @FindBy(xpath = "//*[@id='association-table']/tbody/tr/td/div/div/label")
     private List<WebElement> associateCheckBoxes;
 
     @FindBy(xpath = "//div[@id='saveChangeButton']")
@@ -203,7 +203,7 @@ public class EditItemPage extends BasePage {
     public void selectItemAtOrderInAssociationTab(int assocCheckboxOrder) {
         BrowserUtils.wait(2);
         associateCheckBoxes.get(assocCheckboxOrder - 1).click();
-        String itemIdToBeAssociatedText = GeneralPage.getColumnData(associationTable,"Item Id").get(1);
+        String itemIdToBeAssociatedText = GeneralPage.getColumnData(associationTable,"Öğe Kimliği").get(1);
         itemIdToBeAssociated = Integer.parseInt(itemIdToBeAssociatedText);
     }
 
