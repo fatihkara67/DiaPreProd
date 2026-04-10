@@ -240,8 +240,9 @@ public class Offstand extends BasePage {
     }
 
     public void updateAttribute(String attrLabel, String value) {
+        //header[.//a[normalize-space()='Ürün Ek Grup Kodu']] /ancestor::div[contains(@class,'form-group')]  //input
         WebElement attrInput = Driver.getDriver().
-                findElement(By.xpath("//header[contains(.,'" + attrLabel + "')]/following-sibling::div/input"));
+                findElement(By.xpath("//header[.//a[normalize-space()='" + attrLabel + "']] /ancestor::div[contains(@class,'form-group')]  //input"));
         attrInput.sendKeys(Keys.CONTROL + "A");
         attrInput.sendKeys(value);
     }

@@ -87,6 +87,9 @@ public class GeneralPage extends BasePage {
     @FindBy(xpath = "//div[contains(@class,'panel-heading')]/a")
     private List<WebElement> editFamilyAttributeGroups;
 
+    @FindBy(xpath = "//*[@id='association-table']/tbody/tr/td/input")
+    private List<WebElement> associateCheckBoxes;
+
 
     // you can use selectFilter as IsAssociated, Family, ItemStatuses in feature file
     public void selectOptionInSelectFilter(String selectOption, String selectFilter) {
@@ -106,6 +109,7 @@ public class GeneralPage extends BasePage {
         filterInput.sendKeys(value + Keys.ENTER);
 
     }
+
 
     public void clickHeaderForAscSort(String headerName) {
         String locate = "//thead/tr[1]/th[normalize-space()='" + headerName + "']";

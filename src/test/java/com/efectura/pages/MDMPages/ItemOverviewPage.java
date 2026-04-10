@@ -3,12 +3,18 @@ package com.efectura.pages.MDMPages;
 import com.efectura.pages.BasePage;
 import com.efectura.utilities.BrowserUtils;
 import com.efectura.utilities.ConfigurationReader;
+import com.efectura.utilities.Database;
 import com.efectura.utilities.Driver;
 import lombok.Getter;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 @Getter
@@ -219,5 +225,27 @@ public class ItemOverviewPage extends BasePage {
         WebElement deleteBtn = Driver.getDriver().findElement(By.xpath(locate));
         BrowserUtils.hoverOver(target);
         deleteBtn.click();
+    }
+
+    public void verifyFindAndMatchItemAssoc() {
+        String query = "SELECT * FROM Associations\n" +
+                "   WHERE FirstItemId = 3496510\n" +
+                "   AND SecondItemId = 3496333";
+
+        int assocTypeId = 0;
+        try (Connection conn = Database.getInstance();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                assocTypeId = rs.getInt("AssociationTypeId");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("assocTypeId = " + assocTypeId);
+        Assert.assertEquals(254, assocTypeId);
+
+
     }
 }

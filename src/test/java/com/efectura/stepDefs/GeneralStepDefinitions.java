@@ -9,6 +9,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.checkerframework.checker.guieffect.qual.UI;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -654,5 +655,71 @@ public class GeneralStepDefinitions extends BaseStep {
             Assert.assertTrue(actualValue.split(" ")[0].contains(today));
 //            Assert.assertEquals(expectedValue,actualValue);
         }
+    }
+
+    String randomComment;
+    @And("The user enters random in comment area")
+    public void theUserEntersRandomInCommentArea() {
+        //        pages.contactEditPage().setChangeCommentArea(comment);
+        BrowserUtils.wait(2);
+//        BrowserUtils.waitForVisibility(pages.generalPage().getChangeSaveCommentTextArea(),15);
+        randomComment = UUID.randomUUID().toString();
+        if (BrowserUtils.isElementDisplayed(By.xpath("//textarea[@id='comment']"))) {
+            pages.generalPage().getChangeSaveCommentTextArea().sendKeys(randomComment);
+        }
+    }
+
+    @Then("The user verify history table comment")
+    public void theUserVerifyHistoryTableComment() {
+        String historyLastComment = driver.findElement(By.xpath("//*[@id='history_table_ItemNewHistory']/tbody/tr[1]/td[4]")).getText();
+
+        Assert.assertEquals(randomComment, historyLastComment);
+
+    }
+
+    @And("The user select item at order {int} in association tab")
+    public void theUserSelectItemAtOrderInAssociationTab(int assocCheckboxOrder) {
+        pages.editItemPage().selectItemAtOrderInAssociationTab(assocCheckboxOrder);
+    }
+
+    @When("The user go to {string} attribute page")
+    public void theUserGoToAttributePage(String attributeLabel) {
+        int attributeId = pages.dbProcess().getAttributeIdByLabel(attributeLabel);
+        driver.get("https://dia-preprod-ui.efectura.com/Settings/EditAttribute/" + attributeId);
+        BrowserUtils.wait(2);
+    }
+
+    String randomDefaultValueString;
+    @When("The user fill default value input with random string")
+    public void theUserFillDefaultValueInputWithRandomString() {
+        randomDefaultValueString = UUID.randomUUID().toString();
+
+        WebElement input = driver.findElement(By.xpath("//h6[contains(.,'DefaultValue')]/following-sibling::input"));
+
+        input.sendKeys(Keys.CONTROL + "a"); // hepsini seç
+        input.sendKeys(Keys.DELETE);        // sil
+        input.sendKeys(randomDefaultValueString);
+    }
+
+    @When("The user click save button in attribute edit page")
+    public void theUserClickSaveButtonInAttributeEditPage() {
+        driver.findElement(By.xpath("//button[@id='savebutton']")).click();
+    }
+
+    @When("The user click save button in attribute edit page save modal")
+    public void theUserClickSaveButtonInAttributeEditPageSaveModal() {
+        driver.findElement(By.xpath("//button[@id='saveButtonAttr']")).click();
+    }
+
+    @Then("The user verify {string} attribute default value is random in create page")
+    public void theUserVerifyAttributeDefaultValueIsRandomInCreatePage(String attributeLabel) {
+        int attributeId = pages.dbProcess().getAttributeIdByLabel(attributeLabel);
+
+        String locate = "//input[@data-attribute='" + attributeId + "']";
+        WebElement attributeInputElement = driver.findElement(By.xpath(locate));
+
+        Assert.assertEquals("Default attribute değeri create sırasında gelmedi",
+                randomDefaultValueString, BrowserUtils.getValueInInputBox(attributeInputElement));
+
     }
 }

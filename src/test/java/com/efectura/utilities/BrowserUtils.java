@@ -1106,6 +1106,17 @@ public class BrowserUtils {
     }
 
 
+    public static String getCronForNext2Minutes() {
+        LocalDateTime t = LocalDateTime.now().plusMinutes(2);
+
+        return String.format("%d %d %d %d *",
+                t.getMinute(),
+                t.getHour(),
+                t.getDayOfMonth(),
+                t.getMonthValue());
+    }
+
+
 
 
 
