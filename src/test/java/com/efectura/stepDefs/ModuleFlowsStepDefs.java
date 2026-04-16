@@ -29,7 +29,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserLoginWith(String username) {
         BrowserUtils.wait(3);
         Driver.getDriver().get(ConfigurationReader.getProperty("url"));
-        BrowserUtils.wait(3);
+        BrowserUtils.wait(2);
         BrowserUtils.waitForVisibility(pages.loginPage().getUsernameField(),60);
         pages.loginPage().loginWith(username);
     }
@@ -272,8 +272,9 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserExportTargetFile() {
         BrowserUtils.wait(1);
         Driver.getDriver().findElement(By.id("export-target-dropdown")).click();
+        BrowserUtils.wait(1);
         Driver.getDriver().findElement(By.id("export-target")).click();
-        BrowserUtils.wait(15);
+        BrowserUtils.wait(5);
         targetExportFile = BrowserUtils.getLatestExcelFilePath("C:\\Downloads");
     }
 
@@ -473,6 +474,11 @@ public class ModuleFlowsStepDefs extends BaseStep {
         BrowserUtils.waitForVisibility(pages.modulFlows().impersonateHoverBtn, 30);
         BrowserUtils.hoverOver(pages.modulFlows().impersonateHoverBtn);
         pages.modulFlows().impersonateButton.click();
-        BrowserUtils.wait(3);
+        BrowserUtils.wait(2);
+    }
+
+    @When("The user edit target export file")
+    public void theUserEditTargetExportFile() {
+        BrowserUtils.updateZeroValuesFromColumnH(targetExportFile,100);
     }
 }

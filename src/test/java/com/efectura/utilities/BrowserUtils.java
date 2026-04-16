@@ -32,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.function.BiFunction;
 
 import okhttp3.*;
 import org.json.JSONArray;
@@ -1117,6 +1118,53 @@ public class BrowserUtils {
     }
 
 
+    public static void updateZeroValuesFromColumnH(
+            String filePath,
+            double newValue) {
+
+        try (FileInputStream fis = new FileInputStream(filePath);
+             Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+
+            int firstDataRow = 1;
+            int startColumn = 7;
+
+            for (int rowIndex = firstDataRow; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) continue;
+
+                for (int colIndex = startColumn; colIndex < row.getLastCellNum(); colIndex++) {
+                    Cell cell = row.getCell(colIndex, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+                    if (cell == null) continue;
+
+                    if (isZeroCell(cell)) {
+                        cell.setCellValue(newValue);
+                    }
+                }
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                workbook.write(fos);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Excel güncellenirken hata oluştu", e);
+        }
+    }
+
+    private static boolean isZeroCell(Cell cell) {
+        if (cell == null) return false;
+
+        switch (cell.getCellType()) {
+            case NUMERIC:
+                return cell.getNumericCellValue() == 0.0;
+            case STRING:
+                return "0".equals(cell.getStringCellValue().trim());
+            default:
+                return false;
+        }
+    }
 
 
 

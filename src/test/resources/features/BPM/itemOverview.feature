@@ -2,7 +2,7 @@
 Feature: Item Overview Scenarios
 
   Background:
-    Given The user login with "fatihkara"
+#    Given The user login with "fatihkara"
 
   Scenario: Remove column
     Given The user go to 'Contact' overview page
@@ -137,7 +137,7 @@ Feature: Item Overview Scenarios
     When The user fill event create attributes
     When The user select category for create
     When The user complete create
-    When The user verify created event edit page is open
+    When The user verify created item edit page is open
 
   Scenario: Add List
     Given The user go to 'Event' overview page
@@ -195,7 +195,7 @@ Feature: Item Overview Scenarios
 #    When The user select category for create 'Ürün'
 #    When The user complete create
     When The user go to edit item '3499092'
-    When The user verify created event edit page is open
+    When The user verify created item edit page is open
     When The user click edit item side bar button
     When The user click clone button
     When The user fill product clone item info
@@ -320,6 +320,22 @@ Feature: Item Overview Scenarios
     When The user set cron expression
     When The user click data connect create button
     When The user verify created item edit page is open
+
+  Scenario: StandBudgetGeneralReport Kalem Ekleme
+    When The User opens the browser with the given url
+    And  The User inputs a valid username "validUsername"
+    And  The User inputs a valid password "validPassword"
+    And  The User clicks the Submit button
+
+    Given The user go to StandBudgetGeneralReport page
+    When The user clicks 'Kalem Ekle' button
+    When The user fill customer code '999999999'
+    When The user clicks 'Kontrol' button
+    Then The user verifies info "Müşteri Kodu Geçerli" appears
+    When The user select 'Hayır' in marka isi select
+    When The user fill random kalem name with price '100'
+    When The user clicks 'Kaydet' button
+    Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
 
 
 

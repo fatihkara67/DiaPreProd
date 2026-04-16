@@ -1049,7 +1049,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user click edit item side bar button")
     public void theUserClickEditItemSideBarButton() {
         pages.offstand().getSideBarButton().click();
-        BrowserUtils.wait(2);
+        BrowserUtils.wait(1);
     }
 
     @When("The user click addToComparison button")
@@ -2268,5 +2268,37 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user click data connect create button")
     public void theUserClickDataConnectCreateButton() {
         driver.findElement(By.xpath("//button[@id='dc-create-submit']")).click();
+    }
+
+    @Given("The user go to StandBudgetGeneralReport page")
+    public void theUserGoToStandBudgetGeneralReportPage() {
+        driver.get("https://dia-preprod-ui.efectura.com/Reports/StandBudgetGeneralReport");
+        BrowserUtils.wait(2);
+    }
+
+    @When("The user fill customer code {string}")
+    public void theUserFillCustomerCode(String customerCode) {
+        driver.findElement(By.xpath("//input[@id='standTrackKodu']")).sendKeys(customerCode);
+
+    }
+
+    @When("The user select {string} in marka isi select")
+    public void theUserSelectInMarkaIsiSelect(String markaOption) {
+        WebElement markaSelect = driver.findElement(By.xpath("//select[@id='standMarkaisi']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(markaSelect,markaOption);
+    }
+
+    String randomKalem1;
+    @When("The user fill random kalem name with price {string}")
+    public void theUserFillRandomKalemNameWithPrice(String kalemPrice) {
+        randomKalem1 = UUID.randomUUID().toString();
+        System.out.println("randomKalem1: " + randomKalem1);
+        List<WebElement> kalemNameInputs = driver.findElements(By.xpath("//input[@placeholder='Kalem İsmi']"));
+        List<WebElement> kalemPriceInputs = driver.findElements(By.xpath("//input[@placeholder='Fiyat']"));
+
+
+        kalemNameInputs.get(kalemNameInputs.size()-1).sendKeys(randomKalem1);
+        kalemPriceInputs.get(kalemPriceInputs.size()-1).sendKeys(kalemPrice);
+        BrowserUtils.wait(4);
     }
 }
