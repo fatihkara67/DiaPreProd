@@ -722,4 +722,9 @@ public class GeneralStepDefinitions extends BaseStep {
                 randomDefaultValueString, BrowserUtils.getValueInInputBox(attributeInputElement));
 
     }
+
+    @When("The user clicks {string} button")
+    public void theUserClicksButton(String buttonName) {
+        driver.findElement(By.xpath("//button[.='" + buttonName + "']")).click();
+    }
 }

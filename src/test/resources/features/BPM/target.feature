@@ -8,7 +8,8 @@ Feature: Target Cases
     When The user go to related target item
     When The user click edit item side bar button
     When The user export target file
-    When The user wait 80 second
+    When The user wait 8 second
+    When The user edit target export file
     When The user click target import button
     When The user upload the target file
 #    When The user upload file 'PlanningTarget'
