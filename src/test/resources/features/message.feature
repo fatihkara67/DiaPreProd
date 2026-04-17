@@ -85,7 +85,7 @@ Feature: Message Sending Cases
     When The user click second next button
     When The user click createWithRule button
     When The user select 'İK Personel Email' as attribute
-    When The user set 'fatih.kara@efectura.comxx' as attribute value
+    When The user set 'fatih.kara@efectura.com' as attribute value
     When The user select list 'otomasyon'
     When The user click second next button
     When The user set email body

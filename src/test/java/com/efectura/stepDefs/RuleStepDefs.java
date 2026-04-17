@@ -22,6 +22,7 @@ public class RuleStepDefs extends BaseStep {
     @When("The user click rule tab")
     public void theUserClickRuleTab() {
         pages.editItemPage().clickRuleTab();
+        BrowserUtils.wait(1);
     }
 
     @When("The user sets a rule")

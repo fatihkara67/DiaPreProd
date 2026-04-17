@@ -93,7 +93,7 @@ public class Membership_AccountRulePage extends BasePage {
     @FindBy(xpath = "//textarea[@id='resultNotIn']")
     private WebElement notInListTextArea;
 
-    @FindBy(xpath = "//button[contains(text(),'Continue')]")
+    @FindBy(xpath = "//button[@id='generate-assoc-name']")
     private WebElement continueButtonInSetRulesModal;
 
     @FindBy(xpath = "//input[@id='rule-name']")
@@ -500,7 +500,7 @@ public class Membership_AccountRulePage extends BasePage {
             BrowserUtils.wait(2);
 
             WebElement attribute = driver.findElement(By.xpath(
-                    "//span[normalize-space()='Track Kod']/ancestor::header/following-sibling::input"
+                    "//a[normalize-space()='Track Kod']/ancestor::header/following-sibling::input"
             ));
 
             String trackKod = getValueInInputBox(attribute);
@@ -735,14 +735,14 @@ public class Membership_AccountRulePage extends BasePage {
             BrowserUtils.wait(3);
 
             WebElement attribute = driver.findElement(By.xpath(
-                    "//span[normalize-space()='Track Kod']/ancestor::header/following-sibling::input"
+                    "//a[normalize-space()='Track Kod']/ancestor::header/following-sibling::input"
             ));
 
             String trackKod = getValueInInputBox(attribute);
 
 
             WebElement attribute2 = driver.findElement(By.xpath(
-                    "//span[normalize-space()='Vergi Dairesi Adı']/ancestor::header/following-sibling::input"
+                    "//a[normalize-space()='Vergi Dairesi Adı']/ancestor::header/following-sibling::input"
             ));
 
             String vergiNo = getValueInInputBox(attribute2);

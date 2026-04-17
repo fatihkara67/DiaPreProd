@@ -31,13 +31,13 @@ Feature: Stand Flows Cases
     Given The user submit the task 'Başarılı'
     Given The user verify stand blocked budget with "1200" for '971981'
     Given The user login with "Tedarikçi"
-    Given The user go in Task "DIA: StandFlowForm"
+    Given The user go in Task "DIA: Stand Akış Formu"
     Given The user fill vendor2 form and submit
     Given The user login with "kgu"
     Given The user go in Task and submit
     Given The user verify stand blocked budget with "1200" for '971981'
     Given The user login with "Tedarikçi"
-    Given The user go in Task "DIA: StandFlowForm"
+    Given The user go in Task "DIA: Stand Akış Formu"
     Given The user fill vendor3 form and submit
 #    Given The user login with "kgu"
 #    Given The user go in Task and submit
@@ -69,7 +69,7 @@ Feature: Stand Flows Cases
     Given The user submit the task 'Başarılı'
     Given The user verify stand blocked budget with "1200" for '971981'
     Given The user login with "Tedarikçi"
-    Given The user go in Task "DIA: StandFlowForm"
+    Given The user go in Task "DIA: Stand Akış Formu"
     Given The user fill vendor2 form and submit
     Given The user login with "kgu"
     Given The user go in Task "DIA: ConfirmationForm"
@@ -101,7 +101,7 @@ Feature: Stand Flows Cases
     Given The user submit the task 'Başarılı'
 #    Given The user get total price
     Given The user login with "Tedarikçi"
-    Given The user go in Task "DIA: StandFlowForm"
+    Given The user go in Task "DIA: Stand Akış Formu"
     Given The user submit the task 'Form başarıyla gönderildi.'
     Given The user login with "Tedarikçi"
 #    Given The user go in Task "DIA: StandFlowForm"
@@ -131,7 +131,7 @@ Feature: Stand Flows Cases
     Given The user go in Task "DIA: ConfirmationForm"
     Given The user submit the task 'Başarılı'
     Given The user login with "Tedarikçi"
-    Given The user go in Task "DIA: StandFlowForm"
+    Given The user go in Task "DIA: Stand Akış Formu"
     Given The user submit the task 'Form başarıyla gönderildi.'
     Given The user login with "Tedarikçi"
     Given The user fill last vendor form and complete

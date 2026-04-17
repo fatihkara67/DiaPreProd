@@ -84,7 +84,7 @@ public class PanelStepDefs extends BaseStep {
 //        Assert.assertEquals("Devam Etmekte", pages.panel().getProcessListFlowStatusButtons().get(0).getText());
 
         boolean found = pages.panel().getActionButtons().stream()
-                .anyMatch(el -> "Devam Etmekte".equals(el.getAttribute("data-original-title")));
+                .anyMatch(el -> "Devam Ediyor".equals(el.getAttribute("data-original-title")));
 
         Assert.assertTrue(found);
 

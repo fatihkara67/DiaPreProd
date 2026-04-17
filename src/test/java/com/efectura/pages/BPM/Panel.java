@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class Panel extends BasePage {
 
-    @FindBy(xpath = "//tr/td[3]")
+    @FindBy(xpath = "//tr/td[2]")
     private List<WebElement> formNames;
 
     @FindBy(xpath = "//td/a")
@@ -20,7 +20,7 @@ public class Panel extends BasePage {
     @FindBy(xpath = "//select[contains(@id,'formType')]")
     private WebElement formTypeSelect;
 
-    @FindBy(xpath = "//a[contains(@data-original-title,'Devam Etmekte')]")
+    @FindBy(xpath = "//a[contains(@data-original-title,'Devam Ediyor')]")
     private List<WebElement> ongoingNavigateButton;
 
     @FindBy(xpath = "//div[contains(@class,'table-action')]/button[contains(@class, 't-preview')][1]")
@@ -32,7 +32,7 @@ public class Panel extends BasePage {
     @FindBy(xpath = "//h4[contains(text(),'Akış Detayları')]")
     private WebElement processListDetailModalHeader;
 
-    @FindBy(xpath = "//a[contains(@class,'t-preview filter-btn')]")
+    @FindBy(xpath = "//a[contains(@class,'t-preview')]")
     private List<WebElement> actionButtons;
 
 

@@ -9,6 +9,7 @@ public class MenuFlowsStepDefs extends BaseStep{
     @Given("The user fill menu start form with musteri code {string}")
     public void theUserFillMenuStartFormWithMusteriCode(String lastCustomerCode) {
         pages.menuFlows().fillMenuFlowForm(lastCustomerCode);
+
     }
 
     @Given("The user select vendor as {string}")

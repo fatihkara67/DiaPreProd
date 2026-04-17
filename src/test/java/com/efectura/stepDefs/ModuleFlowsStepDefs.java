@@ -44,7 +44,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserGoInFlow(String formName) {
         BrowserUtils.wait(7);
         pages.panel().goInFlow(formName);
-        BrowserUtils.wait(3);
+        BrowserUtils.wait(30);
     }
 
     @Given("The user select {string} as form type")
