@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 public class Offstand extends BasePage {
 
-    @FindBy(xpath = "//button[contains(.,'Understood')]")
+    @FindBy(xpath = "//button[contains(.,'Anlaşıldı')]")
     private WebElement importPopupApplyButton;
 
     @FindBy(xpath = "//span[@id='select2-ItemType-container']")

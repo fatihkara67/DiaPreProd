@@ -245,6 +245,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.waitForVisibility(trackInfoHeader,20);
         vendorSelect.click();
         vendorInput.sendKeys("Efectura Vendor");
+        BrowserUtils.wait(1);
         efecturaVendorOption.click();
         BrowserUtils.scrollToElement(Driver.getDriver(), docDateInput);
 
@@ -1086,7 +1087,7 @@ public class ModulFlows extends BasePage {
         taskList.getSearchAllFilterInput().sendKeys(formNumber);
         BrowserUtils.wait(4);
         taskList.getFirstColumn().click();
-        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: StandFlowForm");
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: Stand Akış Formu");
         BrowserUtils.wait(3);
         System.out.println("Title: " + Driver.getDriver().getTitle());
 
@@ -1121,7 +1122,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(5);
         taskList.getFirstColumn().click();
 
-        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: StandFlowForm");
+        BrowserUtils.switchToTabByTitleAndCloseOld("DIA: Stand Akış Formu");
         BrowserUtils.wait(3);
         System.out.println("Title: " + Driver.getDriver().getTitle());
 

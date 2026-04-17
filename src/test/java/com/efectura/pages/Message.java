@@ -18,7 +18,7 @@ public class Message extends BasePage {
     @FindBy(xpath = "//div[@class='info-family']/span")
     private List<WebElement> createItemFamilies;
 
-    @FindBy(xpath = "//input[@id='inputCode' and @placeholder='EnterCode']")
+    @FindBy(xpath = "//input[@id='inputCode' and @placeholder='Kodu Girin']")
     private WebElement createItemCodeInput;
 
     @FindBy(xpath = "//input[@id='notification-name']")
