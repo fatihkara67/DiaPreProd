@@ -2,19 +2,24 @@
 Feature: Item Overview Scenarios
 
   Background:
-#    Given The user login with "fatihkara"
+    Given The user login with "fatihkara"
 
-  Scenario: Remove column
+  Scenario: Remove and Adding column
     Given The user go to 'Contact' overview page
     And  The user click columns button
-    And The user remove 'Öğe Durumları' from columns
+    When The user remove one column
+    And  The user clicks overview save button
+    And  The user click columns button
+    And The user add the removed column
     And  The user clicks overview save button
 
-  Scenario: Columns Adding
-    Given The user go to 'Contact' overview page
-    And  The user click columns button
-    And The user add 'Öğe Durumları' to columns
-    And  The user clicks overview save button
+#  Scenario: Columns Adding
+#    Given The user go to 'Contact' overview page
+#    And  The user click columns button
+#    And The user add 'Öğe Durumları' to columns
+#    And The user add the removed column
+#    And  The user clicks overview save button
+    #    And The user remove 'Öğe Durumları' from columns
 
   Scenario: Account Attribute Adding From Item Type
     Given The user go to family edit page
@@ -322,11 +327,10 @@ Feature: Item Overview Scenarios
     When The user verify created item edit page is open
 
   Scenario: StandBudgetGeneralReport Kalem Ekleme
-    When The User opens the browser with the given url
-    And  The User inputs a valid username "validUsername"
-    And  The User inputs a valid password "validPassword"
-    And  The User clicks the Submit button
-
+#    When The User opens the browser with the given url
+#    And  The User inputs a valid username "validUsername"
+#    And  The User inputs a valid password "validPassword"
+#    And  The User clicks the Submit button
     Given The user go to StandBudgetGeneralReport page
     When The user clicks 'Kalem Ekle' button
     When The user fill customer code '999999999'

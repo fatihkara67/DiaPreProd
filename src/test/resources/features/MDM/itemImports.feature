@@ -170,6 +170,7 @@ Feature: Item Imports
     Then The user verify over limit error message
 
   Scenario: Event Import - Create Attribute
+    Then The user delete item values
     Then The user delete attribute options
     Then The user tear down new attributes before
     Given The user go to 'Event' overview page
@@ -201,8 +202,6 @@ Feature: Item Imports
     When The user upload file 'Contact'
     When The user import the file new by skipping failed ones
     Then The user verify import for create2
-#    When The user click skip failed row button
-#    Then The user verify items are created except failed row
 
 
 

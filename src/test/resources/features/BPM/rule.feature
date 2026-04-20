@@ -1,3 +1,4 @@
+@preprod
 Feature: Rule Scenarios
 
   Background:

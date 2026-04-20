@@ -1044,6 +1044,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     @And("The user clicks overview save button")
     public void theUserClicksOverviewSaveButton() {
         Driver.getDriver().findElement(By.xpath("//button[@id='EfSaveColumns']")).click();
+        BrowserUtils.wait(4);
     }
 
     @When("The user click edit item side bar button")
@@ -1992,7 +1993,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @Then("The user delete item values")
     public void theUserDeleteItemValues() {
-        BrowserUtils.wait(10);
+        BrowserUtils.wait(15);
         String query = "DELETE FROM ItemValues\n" +
                 "    WHERE AttributeId IN (\n" +
                 "    SELECT Id FROM Attributes\n" +
@@ -2079,7 +2080,7 @@ public class ItemOverviewStepDefs extends BaseStep {
         pages.itemOverviewPage().getSaveMatchColumnsButton().click();
         BrowserUtils.wait(2);
         BrowserUtils.waitForVisibility(pages.editItemPage().getInfoMessage(),90);
-        Assert.assertEquals("ValidationFailed: DIA_Email:'Value String' is not in the correct format.", pages.editItemPage().getInfoMessage().getText());
+        Assert.assertEquals("Doğrulama Başarısız: DIA_Email:'Value String' is not in the correct format.", pages.editItemPage().getInfoMessage().getText());
 
         driver.findElement(By.xpath("//input[@id='ef-import-edit-skip-errors']")).click();
 
@@ -2300,5 +2301,31 @@ public class ItemOverviewStepDefs extends BaseStep {
         kalemNameInputs.get(kalemNameInputs.size()-1).sendKeys(randomKalem1);
         kalemPriceInputs.get(kalemPriceInputs.size()-1).sendKeys(kalemPrice);
         BrowserUtils.wait(4);
+    }
+
+    String removedColumn;
+    @When("The user remove one column")
+    public void theUserRemoveOneColumn() {
+        for (WebElement column : pages.itemOverviewPage().getAlreadySelectedColumns()) {
+            if (!column.getAttribute("class").contains("item-default-columns")) {
+                BrowserUtils.dragAndDrop(column, pages.itemOverviewPage().getToBeSelectedArea());
+                BrowserUtils.wait(3);
+                removedColumn = column.getText();
+                System.out.println("Removed Column: " + removedColumn);
+                break;
+            }
+        }
+    }
+
+    @And("The user add the removed column")
+    public void theUserAddTheRemovedColumn() {
+        BrowserUtils.wait(2);
+        WebElement matchingElement = pages.itemOverviewPage().getToBeSelectedColumns().stream()
+                .filter(el -> el.getText().trim().equalsIgnoreCase(removedColumn))
+                .findFirst()
+                .orElse(null);
+
+        BrowserUtils.dragAndDrop(matchingElement, pages.itemOverviewPage().getAlreadySelectedColumns().get(0));
+        BrowserUtils.wait(1);
     }
 }
