@@ -9,7 +9,7 @@ Feature: Export Scenarios
     When The user click 'Dışarı Aktar' button
     When The user get selected export options
     When The user complete the export
-    Then The user verifies info "EXPORT_SUCCESS" appears
+    Then The user verifies info "DIŞA AKTARIM BAŞARILI" appears
 #    Then The user verify file is downloaded
 
   Scenario: Export For Above 10000 data
@@ -21,7 +21,7 @@ Feature: Export Scenarios
 
   Scenario: Transaction Tables Export
     Given The user go to edit item '3496205'
-    And The user clicks "TRX_ICHEDEF_PLANLAMA" tab
+    And The user clicks "İç Hedef Planlama" tab
     When The user click 'Dışarı Aktar' button
     When The user get selected export options
     When The user complete the export
@@ -40,4 +40,4 @@ Feature: Export Scenarios
     Then The user verify file is downloaded
     And The user clicks "Akış Detay" tab
     When The user click 'Dışarı Aktar' button
-    Then The user verifies info "ERR_NO_EXPORT_DATA" appears
+    Then The user verifies info "Dışa Aktarılacak Veri Yok" appears
