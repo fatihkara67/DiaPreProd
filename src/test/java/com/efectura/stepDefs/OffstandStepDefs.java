@@ -10,6 +10,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -106,6 +107,7 @@ public class OffstandStepDefs extends BaseStep {
         BrowserUtils.waitForVisibility(By.xpath("//div[@class='notyf__message']"),30);
         Assert.assertEquals(expectedMessage, pages.editItemPage().getInfoMessage().getText());
         System.out.println(pages.editItemPage().getInfoMessage().getText());
+
     }
 
     @When("The user delete item")

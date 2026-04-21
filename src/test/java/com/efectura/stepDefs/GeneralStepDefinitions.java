@@ -107,8 +107,18 @@ public class GeneralStepDefinitions extends BaseStep {
 //        pages.contactEditPage().setChangeCommentArea(comment);
         BrowserUtils.wait(2);
 //        BrowserUtils.waitForVisibility(pages.generalPage().getChangeSaveCommentTextArea(),15);
-        if (BrowserUtils.isElementDisplayed(By.xpath("//textarea[@id='comment']"))) {
-            pages.generalPage().getChangeSaveCommentTextArea().sendKeys(comment);
+
+        List<WebElement> textareas = driver.findElements(By.xpath("//textarea[contains(@class,'fixed-textarea')]"));
+
+        WebElement activeTextarea = textareas.stream()
+                .filter(WebElement::isDisplayed)
+                .filter(WebElement::isEnabled)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Interactable textarea bulunamadı"));
+
+
+        if (BrowserUtils.isElementDisplayed(activeTextarea)) {
+            activeTextarea.sendKeys(comment);
         }
     }
 
@@ -289,12 +299,13 @@ public class GeneralStepDefinitions extends BaseStep {
 
     @And("The user click Save button in family edit page")
     public void theUserClickSaveButtonInFamilyEditPage() {
-        Driver.getDriver().findElement(By.xpath("//button[@id='saveButtonFamily']")).click();
+        Driver.getDriver().findElement(By.xpath("//button[@id='saveChangeButton']")).click();
     }
 
     @And("The user clicks save button in edit family save modal")
     public void theUserClicksSaveButtonInEditFamilySaveModal() {
-        Driver.getDriver().findElement(By.xpath("//*[@id=\"efe-primary-btn-model\"]")).click();
+        BrowserUtils.wait(1);
+        Driver.getDriver().findElement(By.xpath("//button[@id='saveButtonFamily']")).click();
     }
 
     @When("The user click support button")

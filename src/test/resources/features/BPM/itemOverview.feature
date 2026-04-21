@@ -30,6 +30,7 @@ Feature: Item Overview Scenarios
     And The user enters "update for family attribute by automation" in comment area
     And The user clicks save button in edit family save modal
     Then The user verifies info "Changes saved successfully." appears
+    Then The user verifies positive info "Changes saved successfully." appears
 
   Scenario: Support Mail Test
     When The user click support button
