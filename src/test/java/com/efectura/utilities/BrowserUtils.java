@@ -32,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 
 import okhttp3.*;
@@ -1163,6 +1164,38 @@ public class BrowserUtils {
                 return "0".equals(cell.getStringCellValue().trim());
             default:
                 return false;
+        }
+    }
+
+
+    public static String sendFillOfftradeReserveTrackingReportRequest() {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .build();
+
+        String url = "https://dia-preprod-api.efectura.com/api/Scheduler/FillOfftradeReserveTrackingReport";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+
+            if (!response.isSuccessful()) {
+                throw new RuntimeException("Request failed: " + response);
+            }
+
+            return response.body() != null ? response.body().string() : null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

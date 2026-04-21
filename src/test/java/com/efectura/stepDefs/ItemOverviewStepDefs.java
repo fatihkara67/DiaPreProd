@@ -1298,7 +1298,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @Then("The user verify the email")
     public void theUserVerifyTheEmail() {
-        BrowserUtils.wait(10);
+        BrowserUtils.wait(15);
         pages.dbProcess().verifyEmailIsSent(emailBody);
     }
 

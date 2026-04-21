@@ -1181,4 +1181,60 @@ public class ModulFlows extends BasePage {
         BrowserUtils.waitForVisibility(flowInfoMessage,20);
         Assert.assertEquals("Form başarıyla gönderildi.", flowInfoMessage.getText());
     }
+
+    public String fillReserveFlowForm(String lastCustomerCode) {
+        BrowserUtils.adjustScreenSize(80,Driver.getDriver());
+        formNumber = BrowserUtils.getValueInInputBox(driver.findElement(By.xpath("//input[@id='formNumber']")));
+        System.out.println("Form Number: " + formNumber);
+        driver.findElement(By.xpath("//input[contains(@id,'noktaTrackKodu')]")).sendKeys(lastCustomerCode);
+        driver.findElement(By.xpath("//button[@id='searchButton']")).click();
+        driver.findElement(By.xpath("(//input[contains(@id,'madde2')])")).click();
+        driver.findElement(By.xpath("(//input[contains(@id,'madde5')])")).click();
+        driver.findElement(By.xpath("//input[@id='ciroOrani']")).sendKeys("30");
+        driver.findElement(By.xpath("(//input[contains(@id,'madde1')])")).click();
+        BrowserUtils.wait(3);
+        BrowserUtils.waitForVisibility(trackInfoHeader,20);
+//        vendorSelect.click();
+//        vendorInput.sendKeys("Efectura Vendor");
+//        BrowserUtils.wait(1);
+//        efecturaVendorOption.click();
+        BrowserUtils.scrollToElement(Driver.getDriver(), driver.findElement(By.xpath("//input[@id='docDate']")));
+
+        List<String> docTypes = Arrays.asList("İşletme Modül Talep Formu","Rekabet Bildirim Formu",
+                "Tütün Alkol Denetim Belgesi","Bütçe Desteği Kanıt Dokümanı");
+
+        for (int i = 0; i < docTypes.size(); i++) {
+            BrowserUtils.selectDropdownOptionByVisibleText(driver.findElement(By.xpath("//select[@id='docType']")),
+                    docTypes.get(i));
+            driver.findElement(By.xpath("//input[@id='docDate']")).click();
+            driver.findElement(By.xpath("//span[contains(@class,'flatpickr-day today')]")).click();
+
+            // 1) Proje kökünü al
+            String projectRoot = System.getProperty("user.dir");
+
+            // 2) Relative path ile birleştir (OS bağımsız)
+            Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+            // 3) Selenium'a vereceğimiz kesin (absolute) string
+            String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+            System.out.println("Uploading file from: " + absoluteFilePath);
+
+            driver.findElement(By.xpath("//input[@id='fileInput']")).sendKeys(absoluteFilePath);
+//            BrowserUtils.wait(2);
+
+            WebElement file = driver.findElement(By.xpath("//td[contains(text(),'" + docTypes.get(i) +"')]"));
+            BrowserUtils.waitForVisibility(file,30);
+
+        }
+        BrowserUtils.waitForVisibility
+                (driver.findElement(By.xpath("//td[contains(text(),'Bütçe Desteği Kanıt Dokümanı')]")),60);
+        BrowserUtils.scrollToElement(Driver.getDriver(),
+                driver.findElement(By.xpath("(//button[contains(text(),'Onaya Gönder')])")));
+        driver.findElement(By.xpath("(//button[contains(text(),'Onaya Gönder')])")).click();
+        BrowserUtils.waitForVisibility(driver.findElement(By.xpath("//div[@class='notyf__message']")),60);
+        Assert.assertEquals("Başarılı", driver.findElement(By.xpath("//div[@class='notyf__message']")).getText());
+
+        return formNumber;
+    }
 }
