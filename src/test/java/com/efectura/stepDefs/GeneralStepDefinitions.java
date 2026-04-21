@@ -739,4 +739,10 @@ public class GeneralStepDefinitions extends BaseStep {
         driver.findElement(By.xpath("//button[.='" + buttonName + "']")).click();
         BrowserUtils.wait(2);
     }
+
+    @When("The user send fillReserveReport endpoint request")
+    public void theUserSendFillReserveReportEndpointRequest() {
+        String response = BrowserUtils.sendFillOfftradeReserveTrackingReportRequest();
+        Assert.assertTrue("Fill Reserve Report Endpoint requesti başarısız", response.contains("Finished"));
+    }
 }

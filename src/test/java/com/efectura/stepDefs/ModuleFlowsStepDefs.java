@@ -481,4 +481,23 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserEditTargetExportFile() {
         BrowserUtils.updateZeroValuesFromColumnH(targetExportFile,100);
     }
+
+    @Given("The user fill reserve start form with musteri code {string}")
+    public void theUserFillReserveStartFormWithMusteriCode(String lastCustomerCode) {
+        formNumber = pages.modulFlows().fillReserveFlowForm(lastCustomerCode);
+    }
+
+    @Then("The user verify created flow in report")
+    public void theUserVerifyCreatedFlowInReport() {
+        BrowserUtils.wait(2);
+        WebElement tableElement = Driver.getDriver().findElement(By.id("tableReport"));
+        List<String> values =  getColumnData(tableElement,"Form Numarası");
+
+        System.out.println(values);
+        BrowserUtils.wait(2);
+        for (String actualValue : values) {
+            Assert.assertTrue(actualValue.contains(formNumber));
+//            Assert.assertEquals(expectedValue,actualValue);
+        }
+    }
 }
