@@ -17,6 +17,7 @@ import java.util.List;
 import static com.efectura.pages.MDMPages.EditItemPage.clickRuleTab2;
 import static com.efectura.pages.MDMPages.EditItemPage.getStringListFromWebElementList;
 import static com.efectura.utilities.BrowserUtils.getValueInInputBox;
+import static com.efectura.utilities.BrowserUtils.selectDropdownOptionByRandom;
 
 @Getter
 public class Membership_AccountRulePage extends BasePage {
@@ -481,6 +482,7 @@ public class Membership_AccountRulePage extends BasePage {
         BrowserUtils.wait(1);
         addRuleButton.click();
         BrowserUtils.wait(2);
+        BrowserUtils.moveToElement(globalOrButton);
         globalOrButton.click();
         ruleAttributeDropDown.click();
         BrowserUtils.wait(2);
@@ -522,6 +524,7 @@ public class Membership_AccountRulePage extends BasePage {
         searchedRuleOption.click();
         ruleAttributeValueInputBox.sendKeys(contactEmailValue);
         BrowserUtils.wait(1);
+        BrowserUtils.moveToElement(addRuleButton);
         addRuleButton.click();
         BrowserUtils.wait(1);
         ruleAttributeDropDown.click();

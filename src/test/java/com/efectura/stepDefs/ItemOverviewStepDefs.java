@@ -2328,4 +2328,20 @@ public class ItemOverviewStepDefs extends BaseStep {
         BrowserUtils.dragAndDrop(matchingElement, pages.itemOverviewPage().getAlreadySelectedColumns().get(0));
         BrowserUtils.wait(1);
     }
+
+    @Then("The user verifies positive info {string} appears")
+    public void theUserVerifiesPositiveInfoAppears(String message) {
+        WebElement el = Driver.getDriver().findElement(
+                By.xpath("//*[contains(.,'" + message + "')]")
+        );
+
+// attribute alma
+        String classAttr = el.getAttribute("class");
+        String idAttr = el.getAttribute("id");
+        String style = el.getAttribute("style");
+
+        System.out.println(classAttr);
+        System.out.println(idAttr);
+        System.out.println(style);
+    }
 }

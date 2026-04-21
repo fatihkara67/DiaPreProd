@@ -97,6 +97,7 @@ public class PanelStepDefs extends BaseStep {
 //        ((JavascriptExecutor) Driver.getDriver()).
 //                executeScript("arguments[0].click();", pages.panel().getProcessListFlowDetailButtons().get(0));
 
+        BrowserUtils.moveToElement(pages.panel().getProcessListFlowDetailButtons().get(0));
         pages.panel().getProcessListFlowDetailButtons().get(0).click();
 
     }
