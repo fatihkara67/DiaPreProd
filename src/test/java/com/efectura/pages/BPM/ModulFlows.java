@@ -1237,4 +1237,116 @@ public class ModulFlows extends BasePage {
 
         return formNumber;
     }
+
+    public void fillReserveVendorOfferForm(String budget) {
+        initialBudgetInput.sendKeys(budget);
+
+        List<String> docTypes = Arrays.asList("Teklif Dokümanı","Tasarım Dosyası");
+
+        for (String docType : docTypes) {
+            BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, docType);
+            vendorDocDateInput.click();
+            vendorTodayDate.click();
+
+
+            // 1) Proje kökünü al
+            String projectRoot = System.getProperty("user.dir");
+
+            // 2) Relative path ile birleştir (OS bağımsız)
+            Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+            // 3) Selenium'a vereceğimiz kesin (absolute) string
+            String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+            System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+            vendorFileInput.sendKeys(absoluteFilePath);
+//            BrowserUtils.wait(2);
+
+            WebElement file = driver.findElement(By.xpath("//td[contains(text(),'" + docType +"')]"));
+            BrowserUtils.waitForVisibility(file,30);
+
+        }
+
+        BrowserUtils.waitForVisibility(tasarimDosyaUploadInfo,30);
+        BrowserUtils.wait(5);
+        driver.findElement(By.xpath("//button[@id='submitForm']")).click();
+
+        WebElement infoMsg = driver.findElement(By.xpath("//div[@class='notyf__message']"));
+        BrowserUtils.waitForVisibility(infoMsg,60);
+        Assert.assertEquals("Başarılı", infoMsg.getText());
+        vendorInitialBudget = budget;
+        System.out.println("Vendor Ininital Budget = " + vendorInitialBudget);
+    }
+
+    public void fillProformaForm() {
+        List<String> docTypes = Arrays.asList("Proforma");
+
+        BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Proforma");
+
+        vendorDocDateInput.click();
+        vendorTodayDate.click();
+
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+
+        vendorFileInput.sendKeys(absoluteFilePath);
+        BrowserUtils.wait(2);
+        BrowserUtils.waitForVisibility(driver.findElement(By.xpath("//td[contains(text(),'Proforma')]")),
+                60);
+        BrowserUtils.wait(4);
+
+        ilerletButton.click();
+
+        BrowserUtils.waitForVisibility(flowInfoMessage,60);
+        Assert.assertEquals("Başarılı", flowInfoMessage.getText());
+
+    }
+
+    public void fillReserveVendorInvoiceForm(String price) {
+        List<String> docTypes = Arrays.asList("Tedarikçi Faturası");
+        driver.findElement(By.xpath("//input[@id='faturaValue']")).sendKeys(price);
+
+        BrowserUtils.selectDropdownOptionByVisibleText(vendorDocTypeSelect, "Tedarikçi Faturası");
+
+        vendorDocDateInput.click();
+        vendorTodayDate.click();
+
+
+        // 1) Proje kökünü al
+        String projectRoot = System.getProperty("user.dir");
+
+        // 2) Relative path ile birleştir (OS bağımsız)
+        Path docPath = Paths.get(projectRoot, "src", "test", "resources", "features", "testDocument.xlsx");
+
+        // 3) Selenium'a vereceğimiz kesin (absolute) string
+        String absoluteFilePath = docPath.toFile().getAbsolutePath();
+
+        System.out.println("Uploading file from: " + absoluteFilePath);
+
+
+
+        vendorFileInput.sendKeys(absoluteFilePath);
+        BrowserUtils.wait(2);
+        BrowserUtils.waitForVisibility(driver.findElement(By.xpath("//td[contains(text(),'Tedarikçi Faturası')]")),
+                60);
+        BrowserUtils.wait(4);
+
+        driver.findElement(By.xpath("//button[@id='submitForm']")).click();
+
+        BrowserUtils.waitForVisibility(flowInfoMessage,60);
+        Assert.assertEquals("Başarılı", flowInfoMessage.getText());
+    }
 }
