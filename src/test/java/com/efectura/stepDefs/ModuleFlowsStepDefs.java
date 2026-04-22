@@ -9,10 +9,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -44,7 +41,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     public void theUserGoInFlow(String formName) {
         BrowserUtils.wait(7);
         pages.panel().goInFlow(formName);
-        BrowserUtils.wait(30);
+        BrowserUtils.wait(15);
     }
 
     @Given("The user select {string} as form type")
@@ -490,7 +487,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     @Then("The user verify created flow in report")
     public void theUserVerifyCreatedFlowInReport() {
         BrowserUtils.wait(2);
-        WebElement tableElement = Driver.getDriver().findElement(By.id("tableReport"));
+        WebElement tableElement = driver.findElement(By.id("tableReport"));
         List<String> values =  getColumnData(tableElement,"Form Numarası");
 
         System.out.println(values);
@@ -499,5 +496,28 @@ public class ModuleFlowsStepDefs extends BaseStep {
             Assert.assertTrue(actualValue.contains(formNumber));
 //            Assert.assertEquals(expectedValue,actualValue);
         }
+    }
+
+    WebDriver driver = Driver.getDriver();
+    @When("The user select {string} as vendor")
+    public void theUserSelectFavoriReklamAsVendor(String vendorName) {
+        WebElement vendorSelect = driver.findElement(By.xpath("//select[@id='vendorList']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(vendorSelect,vendorName);
+    }
+
+    @Given("The user fill reserve vendor offer form with price {string}")
+    public void theUserFillReserveVendorOfferFormWithPrice(String price) {
+        pages.modulFlows().fillReserveVendorOfferForm(price);
+
+    }
+
+    @Given("The user fill Proforma form")
+    public void theUserFillProformaForm() {
+        pages.modulFlows().fillProformaForm();
+    }
+
+    @Given("The user fill reserve vendor invoice form with price {string}")
+    public void theUserFillReserveVendorInvoiceFormWithPrice(String price) {
+        pages.modulFlows().fillReserveVendorInvoiceForm(price);
     }
 }
