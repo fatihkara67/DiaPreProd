@@ -705,7 +705,7 @@ public class GeneralStepDefinitions extends BaseStep {
     public void theUserFillDefaultValueInputWithRandomString() {
         randomDefaultValueString = UUID.randomUUID().toString();
 
-        WebElement input = driver.findElement(By.xpath("//h6[contains(.,'DefaultValue')]/following-sibling::input"));
+        WebElement input = driver.findElement(By.xpath("//h6[contains(.,'Varsayılan Değer Metni')]/following-sibling::input"));
 
         input.sendKeys(Keys.CONTROL + "a"); // hepsini seç
         input.sendKeys(Keys.DELETE);        // sil

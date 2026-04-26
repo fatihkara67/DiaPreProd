@@ -242,7 +242,7 @@ Feature: Item Overview Scenarios
   Scenario: Transaction Table Create
     When The user go to transaction page
     When The user click create transaction button
-    When The user select db type 'SQLServer'
+    When The user select db type 'SQL Sunucusu'
     When The user fill transaction create inputs
     When The user click create transaction create button
     Then The user verifies info "TableSavedSuccessfully" appears
@@ -262,9 +262,9 @@ Feature: Item Overview Scenarios
     When The user select primary item attribute 'Etkinlik Adı'
     When The user select secondary item attribute 'Adı'
     When The user click find and match preview button
-    Then The user verify "FirstAttributeValue" text filter with value "AutomationFindAndMatch" in "findAndMatchTable"
-    Then The user verify "SecondAttributeValue" text filter with value "AutomationFindAndMatch" in "findAndMatchTable"
-    Then The user verify "AlreadyConnected" text filter with value "NotConnected" in "findAndMatchTable"
+    Then The user verify "İlk Özellik Değeri" text filter with value "AutomationFindAndMatch" in "findAndMatchTable"
+    Then The user verify "İkinci Özellik Değeri" text filter with value "AutomationFindAndMatch" in "findAndMatchTable"
+    Then The user verify "Zaten Bağlı" text filter with value "NotConnected" in "findAndMatchTable"
     When The user click connect button in find and match table
     Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
     Then The user verify items has association
@@ -312,7 +312,7 @@ Feature: Item Overview Scenarios
     When The User clicks on the createButton element
     When The user select saved connect 'test'
     When The user click test connect button
-    Then The user verifies info "ConnectionSuccessful" appears
+    Then The user verifies info "Bağlantı Başarılı" appears
     When The user click first next button
     When The user click sql button
     When The user fill sql query

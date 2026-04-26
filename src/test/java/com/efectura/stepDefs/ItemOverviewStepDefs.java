@@ -1859,7 +1859,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @Then("the user verify clone message")
     public void theUserVerifyCloneMessage() {
-        String text = "Item was cloned successfully.";
+        String text = "Başarılı";
         Assert.assertTrue(BrowserUtils.isElementDisplayed(By.xpath("//*[contains(normalize-space(.), '" + text + "')]")));
     }
 
@@ -2018,7 +2018,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user click family title")
     public void theUserClickFamilyTitle() {
-        driver.findElement(By.xpath("//a[.='FamilySelect']")).click();
+        driver.findElement(By.xpath("//a[.='Aile Seçimi']")).click();
         BrowserUtils.wait(2);
         BrowserUtils.switchToTabByTitleAndCloseOld("DIA: Aileler");
     }
