@@ -848,20 +848,20 @@ public class DbProcess extends BasePage {
         Assert.assertTrue("Gönderilen Body db'de bulunamadı!", emailBodies.size() > 0);
     }
 
-    public List<Integer> getItemId(int count, String itemType) {
-        String query = "SELECT TOP " + count + " Id FROM Items i\n" +
+    public List<String> getItemId(int count, String itemType) {
+        String query = "SELECT TOP " + count + " SKU FROM Items i\n" +
                 "WHERE [Type] = (\n" +
                 "SELECT [Type] FROM ItemTypeColumns\n" +
                 "WHERE TypeName = '" + itemType + "')";
 
-        List<Integer> itemIds = new ArrayList<>();
+        List<String> itemIds = new ArrayList<>();
 
         try (Connection conn = DatabaseManager.getConnection(DbConfigs.DB_URL, DbConfigs.DB_USERNAME, DbConfigs.DB_PASSWORD);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                itemIds.add(rs.getInt("Id"));
+                itemIds.add(rs.getString("SKU"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
