@@ -166,7 +166,7 @@ public class ModulFlows extends BasePage {
     @FindBy(xpath = "//span[contains(@class,'flatpickr-day today')]")
     private WebElement vendorTodayDate;
 
-    @FindBy(xpath = "(//span[@class='flatpickr-day today'])[3]")
+    @FindBy(xpath = "(//span[@class='flatpickr-day today'])[4]")
     private WebElement todayDate;
 
     @FindBy(xpath = "//ul[@id='select2-docType2-results']/li/span")
@@ -193,7 +193,7 @@ public class ModulFlows extends BasePage {
     @FindBy(xpath = "//button[@id='confirmBtn']")
     private WebElement confirmButton;
 
-    @FindBy(xpath = "//h4[contains(text(),'Nokta Bilgileri')]")
+    @FindBy(xpath = "//span[text()='Müşteri Kodu']")
     private WebElement trackInfoHeader;
 
     @FindBy(xpath = "//td[contains(text(),'Tütün Alkol Denetim Belgesi')]")
@@ -1306,7 +1306,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(2);
         BrowserUtils.waitForVisibility(driver.findElement(By.xpath("//td[contains(text(),'Proforma')]")),
                 60);
-        BrowserUtils.wait(4);
+        BrowserUtils.wait(5);
 
         ilerletButton.click();
 

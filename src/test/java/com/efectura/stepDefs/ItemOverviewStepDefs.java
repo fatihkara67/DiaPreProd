@@ -1333,7 +1333,7 @@ public class ItemOverviewStepDefs extends BaseStep {
         Assert.assertTrue(currentUrl.contains("EditItem"));
     }
 
-    List<Integer> itemIds = new ArrayList<>();
+    List<String> itemIds = new ArrayList<>();
     @When("The user get {int} {string} item id")
     public void theUserGetEventItemId(int count, String itemType) {
         itemIds = pages.dbProcess().getItemId(count,itemType);
@@ -1341,9 +1341,17 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user fill id inputs")
     public void theUserFillIdInputs() {
-        BrowserUtils.waitForVisibility(driver.findElement(By.xpath("//input[@id='id1']")),60);
-        driver.findElement(By.xpath("//input[@id='id1']")).sendKeys(itemIds.get(0) + "");
-        driver.findElement(By.xpath("//input[@id='id2']")).sendKeys(itemIds.get(1) + "");
+
+
+        BrowserUtils.waitForVisibility(driver.findElement(By.xpath("//input[@placeholder='Birinci Öğe']")),60);
+
+        driver.findElement(By.xpath("//input[@placeholder='Birinci Öğe']")).sendKeys(itemIds.get(0) + "");
+        BrowserUtils.waitForVisibility(By.xpath("//div[contains(text(),'" + itemIds.get(0) + "')]"),40);
+        driver.findElement(By.xpath("//div[contains(text(),'" + itemIds.get(0) + "')]")).click();
+
+        driver.findElement(By.xpath("//input[@placeholder='İkinci Öğe']")).sendKeys(itemIds.get(1) + "");
+        BrowserUtils.waitForVisibility(By.xpath("//div[contains(text(),'" + itemIds.get(1) + "')]"),40);
+        driver.findElement(By.xpath("//div[contains(text(),'" + itemIds.get(1) + "')]")).click();
     }
 
     @When("The user click compare button")
