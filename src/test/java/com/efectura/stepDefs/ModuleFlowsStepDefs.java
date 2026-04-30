@@ -148,6 +148,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
 
     @Then("The user verify flow start page is open")
     public void theUserVerifyFlowStartPageIsOpen() {
+        BrowserUtils.waitForVisibility(By.xpath("//select[contains(@id,'formType')]"),45);
         Assert.assertTrue(pages.panel().getFormTypeSelect().isDisplayed());
     }
 

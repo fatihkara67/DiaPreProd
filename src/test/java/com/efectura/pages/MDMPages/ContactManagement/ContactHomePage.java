@@ -591,6 +591,7 @@ public class ContactHomePage extends BasePage {
         BrowserUtils.wait(5);
         for (int i = 0; i < editItemTabs.size(); i++) {
             if (editItemTabs.get(i).getText().contains(tabName)) {
+                BrowserUtils.moveToElement(editItemTabs.get(i));
                 editItemTabs.get(i).click();
                 BrowserUtils.wait(2);
             }

@@ -232,7 +232,7 @@ public class ModulFlows extends BasePage {
 
     String formNumber = "";
     public String fillModuleFlowForm(String lastCustomerCode) {
-        BrowserUtils.adjustScreenSize(80,Driver.getDriver());
+        BrowserUtils.adjustScreenSize(60,Driver.getDriver());
         formNumber = BrowserUtils.getValueInInputBox(formNumberInput);
         System.out.println("Form Number: " + formNumber);
         musteriNoInputBox.sendKeys(lastCustomerCode);
@@ -1111,6 +1111,7 @@ public class ModulFlows extends BasePage {
     }
 
     public void selectKalem(String kalem) {
+        BrowserUtils.adjustScreenSize(60,driver);
         BrowserUtils.selectDropdownOptionByVisibleText(kalemSelect,kalem);
         driver.findElement(By.xpath("//button[@id='add-stand-process']")).click();
     }
@@ -1342,7 +1343,7 @@ public class ModulFlows extends BasePage {
         BrowserUtils.wait(2);
         BrowserUtils.waitForVisibility(driver.findElement(By.xpath("//td[contains(text(),'Tedarikçi Faturası')]")),
                 60);
-        BrowserUtils.wait(4);
+        BrowserUtils.wait(5);
 
         driver.findElement(By.xpath("//button[@id='submitForm']")).click();
 
