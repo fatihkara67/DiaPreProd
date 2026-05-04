@@ -2008,7 +2008,7 @@ public class ItemOverviewStepDefs extends BaseStep {
                 "    WHERE Code In ('NewText','NewBoolean','NewSelect','NewDate')\n" +
                 "    )";
 
-        System.out.println();
+        System.out.println(query);
 
 
         int affectedRows = 0;
