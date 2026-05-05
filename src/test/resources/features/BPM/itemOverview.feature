@@ -342,6 +342,12 @@ Feature: Item Overview Scenarios
     When The user clicks 'Kaydet' button
     Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
 
+  Scenario: The user navigates to item detail page by clicking a row in the list
+    Given The user go to 'Event' overview page
+    When the user clicks on the first row in the items table
+    Then the user should be navigated to the item detail page
+    And the item detail page URL should contain "/Enrich/EditItem/"
+
 
 
 

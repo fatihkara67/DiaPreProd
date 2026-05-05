@@ -2354,4 +2354,53 @@ public class ItemOverviewStepDefs extends BaseStep {
         System.out.println(idAttr);
         System.out.println(style);
     }
+
+
+    // Tıklamadan önce bulunduğumuz URL'i saklamak için
+    private String urlBeforeClick;
+
+    @Given("the user is on the Events list page")
+    public void theUserIsOnTheEventsListPage() {
+        // Sayfa zaten açık olduğu varsayılıyor (login ve navigasyon adımı yok)
+        // Tablonun yüklenmesini bekle
+        BrowserUtils.waitForVisibility(
+                By.cssSelector("table#items tbody tr"),
+                15
+        );
+    }
+
+    @When("the user clicks on the first row in the items table")
+    public void theUserClicksOnTheFirstRowInTheItemsTable() {
+        BrowserUtils.wait(2);
+        urlBeforeClick = driver.getCurrentUrl();
+        WebElement cell = driver.findElement(By.xpath("//table[@id='items']/tbody/tr[1]/td[3]"));
+        cell.click();
+    }
+
+    @Then("the user should be navigated to the item detail page")
+    public void theUserShouldBeNavigatedToTheItemDetailPage() {
+        // URL'nin değişmesini bekle
+
+        new org.openqa.selenium.support.ui.WebDriverWait(driver,
+                java.time.Duration.ofSeconds(40))
+                .until(d -> !d.getCurrentUrl().equals(urlBeforeClick));
+
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertNotEquals(
+                "URL did not change after clicking the row!",
+                urlBeforeClick,
+                currentUrl
+        );
+    }
+
+    @And("the item detail page URL should contain {string}")
+    public void theItemDetailPageURLShouldContain(String expectedUrlPart) {
+        String currentUrl = Driver.getDriver().getCurrentUrl();
+        Assert.assertTrue(
+                "Expected URL to contain '" + expectedUrlPart + "' but was: " + currentUrl,
+                currentUrl.contains(expectedUrlPart)
+        );
+    }
+
+
 }
