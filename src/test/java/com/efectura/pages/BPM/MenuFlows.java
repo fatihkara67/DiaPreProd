@@ -75,7 +75,7 @@ public class MenuFlows extends BasePage {
 
     String formNumber = "";
     public void fillMenuFlowForm(String lastCustomerCode) {
-        BrowserUtils.adjustScreenSize(60, Driver.getDriver());
+        BrowserUtils.adjustScreenSize(50, Driver.getDriver());
         formNumber = BrowserUtils.getValueInInputBox(formNumberInput);
         System.out.println("Form Number: " + formNumber);
         musteriNoInputBox.sendKeys(lastCustomerCode);

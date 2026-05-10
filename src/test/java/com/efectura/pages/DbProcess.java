@@ -798,6 +798,22 @@ public class DbProcess extends BasePage {
         }
     }
 
+    public void deleteTestAttributes(String attributeCode) {
+        String query = "DELETE FROM Attributes WHERE Code = '" + attributeCode + "'";
+
+        try (Connection conn = Database.getInstance();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+//            ps.setString(1, "%Test Automation%");
+
+            int affectedRows = ps.executeUpdate();
+            System.out.println("Silinen kayıt sayısı: " + affectedRows);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean isNameEdited(String selectedId, String randomValue) {
         String query = "SELECT ValueString as FirstName FROM ItemValues iv \n" +
                 "WHERE ItemId = " + selectedId + " \n" +
@@ -849,10 +865,13 @@ public class DbProcess extends BasePage {
     }
 
     public List<String> getItemId(int count, String itemType) {
-        String query = "SELECT TOP " + count + " SKU FROM Items i\n" +
+        String query = "SELECT TOP " + count +  "tr_TR as Label FROM Items i\n" +
                 "WHERE [Type] = (\n" +
                 "SELECT [Type] FROM ItemTypeColumns\n" +
-                "WHERE TypeName = '" + itemType + "')";
+                "WHERE TypeName = '" + itemType + "')\n" +
+                "ORDER BY Label DESC";
+
+        System.out.println("query: \n" + query);
 
         List<String> itemIds = new ArrayList<>();
 
@@ -861,7 +880,7 @@ public class DbProcess extends BasePage {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                itemIds.add(rs.getString("SKU"));
+                itemIds.add(rs.getString("Label"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

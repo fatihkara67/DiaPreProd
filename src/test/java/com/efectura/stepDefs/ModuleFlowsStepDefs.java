@@ -288,7 +288,9 @@ public class ModuleFlowsStepDefs extends BaseStep {
         BrowserUtils.wait(6);
         BrowserUtils.waitForVisibility(By.id("target-apply-details-button"),40);
         Driver.getDriver().findElement(By.id("target-apply-details-button")).click();
-        BrowserUtils.wait(10);
+        BrowserUtils.wait(6);
+        driver.navigate().refresh();
+        BrowserUtils.wait(3);
     }
 
     @When("The user click target import button")

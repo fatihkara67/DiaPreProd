@@ -362,6 +362,221 @@ public class GeneralStepDefinitions extends BaseStep {
 
     }
 
+
+
+    private final WebDriver driver = Driver.getDriver();
+    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+    // -----------------------------------------------------------------------
+    // Given
+    // -----------------------------------------------------------------------
+
+    @Given("the user opens the {string} modal")
+    public void theUserOpensTheModal(String modalTitle) {
+        // Modal'ın body'de görünür olduğunu doğrula
+        WebElement modal = BrowserUtils.waitForVisibility(
+                By.cssSelector(".ef-enhanced-modal-dialog"), 15);
+        WebElement title = modal.findElement(By.cssSelector(".ef-enhanced-modal-title"));
+        assert title.getText().contains(modalTitle)
+                : "Beklenen modal başlığı: " + modalTitle + ", bulunan: " + title.getText();
+    }
+
+    // -----------------------------------------------------------------------
+    // When – plain text inputs
+    // -----------------------------------------------------------------------
+
+    @When("the user fills the {string} input field with {string}")
+    public void theUserFillsTheInputFieldWith(String fieldLabel, String value) {
+        WebElement input;
+
+        switch (fieldLabel) {
+            case "Kod":
+                input = BrowserUtils.waitForVisibility(By.id("inputCode"), 10);
+                input.clear();
+                input.sendKeys(value);
+                break;
+
+            case "Etkinlik Adı":
+                // id içinde boşluk olduğu için CSS attribute selector kullanıyoruz
+                input = BrowserUtils.waitForVisibility(
+                        By.cssSelector("input.DIA_Event_Name"), 10);
+                input.clear();
+                input.sendKeys(value);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Tanımsız input alanı: " + fieldLabel);
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // When – Select2 single-select dropdowns
+    // -----------------------------------------------------------------------
+
+    @When("the user selects {string} from the {string} dropdown")
+    public void theUserSelectsFromTheDropdown(String optionText, String fieldLabel) {
+
+        String nativeSelectId = resolveNativeSelectId(fieldLabel);
+
+        // 1) Select2'nin görünür wrapper span'ine tıkla (dropdown'ı açar)
+        WebElement select2Opener = BrowserUtils.waitForClickability(
+                By.cssSelector("#" + nativeSelectId
+                        + " + span.select2-container .select2-selection"), 10);
+        select2Opener.click();
+
+        // 2) Açılan arama kutusuna seçmek istediğimiz metni yaz
+        WebElement searchInput = BrowserUtils.waitForVisibility(
+                By.cssSelector(".select2-container--open .select2-search__field"), 10);
+        searchInput.clear();
+        searchInput.sendKeys(optionText);
+        BrowserUtils.wait(1);
+
+        // 3) Filtrelenmiş listede tam eşleşen seçeneğe tıkla
+        WebElement option = BrowserUtils.waitForClickability(
+                By.xpath("//ul[contains(@class,'select2-results__options')]"
+                        + "/li[normalize-space(text())='" + optionText + "']"), 10);
+        option.click();
+    }
+
+    // -----------------------------------------------------------------------
+    // When – Select2 multi-select dropdowns
+    // -----------------------------------------------------------------------
+
+    @When("the user selects {string} from the {string} multi-select dropdown")
+    public void theUserSelectsFromTheMultiSelectDropdown(String optionText, String fieldLabel) {
+
+        String nativeSelectId = resolveNativeSelectId(fieldLabel);
+
+        // 1) Multi-select için selection alanına tıkla (ul içindeki search li'si dropdown'ı açar)
+        WebElement select2Selection = BrowserUtils.waitForClickability(
+                By.cssSelector("#" + nativeSelectId
+                        + " + span.select2-container .select2-selection--multiple"), 10);
+        select2Selection.click();
+
+        // 2) Açılan search input'a metni yaz
+        WebElement searchInput = BrowserUtils.waitForVisibility(
+                By.cssSelector(".select2-container--open .select2-search__field"), 10);
+        searchInput.clear();
+        searchInput.sendKeys(optionText);
+
+        // 3) Filtrelenmiş listede tam eşleşen seçeneğe tıkla
+        WebElement option = BrowserUtils.waitForClickability(
+                By.xpath("//ul[contains(@class,'select2-results__options')]"
+                        + "/li[normalize-space(text())='" + optionText + "']"), 10);
+        option.click();
+    }
+
+    // -----------------------------------------------------------------------
+    // When – Quill rich text editor
+    // -----------------------------------------------------------------------
+
+    @When("the user fills the {string} rich text editor with {string}")
+    public void theUserFillsTheRichTextEditorWith(String fieldLabel, String text) {
+        // Quill'in contenteditable div'i
+        WebElement quillEditor = BrowserUtils.waitForVisibility(
+                By.cssSelector(".ql-editor[contenteditable='true']"), 10);
+        BrowserUtils.moveToElement(quillEditor);
+        quillEditor.click();
+        quillEditor.clear();
+        quillEditor.sendKeys(text);
+    }
+
+    // -----------------------------------------------------------------------
+    // When – Flatpickr date inputs
+    // -----------------------------------------------------------------------
+
+    @When("the user fills the {string} date field with {string}")
+    public void theUserFillsTheDateFieldWith(String fieldLabel, String dateValue) {
+        String inputId;
+
+        switch (fieldLabel) {
+            case "Başlangıç Tarihi":
+                inputId = "DIA_Start_Date_E";
+                break;
+            case "Bitiş Tarihi":
+                inputId = "DIA_Finish_Date_E";
+                break;
+            default:
+                throw new IllegalArgumentException("Tanımsız tarih alanı: " + fieldLabel);
+        }
+
+        // Flatpickr input readonly olduğu için JS ile değer set ediyoruz
+        WebElement dateInput = BrowserUtils.waitForVisibility(By.id(inputId), 10);
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].removeAttribute('readonly');", dateInput);
+        dateInput.clear();
+        dateInput.sendKeys(dateValue);
+
+        // Flatpickr instance'ına değeri set et
+        ((JavascriptExecutor) driver).executeScript(
+                "const fp = document.getElementById(arguments[0])._flatpickr; " +
+                        "if(fp){ fp.setDate(arguments[1], true); }", inputId, dateValue);
+    }
+
+    // -----------------------------------------------------------------------
+    // When – Button click
+    // -----------------------------------------------------------------------
+
+    @When("the user clicks the {string} button")
+    public void theUserClicksTheButton(String buttonLabel) {
+        WebElement button;
+
+        switch (buttonLabel) {
+            case "Yeni Oluştur":
+                button = BrowserUtils.waitForClickability(By.id("createItem"), 10);
+                break;
+            case "İptal Et":
+                button = BrowserUtils.waitForClickability(By.id("cancelItem"), 10);
+                break;
+            default:
+                // Genel fallback: button text'e göre bul
+                button = BrowserUtils.waitForClickability(
+                        By.xpath("//button[normalize-space(text())='" + buttonLabel + "']"), 10);
+        }
+
+        button.click();
+    }
+
+    // -----------------------------------------------------------------------
+    // Then
+    // -----------------------------------------------------------------------
+
+    @Then("the new product should be created successfully")
+    public void theNewProductShouldBeCreatedSuccessfully() {
+        // Modal kapandıktan sonra başarı mesajı veya toast kontrolü yapılır.
+        // Projedeki toast/notification yapısına göre güncelle.
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.cssSelector(".ef-enhanced-modal-dialog")));
+        System.out.println("Yeni ürün başarıyla oluşturuldu.");
+    }
+
+    // -----------------------------------------------------------------------
+    // Helper – Alan adını native select id'ye çevir
+    // -----------------------------------------------------------------------
+
+    /**
+     * Feature dosyasındaki Türkçe alan adını HTML'deki native select id'ye eşler.
+     * Select2 her zaman gizli bir native <select> ile çalışır;
+     * select'i programatik olarak değiştirip change event'ini tetiklemek
+     * en güvenilir yöntemdir.
+     */
+    private String resolveNativeSelectId(String fieldLabel) {
+        switch (fieldLabel) {
+            case "Temas Tipi":            return "attribute-4953";
+            case "Tarz / Stil":           return "attribute-3822";
+            case "İlgili Ürün":           return "attribute-4951";
+            case "İlgili Marka":          return "attribute-5028";
+            case "Etkinlik Türü":         return "attribute-3821";
+            case "Şehir":                 return "attribute-4922";
+            case "Müşteri Ortamında mı?": return "attribute-4925";
+            case "Ajans Seçimi":          return "attribute-6024";
+            default:
+                throw new IllegalArgumentException(
+                        "Bilinmeyen dropdown alanı: " + fieldLabel);
+        }
+    }
+
+
     String eventName;
     @When("The user fill event create inputs")
     public void theUserFillEventCreateInputs() {
@@ -572,7 +787,6 @@ public class GeneralStepDefinitions extends BaseStep {
 
     }
 
-    WebDriver driver = Driver.getDriver();
     @When("The user impersonate {string}")
     public void theUserImpersonate(String userName) {
         driver.findElement(By.xpath("//tr/td[2][text()='" + userName + "']")).click();

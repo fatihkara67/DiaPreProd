@@ -220,7 +220,7 @@ public class BrowserUtils {
      * @param timeToWaitInSec
      * @return WebElement
      */
-    public static WebElement waitForClickable(By locator, int timeToWaitInSec) {
+    public static WebElement waitForClickability(By locator, int timeToWaitInSec) {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), ofSeconds(timeToWaitInSec));
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }

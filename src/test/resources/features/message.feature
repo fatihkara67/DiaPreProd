@@ -70,7 +70,8 @@ Feature: Message Sending Cases
     When The user click second next button
     When The user clicks send button
     Then The user verifies edit item navigate
-#    Then The user verifies info "Changes saved successfully." appears
+    Then The user clicks 'Mesaj Önizlemesi' tab
+    Then The user verify the email preview
     Then The user verify the email
 
 

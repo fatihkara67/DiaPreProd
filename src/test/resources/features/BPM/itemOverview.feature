@@ -29,7 +29,6 @@ Feature: Item Overview Scenarios
     And The user click Save button in family edit page
     And The user enters "update for family attribute by automation" in comment area
     And The user clicks save button in edit family save modal
-    Then The user verifies info "Changes saved successfully." appears
     Then The user verifies positive info "Changes saved successfully." appears
 
   Scenario: Support Mail Test
@@ -43,8 +42,22 @@ Feature: Item Overview Scenarios
   Scenario: Roof card event creation
     When The user go to roof card item
     When The user click event create button
-    When The user fill event create inputs
+    When the user fills the "Kod" input field with "EVT-2025-001"
+    And the user fills the "Etkinlik Adı" input field with "Test Etkinlik"
+    And the user selects "Birebir" from the "Temas Tipi" dropdown
+    And the user selects "Sohbet" from the "Tarz / Stil" multi-select dropdown
+#    And the user selects "Şarap" from the "İlgili Ürün" multi-select dropdown
+    And the user selects "Eğitim" from the "Etkinlik Türü" dropdown
+#    And the user fills the "Açıklama" rich text editor with "Bu bir test etkinlik açıklamasıdır."
+    And the user fills the "Başlangıç Tarihi" date field with "01.06.2025"
+    And the user fills the "Bitiş Tarihi" date field with "30.06.2025"
+#    And the user selects "İstanbul" from the "Şehir" multi-select dropdown
+    And the user selects "Hayır" from the "Müşteri Ortamında mı?" dropdown
+#    When The user fill event create inputs
+    When The user click category tab
+    When The user select category for create 'On-Trade'
     When The user click create event button
+    Then The user verifies info "Başarılı" appears
 
 #  Scenario: Password update
 #    When The user go to profile page
@@ -163,6 +176,7 @@ Feature: Item Overview Scenarios
     When The user fill event create attributes
 #    When The user select category for create
     When The user select category for create 'On-Trade'
+    When The user click category next button in create
     When The user complete create for agency budget
     When The user verify created item edit page is open
 
@@ -206,7 +220,6 @@ Feature: Item Overview Scenarios
     When The user click clone button
     When The user fill product clone item info
     Then the user verify clone message
-#    Then The user verifies info "Item was cloned successfully." appears
 
   Scenario: Edit Item Attribute Navigation
     When The user go to edit item '3499092'
@@ -264,7 +277,7 @@ Feature: Item Overview Scenarios
     When The user click find and match preview button
     Then The user verify "İlk Özellik Değeri" text filter with value "AutomationFindAndMatch" in "findAndMatchTable"
     Then The user verify "İkinci Özellik Değeri" text filter with value "AutomationFindAndMatch" in "findAndMatchTable"
-    Then The user verify "Zaten Bağlı" text filter with value "NotConnected" in "findAndMatchTable"
+    Then The user verify "Zaten Bağlı" text filter with value "Bağlı Değil" in "findAndMatchTable"
     When The user click connect button in find and match table
     Then The user verifies info "Değişiklikler başarıyla kaydedildi." appears
     Then The user verify items has association
@@ -347,6 +360,55 @@ Feature: Item Overview Scenarios
     When the user clicks on the first row in the items table
     Then the user should be navigated to the item detail page
     And the item detail page URL should contain "/Enrich/EditItem/"
+
+
+  Scenario: BMUSER2 - ShowProcess izni olmayan kullanıcı Modül Akışını göremez (uçtan uca)
+#    Given The process definition page URL is "https://dia-preprod-ui.efectura.com/Process/ProcessDefinition"
+    Given The user go to "panel" page
+    And The permission name is "ShowProcess_Akış_Versiyon_V3.1"
+    And The target flow name is "Modül Akışı"
+    Given The permission "ShowProcess_Akış_Versiyon_V3.1" exists in the system
+    And The user "BMUSER2" does not have permission "ShowProcess_Akış_Versiyon_V3.1"
+    When The user login with "BMUSER2"
+    Given The user go to "panel" page
+#    And I navigate to the process definition page
+    Then The process table should be visible
+    And The process table should NOT contain a row with name "Modül Akışı"
+    And I take a screenshot named "BMUSER2_no_modul_akisi"
+
+  Scenario: Item Clone Random Sku Control
+    Then ItemTypeRules tablosunda Type 82 için OtoSKU açık olmalıdır
+    When The user get target item
+    When The user go to selected target item
+    When The user click edit item side bar button
+    When The user click clone button
+    Then Fletum Kod alanı görünmemelidir
+
+  Scenario: Item Without Unassigned Records Scenario
+    Given The user go to 'KPI' overview page
+    Then The uncategorized section should not be visible
+    Given The user go to 'Event' overview page
+    Then The uncategorized section should be visible
+
+  Scenario: Associated Attribute seçiliyken Associated Value kontrolü
+    When The user go to attribute page
+    When The user click attribute create button
+    When The user select attribute type as 'Metin'
+    When The user click attribute create next button
+    When The user select item type 'Ürün'
+    When The user set attribute code
+    When The user select attribute group 'SYSTEM_ATTRIBUTES_Product'
+    When The user click attribute create next button
+    When The user select assoc attribute check box
+    When The user click attribute create next button
+    Then The user verifies info "Değişiklikler Başarıyla Kaydedildi" appears
+    When The user click update button
+#    Then The user verifies info "Başarıyla Güncellendi" appears
+    When The user go to edit assoc type page
+    When The user clicks assoc type "Özellikler" tab
+    Then The user verify assoc attribute displayed in assoc type
+    Then The user delete test attribute
+
 
 
 
