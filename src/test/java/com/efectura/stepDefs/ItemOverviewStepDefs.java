@@ -19,14 +19,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.efectura.pages.BasePage.getColumnData;
 import static com.efectura.utilities.BrowserUtils.*;
 import static com.efectura.utilities.CommonExcelReader.getExcelPath;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ItemOverviewStepDefs extends BaseStep {
 
@@ -388,7 +392,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     public void theUserVerifyErrorMessage() {
         BrowserUtils.wait(10);
         WebElement table = Driver.getDriver().findElement(By.id("edit-import-table"));
-        
+
         if (errorColumn.equalsIgnoreCase("Family")) {
             Assert.assertEquals("IMPORT_FAMILY_NOT_FOUND", getColumnData(table, "ErrorMessage").get(0));
         } else if (errorColumn.equalsIgnoreCase("Category")) {
@@ -1174,8 +1178,10 @@ public class ItemOverviewStepDefs extends BaseStep {
         pages.message().getFirstAttributeOption().click();
     }
 
+    String receiverEmail;
     @When("The user set {string} as attribute value")
     public void theUserSetAsAttributeValue(String value) {
+        receiverEmail = value;
         pages.message().getAttributeValueInput().sendKeys(value);
     }
 
@@ -1331,6 +1337,7 @@ public class ItemOverviewStepDefs extends BaseStep {
     public void theUserVerifiesEditItemNavigate() {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("EditItem"));
+        BrowserUtils.wait(2);
     }
 
     List<String> itemIds = new ArrayList<>();
@@ -1338,6 +1345,70 @@ public class ItemOverviewStepDefs extends BaseStep {
     public void theUserGetEventItemId(int count, String itemType) {
         itemIds = pages.dbProcess().getItemId(count,itemType);
     }
+
+
+    @Then("The user verify the email preview")
+    public void theUserVerifyTheEmailPreview() {
+
+        // ===== CAMPAIGN SUMMARY PANEL =====
+
+        // Notification Name
+        String actualNotificationName = driver.findElement(
+                By.id("mp-notification-name")).getText();
+//        Assert.assertEquals("Notification name mismatch",
+//                notificationName, actualNotificationName);
+
+        // Recipients - verify count badge visible
+        String actualRecipients = driver.findElement(
+                By.id("mp-recipients")).getText();
+        Assert.assertTrue("Recipients should contain '1 Eşleşen Kullanıcılar'",
+                actualRecipients.contains("Eşleşen Kullanıcılar"));
+
+        // ===== DELIVERY LOGS TABLE =====
+
+        // Receiver Email in logs table (E-mail column)
+        String actualReceiverEmail = driver.findElement(
+                        By.cssSelector("#mp-logs-table tbody tr:first-child td:nth-child(3) .mp-td-muted"))
+                .getText();
+        Assert.assertEquals("Receiver email mismatch",
+                receiverEmail, actualReceiverEmail);
+
+        // ===== MESSAGE PREVIEW PANEL =====
+
+        // Click on "Konu" tab to verify email title (subject)
+        driver.findElement(
+                By.cssSelector("[data-mp-tab='subject']")).click();
+
+        String actualEmailTitle = driver.findElement(
+                By.id("mp-subject-text")).getText();
+        Assert.assertEquals("Email title mismatch",
+                emailTitle, actualEmailTitle);
+
+        // Switch back to body tab
+        driver.findElement(
+                By.cssSelector("[data-mp-tab='body']")).click();
+
+        // Email Body - verify inside iframe
+        WebElement iframe = driver.findElement(
+                By.cssSelector(".mp-email-iframe"));
+        driver.switchTo().frame(iframe);
+
+        String actualEmailBody = driver.findElement(
+                By.tagName("body")).getText();
+        Assert.assertTrue("Email body mismatch",
+                actualEmailBody.contains(emailBody));
+
+        driver.switchTo().defaultContent();
+
+        // ===== PRINT ACTUAL VALUES =====
+        System.out.println("=== EMAIL PREVIEW VERIFICATION ===");
+        System.out.println("Notification Name : " + actualNotificationName);
+        System.out.println("Receiver Email    : " + actualReceiverEmail);
+        System.out.println("Email Title       : " + actualEmailTitle);
+        System.out.println("Email Body        : " + actualEmailBody);
+        System.out.println("==================================");
+    }
+
 
     @When("The user fill id inputs")
     public void theUserFillIdInputs() {
@@ -1548,7 +1619,6 @@ public class ItemOverviewStepDefs extends BaseStep {
         System.out.println("//div[@class='category-tree']//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]");
         driver.findElement(By.xpath("//div[@class='category-tree']//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]")).click();
 
-        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
     }
 
     @When("The user complete create for agency budget")
@@ -2403,4 +2473,460 @@ public class ItemOverviewStepDefs extends BaseStep {
     }
 
 
+    @When("The user click category tab")
+    public void theUserClickCategoryTab() {
+        driver.findElement(By.xpath("//a[@id='_fast-categories']")).click();
+        BrowserUtils.wait(1);
+    }
+
+    @When("The user click category next button in create")
+    public void theUserClickCategoryNextButtonInCreate() {
+        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
+    }
+
+    // ── Uygulama URL ─────────────────────────────────────────────────────────
+    private static final String APP_BASE_URL = "https://dia-preprod-ui.efectura.com";
+
+    // ── Paylaşılan state ──────────────────────────────────────────────────────
+//    private final WebDriverWait wait;
+
+    private String processPageUrl;
+    private String permissionName;
+    private String targetFlowName;
+
+    private boolean permissionExistsInSystem = false;
+    private boolean userHasPermission        = false;
+
+    // ── Constructor (Driver Hook ile inject) ─────────────────────────────────
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+
+    // =========================================================================
+    // BACKGROUND ADIMLAR
+    // =========================================================================
+
+    @Given("The process definition page URL is {string}")
+    public void setProcessPageUrl(String url) {
+        this.processPageUrl = url;
+    }
+
+    @Given("The permission name is {string}")
+    public void setPermissionName(String permission) {
+        this.permissionName = permission;
+    }
+
+    @Given("The target flow name is {string}")
+    public void setTargetFlowName(String flowName) {
+        this.targetFlowName = flowName;
+    }
+
+    // =========================================================================
+    // DB DOĞRULAMA – Permission sistemde var mı?
+    // =========================================================================
+
+    /**
+     * SQL:
+     *   SELECT COUNT(1) AS cnt
+     *   FROM RolePermissions
+     *   WHERE Name = 'ShowProcess_Akış_Versiyon_V3.1'
+     */
+    @Given("I query the RolePermissions table for permission {string}")
+    public void queryRolePermissions(String permName) throws SQLException {
+        this.permissionName = permName;
+
+        String sql = "SELECT COUNT(1) AS cnt FROM RolePermissions WHERE Name = ?";
+
+        Connection conn = DatabaseManager.getConnection(
+                DbConfigs.DB_URL,
+                DbConfigs.DB_USERNAME,
+                DbConfigs.DB_PASSWORD);
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, permName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    permissionExistsInSystem = rs.getInt("cnt") > 0;
+                }
+            }
+        }
+    }
+
+    @Then("The permission should exist in the system")
+    public void permissionShouldExist() {
+        assertTrue(
+                "Permission '" + permissionName + "' RolePermissions tablosunda bulunamadı!",
+                permissionExistsInSystem
+        );
+        System.out.println("✅ Permission sistemde mevcut: " + permissionName);
+    }
+
+    // =========================================================================
+    // DB DOĞRULAMA – Kullanıcı bu permission'a sahip değil
+    // =========================================================================
+
+    /**
+     * SQL:
+     *   SELECT COUNT(1) AS cnt FROM (
+     *     SELECT DISTINCT rp.Name
+     *     FROM [User] u
+     *     JOIN AspNetUserRoles ur ON u.Id = ur.UserId
+     *     JOIN AspNetRoles r      ON ur.RoleId = r.Id
+     *     JOIN RolePermissions rp
+     *       ON ',' + REPLACE(r.Permissions, ' ', '') + ','
+     *          LIKE '%,' + CAST(rp.[Key] AS VARCHAR) + ',%'
+     *     WHERE u.UserName = ?
+     *   ) sub
+     *   WHERE sub.Name = ?
+     */
+    @Given("I query the permissions of user {string}")
+    public void queryUserPermissions(String userName) throws SQLException {
+        String sql =
+                "SELECT COUNT(1) AS cnt FROM (" +
+                        "  SELECT DISTINCT rp.Name" +
+                        "  FROM [User] u" +
+                        "  JOIN AspNetUserRoles ur ON u.Id = ur.UserId" +
+                        "  JOIN AspNetRoles r      ON ur.RoleId = r.Id" +
+                        "  JOIN RolePermissions rp" +
+                        "    ON ',' + REPLACE(REPLACE(REPLACE(r.Permissions, '[', ''), ']', ''), ' ', '') + ','" +
+                        "       LIKE '%,' + CAST(rp.[Key] AS VARCHAR) + ',%'" +
+                        "  WHERE u.UserName = ?" +
+                        ") sub" +
+                        " WHERE sub.Name = ?";
+
+        System.out.println("sql: " + sql);
+
+        Connection conn = DatabaseManager.getConnection(
+                DbConfigs.DB_URL,
+                DbConfigs.DB_USERNAME,
+                DbConfigs.DB_PASSWORD);
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, userName);
+            ps.setString(2, permissionName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userHasPermission = rs.getInt("cnt") > 0;
+                }
+            }
+        }
+    }
+
+    @Then("The user {string} should NOT have permission {string}")
+    public void userShouldNotHavePermission(String userName, String permName) {
+        assertFalse(
+                "Kullanıcı '" + userName + "', '" + permName + "' iznine sahip olmamalı – ancak sahip!",
+                userHasPermission
+        );
+        System.out.println("✅ Doğrulandı: " + userName + " kullanıcısının '" + permName + "' permission'ı yok.");
+    }
+
+    // =========================================================================
+    // PRECONDITION ADIMLAR (senaryo içi ön doğrulama)
+    // =========================================================================
+
+    @Given("The permission {string} exists in the system")
+    public void verifyPermissionExistsInSystem(String permName) throws SQLException {
+        this.permissionName = permName;
+        queryRolePermissions(permName);
+        assertTrue(
+                "Ön koşul BAŞARISIZ: '" + permName + "' sistemde tanımlı değil!",
+                permissionExistsInSystem
+        );
+    }
+
+    @Given("The user {string} does not have permission {string}")
+    public void verifyUserDoesNotHavePermission(String userName, String permName) throws SQLException {
+        this.permissionName = permName;
+        queryUserPermissions(userName);
+        assertFalse(
+                "Ön koşul BAŞARISIZ: '" + userName + "' kullanıcısının '" + permName + "' izni var!",
+                userHasPermission
+        );
+    }
+
+
+
+    // =========================================================================
+    // NAVIGASYON
+    // =========================================================================
+
+    @When("I navigate to the process definition page")
+    public void navigateToProcessDefinitionPage() {
+        String url = (processPageUrl != null)
+                ? processPageUrl
+                : APP_BASE_URL + "/Process/ProcessDefinition";
+
+        driver.get(url);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("process-table")));
+        waitForTableToLoad();
+
+        System.out.println("✅ Sayfa yüklendi: " + url);
+    }
+
+    // =========================================================================
+    // TABLO DOĞRULAMA
+    // =========================================================================
+
+    @Then("The process table should be visible")
+    public void processTableShouldBeVisible() {
+//        Instant wait = null;
+//        WebElement table = wait.until(
+//                ExpectedConditions.visibilityOfElementLocated(By.id("process-table")));
+        WebElement table = driver.findElement(By.id("process-table"));
+        assertTrue("Process tablosu görünür değil!", table.isDisplayed());
+        System.out.println("✅ Process tablosu görünür.");
+    }
+
+    /**
+     * DataTable sütun sırası (kaynak koddan):
+     *   index 0 → Durum
+     *   index 1 → Anahtar
+     *   index 2 → Form Sayısı
+     *   index 3 → İsim  ← hedef kolon
+     *   index 4 → Actions
+     */
+    @Then("The process table should NOT contain a row with name {string}")
+    public void processTableShouldNotContainFlowName(String flowName) {
+        waitForTableToLoad();
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#process-table tbody tr"));
+
+        boolean found = rows.stream()
+                .filter(row -> {
+                    String cls = row.getAttribute("class");
+                    return cls == null || !cls.contains("dataTables_empty");
+                })
+                .anyMatch(row -> {
+                    List<WebElement> cells = row.findElements(By.tagName("td"));
+                    if (cells.size() > 3) {
+                        return cells.get(3).getText().trim().equalsIgnoreCase(flowName);
+                    }
+                    return false;
+                });
+
+        assertFalse(
+                "❌ HATA: '" + flowName + "' tabloda görünüyor! " +
+                        "Bu kullanıcının ShowProcess iznine sahip OLMAMASI gerekiyor.",
+                found
+        );
+        System.out.println("✅ Doğrulandı: '" + flowName + "' tabloda yer almıyor (permission yok).");
+    }
+
+    // =========================================================================
+    // EKRAN GÖRÜNTÜSÜ
+    // =========================================================================
+
+    @Then("I take a screenshot named {string}")
+    public void takeScreenshot(String screenshotName) {
+        try {
+            org.openqa.selenium.TakesScreenshot ts =
+                    (org.openqa.selenium.TakesScreenshot) driver;
+            byte[] bytes = ts.getScreenshotAs(org.openqa.selenium.OutputType.BYTES);
+
+            java.nio.file.Path path = java.nio.file.Paths.get(
+                    "target/screenshots/" + screenshotName + ".png");
+            java.nio.file.Files.createDirectories(path.getParent());
+            java.nio.file.Files.write(path, bytes);
+
+            System.out.println("📸 Screenshot kaydedildi: " + path.toAbsolutePath());
+        } catch (Exception e) {
+            System.err.println("Screenshot alınamadı: " + e.getMessage());
+        }
+    }
+
+    // =========================================================================
+    // YARDIMCI
+    // =========================================================================
+
+    private void waitForTableToLoad() {
+        try {
+            wait.until(driver -> {
+                List<WebElement> processing = driver.findElements(
+                        By.id("process-table_processing"));
+                if (processing.isEmpty()) return true;
+                return "none".equals(processing.get(0).getCssValue("display"));
+            });
+
+            wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.cssSelector("#process-table tbody tr")));
+        } catch (Exception ignored) {
+            // Tablo boş olabilir, devam et
+        }
+    }
+
+    @When("The user click category next button2 in create")
+    public void theUserClickCategoryNextButton2InCreate() {
+        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
+    }
+
+    @When("The user click assoc next button in create")
+    public void theUserClickAssocNextButtonInCreate() {
+        driver.findElement(By.xpath("//button[@id='next-step-segment-build']")).click();
+    }
+
+    @When("The user click the create button on the modal")
+    public void theUserClickTheCreateButtonOnTheModal() {
+        driver.findElement(By.xpath("//button[@id='create-segment']")).click();
+    }
+
+
+    @Then("ItemTypeRules tablosunda Type 82 için OtoSKU açık olmalıdır")
+    public void itemTypeRulesOtoSkuAcikOlmali() throws SQLException {
+        Connection connection = Database.getInstance();
+
+        String query = "SELECT OtoSKU FROM ItemTypeRules WHERE Type = 82";
+        var rs = connection.createStatement().executeQuery(query);
+
+        Assert.assertTrue("ItemTypeRules Type=82 kaydı bulunamadı", rs.next());
+        Assert.assertEquals("OtoSKU açık (1) olmalıdır", 1, rs.getInt("OtoSKU"));
+    }
+
+    String targetItemId;
+    @When("The user get target item")
+    public void theUserGetTargetItem() throws SQLException {
+        Connection connection = Database.getInstance();
+
+        String query = "SELECT TOP 1 * FROM Items WHERE Type = 82 AND FamilyId = 280";
+        var rs = connection.createStatement().executeQuery(query);
+
+        Assert.assertTrue("Target item bulunamadı", rs.next());
+        int itemId = rs.getInt("Id");
+        targetItemId = itemId + "";
+    }
+
+    @When("The user go to selected target item")
+    public void theUserGoToSelectedTargetItem() {
+        driver.get("https://dia-preprod-ui.efectura.com/Enrich/EditItem/" + targetItemId);
+        BrowserUtils.wait(2);
+    }
+
+    @Then("Fletum Kod alanı görünmemelidir")
+    public void fletumKodAlaniGorunmemelidir() {
+        Assert.assertFalse(
+                "Fletum Kod alanı görünür durumda",
+                driver.findElements(By.id("skuinputvalue")).size() > 0 &&
+                        driver.findElement(By.id("skuinputvalue")).isDisplayed()
+        );
+    }
+
+
+    @Then("The uncategorized section should not be visible")
+    public void theUncategorizedSectionShouldNotBeVisible() {
+        List<WebElement> elements = driver.findElements(By.id("notCategoryTree"));
+
+        if (elements.size() > 0) {
+            Assert.assertFalse(
+                    "Uncategorized section should not be visible",
+                    elements.get(0).isDisplayed()
+            );
+        }
+        // Element yoksa zaten test geçer
+    }
+
+    @Then("The uncategorized section should be visible")
+    public void theUncategorizedSectionShouldBeVisible() {
+        List<WebElement> elements = driver.findElements(By.id("notCategoryTree"));
+
+        if (elements.size() > 0) {
+            Assert.assertTrue(
+                    "Uncategorized section should be visible",
+                    elements.get(0).isDisplayed()
+            );
+        }
+    }
+
+    @When("The user click attribute create button")
+    public void theUserClickAttributeCreateButton() {
+        driver.findElement(By.xpath("//button[@id='attributes_table-AddNew']")).click();
+    }
+
+    @When("The user select attribute type as {string}")
+    public void theUserSelectAttributeTypeAs(String attributeType) {
+        BrowserUtils.wait(1);
+        List<WebElement> attributeTypesInCreate = driver.findElements(By.xpath("//button[contains(@class,'attr-type-card')]"));
+
+        attributeTypesInCreate.stream()
+                .filter(e -> e.getText().trim().equals(attributeType))
+                .findFirst()
+                .ifPresent(WebElement::click);
+
+    }
+
+    @When("The user click attribute create next button")
+    public void theUserClickAttributeCreateNextButton() {
+        driver.findElement(By.xpath("//button[@id='attrBtnNext']")).click();
+    }
+
+    @When("The user select item type {string}")
+    public void theUserSelectItemType(String itemType) {
+        WebElement itemTypeSelect = driver.findElement(By.xpath("//select[@id='chooseItemTypes']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(itemTypeSelect, itemType);
+    }
+
+    @When("The user select attribute group {string}")
+    public void theUserSelectAttributeGroup(String attributeGroup) {
+        WebElement attributeGroupSelect = driver.findElement(By.xpath("//select[@id='AttributeGroupList']"));
+        BrowserUtils.selectDropdownOptionByVisibleText(attributeGroupSelect, attributeGroup);
+    }
+
+    String randomAttributeCode;
+    @When("The user set attribute code")
+    public void theUserSetAttributeCode() {
+        randomAttributeCode = UUID.randomUUID().toString();
+        driver.findElement(By.xpath("//input[@id='attribute-code']")).sendKeys(randomAttributeCode);
+    }
+
+    @When("The user select assoc attribute check box")
+    public void theUserSelectAssocAttributeCheckBox() {
+        driver.findElement(By.xpath("//input[@id='associationAttribute']")).click();
+    }
+
+    @When("The user go to edit assoc type page")
+    public void theUserGoToEditAssocTypePage() {
+        BrowserUtils.wait(2);
+        driver.get("https://dia-preprod-ui.efectura.com/Settings/EditAssociationType?id=181");
+        BrowserUtils.wait(3);
+    }
+
+    @When("The user clicks assoc type {string} tab")
+    public void theUserClicksAssocTypeTab(String tabName) {
+
+        List<WebElement> assocTypeTabs = driver.findElements(By.xpath("//ul[@class='nav nav-tabs']//li//a"));
+        BrowserUtils.adjustScreenSize(50, Driver.getDriver());
+
+        for (int i = 0; i < assocTypeTabs.size(); i++) {
+            if (assocTypeTabs.get(i).getText().contains(tabName)) {
+                BrowserUtils.moveToElement(assocTypeTabs.get(i));
+                assocTypeTabs.get(i).click();
+                BrowserUtils.wait(2);
+            }
+        }
+
+        BrowserUtils.wait(2);
+    }
+
+    @Then("The user verify assoc attribute displayed in assoc type")
+    public void theUserVerifyAssocAttributeDisplayedInAssocType() {
+        List<WebElement> attributeLabels = driver.findElements(
+                By.cssSelector(".panel-body .checkbox .label-text")
+        );
+
+        boolean isFound = attributeLabels.stream()
+                .anyMatch(e -> e.getText().trim().equals(randomAttributeCode));
+
+        Assert.assertTrue("'" + randomAttributeCode + "' attribute not found in assoc type attributes", isFound);
+    }
+
+    @When("The user click update button")
+    public void theUserClickUpdateButton() {
+        BrowserUtils.wait(4);
+        driver.findElement(By.xpath("//button[@id='update-permissions-attribute-like-group']")).click();
+    }
+
+    @Then("The user delete test attribute")
+    public void theUserDeleteTestAttribute() {
+        pages.dbProcess().deleteTestAttributes(randomAttributeCode);
+    }
 }

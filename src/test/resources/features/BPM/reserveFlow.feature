@@ -9,7 +9,7 @@ Feature: Reserve Flows Cases
     When The user send fillReserveReport endpoint request
     Given The user login with "fatihkara"
     Given The user go to "report" page
-    When The user select 'OfftradeReserveTrackingReports' report
+    When The user select 'Off-Trade Rezerv Takip Raporları' report
     Then The user verify 'tableReport' table has data
     Then The user verify created flow in report
 
@@ -37,3 +37,17 @@ Feature: Reserve Flows Cases
     Given The user login with "FavoriRe"
     Given The user go in Task "DIA: ReservFlowForm"
     Given The user fill reserve vendor invoice form with price "1100"
+
+
+  Scenario: Reserve Flow Full Cycle Over 500000 price
+    Given The user login with "satismuduru"
+    Given The user go to "panel" page
+    Given The user go in "Offtrade Rezerv Akışı" flow
+    Given The user fill reserve start form with musteri code "999999999"
+    Given The user login with "MarketingManager"
+    Given The user go in Task "DIA: ConfirmationFormReserve"
+    When The user select 'Favori Reklam' as vendor
+    Given The user submit the task 'Başarılı'
+    Given The user login with "FavoriRe"
+    Given The user go in Task "DIA: ReservFlowForm"
+    Given The user fill reserve vendor offer form with price "10000"
