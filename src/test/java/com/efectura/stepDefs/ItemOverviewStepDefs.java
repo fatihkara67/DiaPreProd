@@ -2423,6 +2423,7 @@ public class ItemOverviewStepDefs extends BaseStep {
         System.out.println(classAttr);
         System.out.println(idAttr);
         System.out.println(style);
+        BrowserUtils.wait(1);
     }
 
 
@@ -2928,5 +2929,140 @@ public class ItemOverviewStepDefs extends BaseStep {
     @Then("The user delete test attribute")
     public void theUserDeleteTestAttribute() {
         pages.dbProcess().deleteTestAttributes(randomAttributeCode);
+    }
+
+    private String uniqueAttributeItemId1;
+    private String uniqueAttributeItemId2;
+    private String uniqueAttributeEventName1;
+    private String uniqueAttributeEventName2;
+    @When("The user get item info for unique attribute case")
+    public void theUserGetItemInfoForUniqueAttributeCase() throws SQLException {
+        Connection connection = Database.getInstance();
+
+        String query = "SELECT TOP 2 ItemId, ValueString AS EventName FROM ItemValues " +
+                "WHERE AttributeId = 3832 AND ValueString IS NOT NULL";
+
+        ResultSet rs = connection.createStatement().executeQuery(query);
+
+        rs.next();
+        uniqueAttributeItemId1    = String.valueOf(rs.getInt("ItemId"));
+        uniqueAttributeEventName1 = rs.getString("EventName");
+
+
+        rs.next();
+        uniqueAttributeItemId2    = String.valueOf(rs.getInt("ItemId"));
+        uniqueAttributeEventName2 = rs.getString("EventName");
+        System.out.println(uniqueAttributeEventName2);
+    }
+
+    @When("The user go to second item page")
+    public void theUserGoToSecondItemPage() {
+        driver.get("https://dia-preprod-ui.efectura.com/Enrich/EditItem/" + uniqueAttributeItemId2);
+    }
+
+    @When("The user update {string} attribute")
+    public void theUserUpdateAttribute(String attrLabel) {
+        pages.offstand().updateAttribute(attrLabel,uniqueAttributeEventName1);
+    }
+
+    @When("The user click add favourite button")
+    public void theUserClickAddFavouriteButton() {
+        driver.findElement(By.xpath("//span[@id='toggleFavoriteStar']")).click();
+    }
+
+    @When("The user tear down favourite history case")
+    public void theUserTearDownFavouriteHistoryCase() {
+        String query = "DELETE FROM ItemHistories \n" +
+                "WHERE ObjId = 3620672";
+
+        try (Connection conn = Database.getInstance();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+//            ps.setString(1, "%Test Automation%");
+
+            int affectedRows = ps.executeUpdate();
+            System.out.println("Silinen kayıt sayısı: " + affectedRows);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @When("The user click permission export button")
+    public void theUserClickPermissionExportButton() {
+        driver.findElement(By.xpath("//button[@id='table-Main-export-dropdown']")).click();
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("//a[@id='table-Main_export-all']")).click();
+    }
+
+    @When("The user go to {string} family page")
+    public void theUserGoToFamilyPage(String familyCode) throws SQLException {
+        String query = "SELECT Id FROM Families WHERE Code = '" + familyCode + "'";
+        ResultSet rs = Database.getInstance().createStatement().executeQuery(query);
+        rs.next();
+        int familyId = rs.getInt("Id");
+
+        driver.get("https://dia-preprod-ui.efectura.com/Settings/EditFamily/" + familyId);
+
+    }
+
+    @Then("The user verify category {string} is selected")
+    public void theUserVerifyCategoryIsSelected(String category) {
+        WebElement categoryCheckbox = driver.findElement(By.xpath("//div[@class='category-tree']//div[contains(text(),'" + category + "')]/preceding-sibling::div[1]"));
+
+        String classValue = categoryCheckbox.getAttribute("class");
+        boolean isChecked = classValue.contains("checked");
+
+        Assert.assertTrue("Default kategori, create'te secili gelmedi",isChecked);
+
+    }
+
+    @When("The user go to {string} edit role page")
+    public void theUserGoToEditRolePage(String roleName) throws SQLException {
+        String query = "SELECT Id FROM AspNetRoles WHERE Name = '" + roleName + "'";
+        ResultSet rs = Database.getInstance().createStatement().executeQuery(query);
+        rs.next();
+        String roleId = rs.getString("Id");
+        driver.get("https://dia-preprod-ui.efectura.com/UserManage/EditRole/" + roleId);
+    }
+
+    @Then("The user delete default category for {string} family")
+    public void theUserDeleteDefaultCategoryForFamily(String familyName) throws SQLException {
+        String query = "SELECT Id FROM Families WHERE Code = '" + familyName + "'";
+        ResultSet rs = Database.getInstance().createStatement().executeQuery(query);
+        rs.next();
+        int familyId = rs.getInt("Id");
+
+        String query2 = "DELETE FROM FamilyDefaultCategories\n" +
+                "WHERE FamilyId = " + familyId;
+
+        try (Connection conn = Database.getInstance();
+             PreparedStatement ps = conn.prepareStatement(query2)) {
+
+//            ps.setString(1, "%Test Automation%");
+
+            int affectedRows = ps.executeUpdate();
+            System.out.println("Silinen kayıt sayısı: " + affectedRows);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @When("The user click create next button")
+    public void theUserClickCreateNextButton() {
+        driver.findElement(By.xpath("//button[@id='next-step-btn']")).click();
+    }
+
+    @When("The user click option import button")
+    public void theUserClickOptionImportButton() {
+        BrowserUtils.wait(1);
+        pages.itemOverviewPage().getOptionImportButton().click();
+    }
+
+    @When("The user click attribute import button")
+    public void theUserClickAttributeImportButton() {
+        pages.itemOverviewPage().getAttributeImportButton().click();
     }
 }

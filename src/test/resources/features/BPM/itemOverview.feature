@@ -14,8 +14,6 @@ Feature: Item Overview Scenarios
     And  The user clicks overview save button
 
 #  Scenario: Columns Adding
-#    Given The user go to 'Contact' overview page
-#    And  The user click columns button
 #    And The user add 'Öğe Durumları' to columns
 #    And The user add the removed column
 #    And  The user clicks overview save button
@@ -42,7 +40,8 @@ Feature: Item Overview Scenarios
   Scenario: Roof card event creation
     When The user go to roof card item
     When The user click event create button
-    When the user fills the "Kod" input field with "EVT-2025-001"
+#    When the user fills the "Kod" input field with "EVT-2025-001"
+    When the user fills the "Kod" input field with random value
     And the user fills the "Etkinlik Adı" input field with "Test Etkinlik"
     And the user selects "Birebir" from the "Temas Tipi" dropdown
     And the user selects "Sohbet" from the "Tarz / Stil" multi-select dropdown
@@ -403,11 +402,59 @@ Feature: Item Overview Scenarios
     When The user click attribute create next button
     Then The user verifies info "Değişiklikler Başarıyla Kaydedildi" appears
     When The user click update button
-#    Then The user verifies info "Başarıyla Güncellendi" appears
     When The user go to edit assoc type page
     When The user clicks assoc type "Özellikler" tab
     Then The user verify assoc attribute displayed in assoc type
     Then The user delete test attribute
+
+  Scenario: Unique Attribute Control
+    When The user get item info for unique attribute case
+    When The user go to second item page
+    When The user clicks "Etkinlik Grubu" attribute group
+    When The user update 'Etkinlik Adı' attribute
+    When The user clicks "Önizleme" tab
+    And The user clicks save button in edit item
+    And The user enters "update for offstand by automation" in comment area
+    And The user clicks save button in edit item save modal
+    Then The user verifies info "Özellik değerleri benzersiz olmalıdır: Etkinlik Adı" appears
+
+  Scenario: Add Favourite - History Control
+    When The user tear down favourite history case
+    When The user go to edit item '3620672'
+    When The user click add favourite button
+    When The user clicks "Tarihçe" tab
+    When The user click 'Yenile' button
+    Then The user verify "Yorum" text filter with value "Added to favorites" in "history_table_ItemNewHistory"
+    When The user tear down favourite history case
+    When The user click add favourite button
+    When The user click 'Yenile' button
+    Then The user verify "Yorum" text filter with value "Removed from favorites" in "history_table_ItemNewHistory"
+    When The user tear down favourite history case
+
+  Scenario: Roller İzinler Export
+    When The user go to 'DIA_BASIC' edit role page
+    When The user clicks assoc type "İzinler" tab
+    When The user click permission export button
+    When The user complete the export
+    Then The user verifies info "Başarılı" appears
+
+  Scenario: Default Category
+    Then The user delete default category for 'WALKERS' family
+    When The user go to 'WALKERS' family page
+    When The user clicks assoc type "Varsayılan Kategoriler" tab
+    When The user select category for create 'On-Trade'
+    And The user click Save button in family edit page
+    And The user enters "update for default category by automation" in comment area
+    And The user clicks save button in edit family save modal
+    Then The user verifies positive info "Changes saved successfully." appears
+    Given The user go to 'Event' overview page
+    When The User clicks on the createButton element
+    When The user select create item family 'WALKERS'
+    When The user fills the "Kod" input field with random value
+    When The user click create next button
+    Then The user verify category 'On-Trade' is selected
+    Then The user delete default category for 'WALKERS' family
+
 
 
 

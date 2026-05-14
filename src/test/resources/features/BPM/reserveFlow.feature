@@ -50,4 +50,4 @@ Feature: Reserve Flows Cases
     Given The user submit the task 'Başarılı'
     Given The user login with "FavoriRe"
     Given The user go in Task "DIA: ReservFlowForm"
-    Given The user fill reserve vendor offer form with price "10000"
+    Given The user fill reserve vendor offer form with price "500001"

@@ -119,15 +119,15 @@ Feature: Stand Flows Cases
     Given The user fill start form for '971982' and markaisi 0
     Then The user verifies info "Form başarıyla gönderildi." appears
     Given The user verify stand blocked budget with "600" for '971982'
-    Given The user login with "skgm3"
+    Given The user login with "skgmtest2"
     Given The user search form
-    Then The user verify "Göreve Atanan" text filter with value "skgm3 skgm3" in "taskList_table"
+    Then The user verify "Göreve Atanan" text filter with value "skgm2 soyad" in "taskList_table"
     Given The user go in Task "DIA: ConfirmationForm"
     Given The user select kalem 'JW_Ağac_Stand_tr'
     Given The user submit the task 'Başarılı'
     When The user wait 8 second
     Given The user verify stand blocked budget with "1200" for '971982'
-    Given The user login with "kgu"
+    Given The user login with "kgu2"
     Given The user go in Task "DIA: ConfirmationForm"
     Given The user submit the task 'Başarılı'
     Given The user login with "Tedarikçi"
