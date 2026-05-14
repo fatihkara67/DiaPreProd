@@ -777,7 +777,7 @@ public class DbProcess extends BasePage {
         }
         System.out.println("Code: " + code);
 
-        return i != 0;
+        return i == 1000;
 
 
     }

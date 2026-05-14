@@ -101,6 +101,12 @@ public class ItemOverviewPage extends BasePage {
     @FindBy(xpath = "//button[@id='export-dropdown']")
     private WebElement overviewExportDropdownBtn;
 
+    @FindBy(xpath = "//button[@id='import-select-options']")
+    private WebElement optionImportButton;
+
+    @FindBy(xpath = "//button[@id='attributes_table-Import']")
+    private WebElement attributeImportButton;
+
     @FindBy(xpath = "//button[@id='importUser']")
     private WebElement itemImportButton;
 

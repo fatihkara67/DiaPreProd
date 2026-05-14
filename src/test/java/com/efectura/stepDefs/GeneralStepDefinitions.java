@@ -1,10 +1,7 @@
 package com.efectura.stepDefs;
 
 import com.efectura.pages.BasePage;
-import com.efectura.utilities.BrowserUtils;
-import com.efectura.utilities.CommonExcelReader;
-import com.efectura.utilities.ConfigurationReader;
-import com.efectura.utilities.Driver;
+import com.efectura.utilities.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -77,6 +75,7 @@ public class GeneralStepDefinitions extends BaseStep {
         System.out.println(values);
         BrowserUtils.wait(2);
         for (String actualValue : values) {
+            System.out.println("actualValue: " + actualValue + " | expectedValue: " + expectedValue);
             Assert.assertTrue(actualValue.toLowerCase().contains(expectedValue.toLowerCase()));
 //            Assert.assertEquals(expectedValue,actualValue);
         }
@@ -627,7 +626,6 @@ public class GeneralStepDefinitions extends BaseStep {
 
     @When("The user upload the {string} file")
     public void theUserUploadTheFile(String fileName) {
-        Driver.getDriver().findElement(By.xpath("//button[contains(@id,'Import')]")).click();
         BrowserUtils.wait(2);
         pages.itemOverviewPage().getImportInput().sendKeys(CommonExcelReader.getExcelPath(fileName));
         BrowserUtils.wait(2);
@@ -640,15 +638,18 @@ public class GeneralStepDefinitions extends BaseStep {
         BrowserUtils.wait(1);
         pages.itemOverviewPage().getItemImportStep2NextButton().click();
         BrowserUtils.wait(5);
+        BrowserUtils.waitForVisibility(By.xpath("//button[contains(@id,'import-step-edit')]"),40);
         Driver.getDriver().findElement(By.xpath("//button[contains(@id,'import-step-edit')]")).click();
         BrowserUtils.wait(1);
+        BrowserUtils.waitForVisibility(By.xpath("//button[contains(@id,'import-apply-button')]"),40);
         Driver.getDriver().findElement(By.xpath("//button[contains(@id,'import-apply-button')]")).click();
-        BrowserUtils.wait(10);
+        BrowserUtils.wait(420);
     }
 
     @Then("The user verifies that attributes are created")
     public void theUserVerifiesThatAttributesAreCreated() {
         boolean isCreated = pages.dbProcess().isAttributeCreated();
+        Assert.assertTrue("Attribute'lar oluşturulmadı!!",isCreated);
     }
 
     @Then("The user tear down all changes in Attribute Case")
@@ -908,10 +909,17 @@ public class GeneralStepDefinitions extends BaseStep {
     }
 
     @When("The user go to {string} attribute page")
-    public void theUserGoToAttributePage(String attributeLabel) {
-        int attributeId = pages.dbProcess().getAttributeIdByLabel(attributeLabel);
+    public void theUserGoToAttributePage(String attributeLabel) throws SQLException {
+//        int attributeId = pages.dbProcess().getAttributeIdByLabel(attributeLabel);
+        String query = "SELECT Id FROM Attributes WHERE Code = 'Event_Type'";
+        ResultSet rs = Database.getInstance().createStatement().executeQuery(query);
+        rs.next();
+        int attributeId = rs.getInt("Id");
+
+        System.out.println("attr id: " + attributeId);
         driver.get("https://dia-preprod-ui.efectura.com/Settings/EditAttribute/" + attributeId);
-        BrowserUtils.wait(2);
+        driver.get("https://dia-preprod-ui.efectura.com/Settings/EditAttribute?id=" + attributeId);
+        BrowserUtils.wait(3);
     }
 
     String randomDefaultValueString;
@@ -958,5 +966,30 @@ public class GeneralStepDefinitions extends BaseStep {
     public void theUserSendFillReserveReportEndpointRequest() {
         String response = BrowserUtils.sendFillOfftradeReserveTrackingReportRequest();
         Assert.assertTrue("Fill Reserve Report Endpoint requesti başarısız", response.contains("Finished"));
+    }
+
+    @When("The user fills the {string} input field with random value")
+    public void theUserFillsTheInputFieldWithRandomValue(String fieldLabel) {
+        WebElement input;
+        String value = UUID.randomUUID().toString();
+
+        switch (fieldLabel) {
+            case "Kod":
+                input = BrowserUtils.waitForVisibility(By.id("inputCode"), 10);
+                input.clear();
+                input.sendKeys(value);
+                break;
+
+            case "Etkinlik Adı":
+                // id içinde boşluk olduğu için CSS attribute selector kullanıyoruz
+                input = BrowserUtils.waitForVisibility(
+                        By.cssSelector("input.DIA_Event_Name"), 10);
+                input.clear();
+                input.sendKeys(value);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Tanımsız input alanı: " + fieldLabel);
+        }
     }
 }

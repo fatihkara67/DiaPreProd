@@ -81,12 +81,22 @@ Feature: Item Imports
 
 
   Scenario: Attribute Import
+    Then The user tear down all changes in Attribute Case
     When The user go to attribute page
+    When The user click attribute import button
     When The user upload the 'Attribute' file
-#    When The user upload "Attribute" file
     When The user import attribute file
     Then The user verifies that attributes are created
     Then The user tear down all changes in Attribute Case
+
+  Scenario: Attribute Option Import
+    When The user go to 'Event_Type' attribute page
+    When The user clicks assoc type "Değerler" tab
+    When The user click option import button
+    When The user upload the 'Option' file
+    When The user import attribute file
+#    When The user import attribute option file
+#    Then The user verifies that attribute options are created
 
 
   Scenario: Contact Import New
