@@ -299,6 +299,7 @@ public class Membership_AccountRulePage extends BasePage {
     }
 
     public void clickSetRulesButton() {
+        BrowserUtils.moveToElement(setRulesButton);
         setRulesButton.click();
         ruleNameInputBox.sendKeys("test automation");
         continueButtonInSetRulesModal.click();

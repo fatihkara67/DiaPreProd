@@ -7,7 +7,7 @@ Feature: Report
 
 
   Scenario: Menu Tracking Report
-    When The user select 'MenuTrackingReports' report
+    When The user select 'Menü Takip Raporları' report
     Then The user verify 'tableReport' table displayed
     Then The user verify advanced filter group displayed
     Then The user verify 'tableReport' table has data
@@ -23,7 +23,7 @@ Feature: Report
     Then The user verify warning message 'Başarılı'
 
   Scenario: Module Tracking Report
-    When The user select 'ModuleTrackingReports' report
+    When The user select 'Modül Takip Raporları' report
     Then The user verify 'tableReport' table displayed
     Then The user verify advanced filter group displayed
     Then The user verify 'tableReport' table has data
