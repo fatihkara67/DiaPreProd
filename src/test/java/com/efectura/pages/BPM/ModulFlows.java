@@ -243,6 +243,7 @@ public class ModulFlows extends BasePage {
         startFormFifthCheckbox.click();
         BrowserUtils.wait(3);
         BrowserUtils.waitForVisibility(trackInfoHeader,20);
+        BrowserUtils.moveToElement(vendorSelect);
         vendorSelect.click();
         vendorInput.sendKeys("Efectura Vendor");
         BrowserUtils.wait(1);
@@ -1189,6 +1190,7 @@ public class ModulFlows extends BasePage {
         System.out.println("Form Number: " + formNumber);
         driver.findElement(By.xpath("//input[contains(@id,'noktaTrackKodu')]")).sendKeys(lastCustomerCode);
         driver.findElement(By.xpath("//button[@id='searchButton']")).click();
+        BrowserUtils.moveToElement(driver.findElement(By.xpath("(//input[contains(@id,'madde5')])")));
         driver.findElement(By.xpath("(//input[contains(@id,'madde2')])")).click();
         driver.findElement(By.xpath("(//input[contains(@id,'madde5')])")).click();
         driver.findElement(By.xpath("//input[@id='ciroOrani']")).sendKeys("30");

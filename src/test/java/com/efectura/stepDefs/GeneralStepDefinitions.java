@@ -287,11 +287,14 @@ public class GeneralStepDefinitions extends BaseStep {
 
     @And("The user click {string} check box")
     public void theUserClickCheckBox(String attribute) {
+        BrowserUtils.adjustScreenSize(75,driver);
         WebElement element = Driver.getDriver().findElement(By.xpath("//span[normalize-space(text())='" + attribute +
                 "']     /ancestor::label     //input[@type='checkbox']"));
 
         System.out.println("//span[normalize-space(text())='" + attribute +
                 "']     /ancestor::label     //input[@type='checkbox']");
+
+        BrowserUtils.moveToElement(element);
 
         element.click();
     }
@@ -820,7 +823,7 @@ public class GeneralStepDefinitions extends BaseStep {
     @When("The user click bulk action button")
     public void theUserClickBulkActionButton() {
         driver.findElement(By.xpath("//button[@data-original-title='TOPLU EYLEMLER']")).click();
-        BrowserUtils.waitForVisibility(By.xpath("//p[.='TOPLU EYLEMLER']"),60);
+        BrowserUtils.waitForVisibility(By.xpath("//p[.='TOPLU EYLEMLER']"),70);
         BrowserUtils.wait(3);
         BrowserUtils.waitForVisibility(By.id("bulkActionModal"),45);
         driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='bulkActionIframe']")));

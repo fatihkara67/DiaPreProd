@@ -1095,10 +1095,12 @@ public class ItemOverviewStepDefs extends BaseStep {
         WebElement input = Driver.getDriver().findElement(By.xpath("//input[@class='inline-edit-input' and @data-field='DIA_FirstName']"));
         input.sendKeys(Keys.CONTROL + "A");
         input.sendKeys(randomValue);
+        System.out.println("random value: " + randomValue);
     }
 
     @Then("The user verify name is edited")
     public void theUserVerifyNameIsEdited() {
+        BrowserUtils.wait(3);
         boolean isEdited = pages.dbProcess().isNameEdited(selectedId, randomValue);
         Assert.assertTrue("İsim Editlenmedi!!", isEdited);
     }

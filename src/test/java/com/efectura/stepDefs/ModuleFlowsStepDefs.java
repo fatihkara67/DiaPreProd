@@ -116,6 +116,7 @@ public class ModuleFlowsStepDefs extends BaseStep {
     @Given("The user change distributor help")
     public void theUserChangeDistributorHelp() {
         BrowserUtils.waitForVisibility(pages.modulFlows().getDistributorCheckbox(),30);
+        BrowserUtils.moveToElement(pages.modulFlows().getDistributorCheckbox());
         pages.modulFlows().getDistributorCheckbox().click();
         BrowserUtils.wait(1);
         BrowserUtils.waitForVisibility(pages.modulFlows().getFlowInfoMessage(), 20);
