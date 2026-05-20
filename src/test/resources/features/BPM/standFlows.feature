@@ -79,17 +79,17 @@ Feature: Stand Flows Cases
 
 
   Scenario: Standart Stand Flow Full Cycle
-    Given The user get blocked budget for stand '999999999'
-    Given The user get actual budget for stand '999999999'
+    Given The user get blocked budget for stand '971981'
+    Given The user get actual budget for stand '971981'
     Given The user login with "sahamuduru"
     Given The user go to "panel" page
     Given The user go in "On Trade Stand Akışı" flow
-    Given The user fill start form for '999999999' and markaisi 0
+    Given The user fill start form for '971981' and markaisi 0
     Then The user verifies info "Form başarıyla gönderildi." appears
     Given The user verify stand blocked budget with "600" for '999999999'
-    Given The user login with "skgmtest2"
+    Given The user login with "skgmtest"
     Given The user search form
-    Then The user verify "Göreve Atanan" text filter with value "skgm2 soyad" in "taskList_table"
+    Then The user verify "Göreve Atanan" text filter with value "SKGM 0518" in "taskList_table"
     Given The user go in Task "DIA: ConfirmationForm"
     Given The user select kalem 'JW_Ağac_Stand_tr'
     Given The user submit the task 'Başarılı'
@@ -106,8 +106,8 @@ Feature: Stand Flows Cases
     Given The user login with "Tedarikçi"
 #    Given The user go in Task "DIA: StandFlowForm"
     Given The user fill last vendor form and complete
-    Given The user verify stand blocked budget with "0" for '999999999'
-    Given The user verify stand actual budget with "1000" for '999999999'
+    Given The user verify stand blocked budget with "0" for '971981'
+    Given The user verify stand actual budget with "1000" for '971981'
 
 
   Scenario: Standart Stand Flow Full Cycle - Bolge

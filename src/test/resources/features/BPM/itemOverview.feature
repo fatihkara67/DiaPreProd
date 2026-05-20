@@ -41,7 +41,7 @@ Feature: Item Overview Scenarios
     When The user go to roof card item
     When The user click event create button
 #    When the user fills the "Kod" input field with "EVT-2025-001"
-    When the user fills the "Kod" input field with random value
+    When The user fills the "Kod" input field with random value
     And the user fills the "Etkinlik Adı" input field with "Test Etkinlik"
     And the user selects "Birebir" from the "Temas Tipi" dropdown
     And the user selects "Sohbet" from the "Tarz / Stil" multi-select dropdown

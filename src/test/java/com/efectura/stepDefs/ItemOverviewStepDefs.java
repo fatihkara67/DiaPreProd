@@ -1086,7 +1086,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @When("The user click overview edit button")
     public void theUserClickOverviewEditButton() {
-        Driver.getDriver().findElement(By.xpath("//*[@id=\"items\"]/tbody/tr/td[16]/a[1]")).click();
+        Driver.getDriver().findElement(By.xpath("//*[@id=\"items\"]/tbody/tr[1]/td[9]/a[1]")).click();
     }
 
     String randomValue = UUID.randomUUID().toString();
