@@ -58,7 +58,7 @@ import java.util.List;
             }
 
             // 4) Telegram'a gönder   -4570445477 -1002156506449
-            BrowserUtils.sendFileToTelegram(finalReportPath.toString(), "-5097889346");
+            BrowserUtils.sendFileToTelegram(finalReportPath.toString(), "-1003681783983");
 
             BrowserUtils.renameFile(
                     renamedReport.toString(),
