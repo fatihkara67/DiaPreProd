@@ -604,7 +604,7 @@ public class BrowserUtils {
         selectDate(dateInput, LocalDate.now());
     }
 
-    private static final String TELEGRAM_BOT_TOKEN = "6538211561:AAEVRYoo03lBKnqhTUUU3lne9nfvpRGHa08";
+    private static final String TELEGRAM_BOT_TOKEN = "7959519774:AAG00auX06WGLF_gl5v4mwDeWjI1v5eTh68";
     public static void sendMessageToTelegram(String message, String chatId) {
         try {
             // Telegram API URL
