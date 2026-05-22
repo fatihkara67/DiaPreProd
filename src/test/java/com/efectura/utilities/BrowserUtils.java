@@ -107,6 +107,68 @@ public class BrowserUtils {
         Actions actions = new Actions(Driver.getDriver());
         actions.dragAndDrop(source, target).build().perform();
     }
+
+
+    public static void dragAndDropWithActions(WebElement source, WebElement target) {
+        Actions actions = new Actions(Driver.getDriver());
+        actions.clickAndHold(source)
+                .pause(Duration.ofMillis(500))
+                .moveToElement(target)
+                .pause(Duration.ofMillis(500))
+                .release()
+                .build()
+                .perform();
+    }
+
+    public static void dragAndDropJQuerySortable(WebElement source, WebElement target) {
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+
+        String script = """
+        var src = arguments[0];
+        var tgt = arguments[1];
+        var srcRect = src.getBoundingClientRect();
+        var tgtRect = tgt.getBoundingClientRect();
+        
+        $(src).simulate('drag', {
+            dx: tgtRect.left - srcRect.left,
+            dy: tgtRect.top - srcRect.top
+        });
+    """;
+
+        js.executeScript(script, source, target);
+    }
+
+
+    public static void dragAndDropJQueryUI(WebElement source, WebElement target) {
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+
+        String script = """
+        var src = $(arguments[0]);
+        var tgt = $(arguments[1]);
+        var srcOffset = src.offset();
+        var tgtOffset = tgt.offset();
+        
+        src.trigger('mousedown', [{which: 1}]);
+        
+        src.trigger($.Event('mousemove', {
+            pageX: srcOffset.left + 1,
+            pageY: srcOffset.top + 1
+        }));
+        
+        tgt.trigger($.Event('mousemove', {
+            pageX: tgtOffset.left,
+            pageY: tgtOffset.top
+        }));
+        
+        src.trigger($.Event('mouseup', {
+            pageX: tgtOffset.left,
+            pageY: tgtOffset.top
+        }));
+    """;
+
+        js.executeScript(script, source, target);
+    }
+
     /**
      * Belirtilen web öğesi üzerinde fareyle üzerine gelme eylemi gerçekleştirir.
      *
