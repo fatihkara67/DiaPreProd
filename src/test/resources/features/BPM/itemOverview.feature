@@ -13,6 +13,26 @@ Feature: Item Overview Scenarios
     And The user add the removed column
     And  The user clicks overview save button
 
+  Scenario: Edit Item Column Selection
+    When The user go to roof card item
+    When The user clicks 'İlgili Etkinlik' tab
+    And  The user click columns button
+    When The user remove one column in assoc tab
+    And  The user clicks assoc column save button
+    And  The user click columns button
+    When The user clicks "Etkinlik Grubu" attribute group in column select
+    When The user search removed column
+    When The user search added column
+    And The user add the removed column in assoc tab
+    And  The user clicks assoc column save button
+
+  Scenario: Bulk Action Number Format
+    Given The user go to 'Contact' overview page
+    When The user select first two items
+    Then The user verifies total record count is displayed with thousand separator
+
+
+
 #  Scenario: Columns Adding
 #    And The user add 'Öğe Durumları' to columns
 #    And The user add the removed column
@@ -454,6 +474,9 @@ Feature: Item Overview Scenarios
     When The user click create next button
     Then The user verify category 'On-Trade' is selected
     Then The user delete default category for 'WALKERS' family
+
+  Scenario: Menu Manager
+    
 
 
 

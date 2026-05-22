@@ -1039,6 +1039,7 @@ public class ItemOverviewStepDefs extends BaseStep {
 
     @And("The user click columns button")
     public void theUserClickColumnsButton() {
+        BrowserUtils.wait(2);
         BrowserUtils.waitForVisibility(pages.itemOverviewPage().getConfigureColumnsButton(),20);
         pages.itemOverviewPage().getConfigureColumnsButton().click();
         BrowserUtils.wait(3);
@@ -1048,6 +1049,12 @@ public class ItemOverviewStepDefs extends BaseStep {
     @And("The user clicks overview save button")
     public void theUserClicksOverviewSaveButton() {
         Driver.getDriver().findElement(By.xpath("//button[@id='EfSaveColumns']")).click();
+        BrowserUtils.wait(4);
+    }
+
+    @And("The user clicks assoc column save button")
+    public void theUserClicksAssocColumnSaveButton() {
+        Driver.getDriver().findElement(By.xpath("//button[@id='saveChangeTest']")).click();
         BrowserUtils.wait(4);
     }
 
@@ -1457,6 +1464,13 @@ public class ItemOverviewStepDefs extends BaseStep {
         BrowserUtils.moveToElement(checkboxes.get(0));
         checkboxes.get(0).click();
         checkboxes.get(1).click();
+    }
+
+    @Then("The user verifies total record count is displayed with thousand separator")
+    public void theUserVerifiesTotalRecordCountWithThousandSeparator() {
+        String countText = driver.findElement(By.xpath("//div[@class='bulk-container']/div/span")).getText();
+        assertTrue("Binlik ayraç (.) bulunamadı: " + countText,
+                countText.matches(".*\\d{1,3}(\\.\\d{3})+.*"));
     }
 
     @When("The user select create item family {string}")
@@ -3066,5 +3080,59 @@ public class ItemOverviewStepDefs extends BaseStep {
     @When("The user click attribute import button")
     public void theUserClickAttributeImportButton() {
         pages.itemOverviewPage().getAttributeImportButton().click();
+    }
+
+    @When("The user remove one column in assoc tab")
+    public void theUserRemoveOneColumnInAssocTab() {
+        for (WebElement column : pages.itemOverviewPage().getAlreadySelectedAssocColumns()) {
+            if (!column.getAttribute("class").contains("item-default-columns") &&
+                    !column.getAttribute("class").contains("ui-state-disabled")) {
+                System.out.println("Column to be removed: " + column.getText());
+                BrowserUtils.moveToElement(column);
+                BrowserUtils.dragAndDrop(column, pages.itemOverviewPage().getToBeSelectedAssocArea());
+                BrowserUtils.wait(3);
+                removedColumn = column.getText();
+                System.out.println("Removed Column: " + removedColumn);
+                break;
+            }
+        }
+    }
+
+    @And("The user add the removed column in assoc tab")
+    public void theUserAddTheRemovedColumnInAssocTab() {
+        BrowserUtils.wait(2);
+        WebElement matchingElement = pages.itemOverviewPage().getToBeSelectedAssocColumns().stream()
+                .filter(el -> el.getText().trim().equalsIgnoreCase(removedColumn))
+                .findFirst()
+                .orElse(null);
+
+        BrowserUtils.dragAndDrop(matchingElement, pages.itemOverviewPage().getAlreadySelectedAssocArea());
+        BrowserUtils.wait(1);
+    }
+
+    @When("The user clicks {string} attribute group in column select")
+    public void theUserClicksAttributeGroupInColumnSelect(String attrGroup) {
+        BrowserUtils.adjustScreenSize(55,Driver.getDriver());
+        BrowserUtils.wait(7);
+        for (WebElement attributeGroup : pages.itemOverviewPage().getColumnSelectAttributeGroups()) {
+            if (attributeGroup.getText().contains(attrGroup)) {
+                attributeGroup.click();
+                BrowserUtils.wait(2);
+            }
+        }
+    }
+
+    @When("The user search removed column")
+    public void theUserSearchRemovedColumn() {
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("//input[@id='search-sortable1']")).sendKeys(removedColumn);
+        BrowserUtils.wait(1);
+    }
+
+    @When("The user search added column")
+    public void theUserSearchAddedColumn() {
+        BrowserUtils.wait(1);
+        driver.findElement(By.xpath("//input[@id='search-sortable2']")).sendKeys("x");
+        BrowserUtils.wait(1);
     }
 }
